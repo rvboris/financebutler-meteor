@@ -1,0 +1,73 @@
+{
+  "REGISTER": {
+    "REGISTRATION": "Регистрация",
+    "EMAIL": "Email",
+    "EMAIL_REQUIRED": "Email обязателен",
+    "EMAIL_INVALID": "Введите корректный email адрес",
+    "PASSWORD": "Пароль",
+    "PASSWORD_REQUIRED": "Пароль обязателен",
+    "PASSWORD_MIN_LENGTH": "Минимальная длинна пароля __count__ символ",
+    "PASSWORD_MIN_LENGTH_plural_1": "Минимальная длинна пароля __count__ символ",
+    "PASSWORD_MIN_LENGTH_plural_2": "Минимальная длинна пароля __count__ символа",
+    "PASSWORD_MIN_LENGTH_plural_5": "Минимальная длинна пароля __count__ символов",
+    "PASSWORD_REPEAT": "Повторите пароль",
+    "PASSWORD_MATCH": "Пароли должны совпадать",
+    "REGISTER": "Зарегистрироваться",
+    "ALREADY_REGISTER": "Уже зарегистрированы?",
+    "LOGIN_WITH": "Войти с помощью"
+  },
+  "LOGIN": {
+    "REGISTRATION": "Регистрация",
+    "AUTHORIZATION": "Авторизация",
+    "EMAIL": "Email",
+    "EMAIL_REQUIRED": "Email обязателен",
+    "EMAIL_INVALID": "Введите корректный email адрес",
+    "PASSWORD": "Пароль",
+    "PASSWORD_REQUIRED": "Пароль обязателен",
+    "PASSWORD_MIN_LENGTH": "Минимальная длинна пароля __count__ символ",
+    "PASSWORD_MIN_LENGTH_plural_1": "Минимальная длинна пароля __count__ символ",
+    "PASSWORD_MIN_LENGTH_plural_2": "Минимальная длинна пароля __count__ символа",
+    "PASSWORD_MIN_LENGTH_plural_5": "Минимальная длинна пароля __count__ символов",
+    "LOGIN": "Войти",
+    "FORGOT_PASSWORD": "Забыли пароль?",
+    "LOGIN_WITH": "Войти с помощью"
+  },
+  "RESET_PASSWORD": {
+    "RECOVERY_PASSWORD": "Сбросить пароль",
+    "RECOVERY": "Сбросить",
+    "SAVE_NEW_PASSWORD": "Сохранить новый пароль",
+    "EMAIL": "Email",
+    "EMAIL_REQUIRED": "Email обязателен",
+    "EMAIL_INVALID": "Введите корректный email адрес",
+    "LOGIN": "Войти",
+    "LOGIN_WITH": "Войти с помощью",
+    "REGISTRATION": "Регистрация",
+    "NEW_PASSWORD": "Пароль",
+    "NEW_PASSWORD_REQUIRED": "Пароль обязателен",
+    "PASSWORD_MIN_LENGTH": "Минимальная длинна пароля __count__ символ",
+    "PASSWORD_MIN_LENGTH_plural_1": "Минимальная длинна пароля __count__ символ",
+    "PASSWORD_MIN_LENGTH_plural_2": "Минимальная длинна пароля __count__ символа",
+    "PASSWORD_MIN_LENGTH_plural_5": "Минимальная длинна пароля __count__ символов",
+    "NEW_PASSWORD_REPEAT": "Повторите пароль",
+    "NEW_PASSWORD_MATCH": "Пароли должны совпадать",
+    "CHECK_MAIL": "Ссылка для сброса пароля отправлена вам на email"
+  },
+  "VERIFY_EMAIL": {
+    "EMAIL_VERIFIED": "Спасибо что подтвердили свой email",
+    "EMAIL_VERIFY_SENDED": "Вам на email отправлено письмо для подтвеждения регистрации"
+  },
+  "GLOBAL": {
+    "AUTH_REQUIRED": "Требуется авторизация"
+  },
+  "EMAIL": {
+    "RESET_PASSWORD_SUBJECT": "Восстановление пароля",
+    "RESET_PASSWORD_TEXT": "Пожалуйста перейдите по ссылке чтобы сбросить пароль __url__",
+    "CONFIRM_EMAIL_SUBJECT": "Подверждение email адреса",
+    "CONFIRM_EMAIL_TEXT": "Пожалуйста подтвердите свой email адрес перейдя по ссылке __url__"
+  },
+  "APP": {
+    "SETTINGS": "Настройки",
+    "PROFILE": "Профиль",
+    "LOGOUT": "Выйти"
+  }
+}

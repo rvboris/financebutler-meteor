@@ -1,0 +1,16 @@
+{
+  "name": "financebutler",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular-validation-match": "^1.5.1"
+  },
+  "ignoredDependencies": [
+    "angular"
+  ],
+  "private": true,
+  "overrides": {
+    "angular-validation-match": {
+      "arch": ["client"]
+    }
+  }
+}
