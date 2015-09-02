@@ -27,3 +27,5 @@ matb33:collection-hooks
 ryne:basic-g
 ongoworks:security
 dburles:collection-helpers
+sanjo:jasmine
+velocity:console-reporter

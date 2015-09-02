@@ -1,0 +1,13 @@
+{
+  "extends": "airbnb/base",
+  "parser": "babel-eslint",
+  "new-cap": [0, {
+    "newIsCapExceptions": [
+      "Component",
+      "View",
+      "State",
+      "Filter",
+      "Component"
+    ]
+  }]
+}

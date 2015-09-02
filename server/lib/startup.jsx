@@ -1,5 +1,3 @@
-'use strict';
-
 _ = lodash;
 
 Meteor.startup(() => {
@@ -10,15 +8,15 @@ Meteor.startup(() => {
   }
 
   Logstar.allow({
-    log: userId => {
+    log: () => {
       return true;
-    }
+    },
   });
 
   Logstar.info('Setup Accounts');
 
   Accounts.config({
-    sendVerificationEmail: true
+    sendVerificationEmail: true,
   });
 
   Accounts.onCreateUser((options, user) => {
@@ -49,33 +47,33 @@ Meteor.startup(() => {
   });
 
   ServiceConfiguration.configurations.remove({
-    service: 'facebook'
+    service: 'facebook',
   });
 
   ServiceConfiguration.configurations.insert({
     service: 'facebook',
     appId: Meteor.settings.facebook.appId,
-    secret: Meteor.settings.facebook.secret
+    secret: Meteor.settings.facebook.secret,
   });
 
   ServiceConfiguration.configurations.remove({
-    service: 'google'
+    service: 'google',
   });
 
   ServiceConfiguration.configurations.insert({
     service: 'google',
     clientId: Meteor.settings.google.clientId,
-    secret: Meteor.settings.google.secret
+    secret: Meteor.settings.google.secret,
   });
 
   ServiceConfiguration.configurations.remove({
-    service: 'twitter'
+    service: 'twitter',
   });
 
   ServiceConfiguration.configurations.insert({
     service: 'twitter',
     consumerKey: Meteor.settings.twitter.consumerKey,
-    secret: Meteor.settings.twitter.secret
+    secret: Meteor.settings.twitter.secret,
   });
 
   Accounts.emailTemplates.siteName = 'FinanceButler';
@@ -86,8 +84,7 @@ Meteor.startup(() => {
   };
 
   Accounts.emailTemplates.resetPassword.text = (user, url) => {
-    url = url.replace('#/', '');
-    return TAPi18n.__('EMAIL.RESET_PASSWORD_TEXT', { url }, user.profile.language);
+    return TAPi18n.__('EMAIL.RESET_PASSWORD_TEXT', { url: url.replace('#/', '') }, user.profile.language);
   };
 
   Accounts.emailTemplates.verifyEmail.subject = user => {
@@ -95,8 +92,7 @@ Meteor.startup(() => {
   };
 
   Accounts.emailTemplates.verifyEmail.text = (user, url) => {
-    url = url.replace('#/', '');
-    return TAPi18n.__('EMAIL.CONFIRM_EMAIL_TEXT', { url }, user.profile.language);
+    return TAPi18n.__('EMAIL.CONFIRM_EMAIL_TEXT', { url: url.replace('#/', '') }, user.profile.language);
   };
 
   if (G.CurrenciesCollection.find().count() === 0) {
@@ -107,6 +103,11 @@ Meteor.startup(() => {
     });
   }
 
-  // Generate demo user
-  G.UserGenerator('demo@demo', 'demo@demo');
+  Meteor.call('velocity/isMirror', (err, isMirror) => {
+    if (isMirror) {
+      return;
+    }
+
+    G.userGenerator('demo@demo', 'demo@demo');
+  });
 });

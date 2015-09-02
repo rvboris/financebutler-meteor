@@ -1,14 +1,14 @@
-'use strict';
+const namespace = 'UsersAccounts';
 
 Meteor.methods({
-  addUserAccount: (userId, account) => {
+  [`${namespace}/Add`]: (userId, account) => {
     account._id = account._id || Random.id();
     account.startBalance = account.startBalance || 0;
     account.currentBalance = account.startBalance;
     account.order = account.order || 0;
     account.status = account.status || 'active';
 
-    let user = Meteor.users.findOne(userId);
+    const user = Meteor.users.findOne(userId);
 
     if (!user) {
       throw new Meteor.Error('user is not finded');
@@ -34,35 +34,35 @@ Meteor.methods({
       throw new Meteor.Error('account currencyId is empty');
     }
 
-    let currency = G.CurrenciesCollection.findOne(account.currencyId);
+    const currency = G.CurrenciesCollection.findOne(account.currencyId);
 
     if (!currency) {
       throw new Meteor.Error('currency is not finded');
     }
 
     return G.UsersAccountsCollection.update({
-      userId: userId
+      userId: userId,
     }, {
       $addToSet: {
-        accounts: account
-      }
+        accounts: account,
+      },
     });
   },
 
-  removeUserAccount: (userId, accountId) => {
+  [`${namespace}/Remove`]: (userId, accountId) => {
     return G.UsersAccountsCollection.update({
-      userId: userId
+      userId: userId,
     }, {
       $pull: {
         accounts: {
-          _id: accountId
-        }
-      }
+          _id: accountId,
+        },
+      },
     });
   },
 
-  updateUserAccount: (userId, accountId, account) => {
-    let fieldsToUpdate = {};
+  [`${namespace}/Update`]: (userId, accountId, account) => {
+    const fieldsToUpdate = {};
 
     if (account.name) {
       fieldsToUpdate['accounts.$.name'] = account.name;
@@ -86,26 +86,26 @@ Meteor.methods({
 
     return G.UsersAccountsCollection.update({
       userId: userId,
-      'accounts._id' : accountId
+      'accounts._id': accountId,
     }, {
-      $set: fieldsToUpdate
+      $set: fieldsToUpdate,
     });
   },
 
-  updateUserAccountBalance: (userId, accountId, balance) => {
+  [`${namespace}/UpdateBalance`]: (userId, accountId, balance) => {
     return G.UsersAccountsCollection.update({
       userId: userId,
-      'accounts._id': accountId
+      'accounts._id': accountId,
     }, {
       $inc: {
-        'accounts.$.currentBalance': balance
-      }
+        'accounts.$.currentBalance': balance,
+      },
     });
   },
 
-  getUsersAccountsTotals: userId => {
+  [`${namespace}/GetTotals`]: userId => {
     return _.sum(G.UsersAccountsCollection.findOne({userId}).accounts, account => {
       return account.currentBalance;
     });
-  }
+  },
 });

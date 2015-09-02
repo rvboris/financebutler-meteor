@@ -1,23 +1,23 @@
-'use strict';
+const namespace = 'UsersOperations';
 
 Meteor.methods({
-  addUserOperation: (userId, accountId, operation) => {
+  [`${namespace}/Add`]: (userId, accountId, operation) => {
     operation.date = operation.date || new Date();
 
-    let user = Meteor.users.findOne(userId);
+    const user = Meteor.users.findOne(userId);
 
     if (!user) {
       throw new Meteor.Error('user is not finded');
     }
 
-    let account = G.UsersAccountsCollection.findOne({userId}).getAccount(accountId);
+    const account = G.UsersAccountsCollection.findOne({userId}).getAccount(accountId);
 
     if (!account) {
       throw new Meteor.Error('account is not finded');
     }
 
     if (operation.categoryId) {
-      let category = G.UsersCategoriesCollection.findOne({userId}).getCategory(operation.categoryId);
+      const category = G.UsersCategoriesCollection.findOne({userId}).getCategory(operation.categoryId);
 
       if (!category) {
         throw new Meteor.Error('category is not finded');
@@ -50,12 +50,12 @@ Meteor.methods({
       throw new Meteor.Error('income operation must be positive');
     }
 
-    let operationToInsert = {
+    const operationToInsert = {
       userId: userId,
       accountId: accountId,
       type: operation.type,
       date: operation.date,
-      amount: operation.amount
+      amount: operation.amount,
     };
 
     if (operation.categoryId) {
@@ -65,7 +65,7 @@ Meteor.methods({
     return G.UsersOperationsCollection.insert(operationToInsert);
   },
 
-  addTransferUserOperation: (userId, accountIdFrom, accountIdTo, operation) => {
+  [`${namespace}/AddTransfer`]: (userId, accountIdFrom, accountIdTo, operation) => {
     operation.date = operation.date || new Date();
 
     if (!operation.amount) {
@@ -78,24 +78,26 @@ Meteor.methods({
       throw new Meteor.Error('operation amount can not be equal 0');
     }
 
-    let groupFromOperation = Meteor.call('addUserOperation', userId, accountIdFrom, {
+    const groupFromOperation = Meteor.call(`${namespace}/Add`, userId, accountIdFrom, {
       amount: operation.amount > 0 ? operation.amount * -1 : operation.amount,
       date: operation.date,
-      type: 'expense'
+      type: 'expense',
     });
 
-    let groupToOperation = Meteor.call('addUserOperation', userId, accountIdTo, {
+    const groupToOperation = Meteor.call(`${namespace}/Add`, userId, accountIdTo, {
       amount: operation.amount < 0 ? operation.amount * -1 : operation.amount,
       date: operation.date,
-      type: 'income'
+      type: 'income',
     });
 
     G.UsersOperationsCollection.direct.update(groupFromOperation, { $set: { groupTo: groupToOperation } });
     G.UsersOperationsCollection.direct.update(groupToOperation, { $set: { groupTo: groupFromOperation } });
+
+    return groupFromOperation;
   },
 
-  updateUserOperation: (userId, operationId, operation) => {
-    let fieldsToUpdate = {};
+  [`${namespace}/Update`]: (userId, operationId, operation) => {
+    const fieldsToUpdate = {};
 
     if (operation.amount) {
       operation.amount = _.round(_.parseInt(operation.amount));
@@ -104,49 +106,60 @@ Meteor.methods({
         throw new Meteor.Error('operation amount can not be equal 0');
       }
 
-      fieldsToUpdate['amount'] = operation.amount;
+      fieldsToUpdate.amount = operation.amount;
     }
 
     if (operation.categoryId) {
-      let category = G.UsersCategoriesCollection.findOne({userId}).getCategory(operation.categoryId);
+      const category = G.UsersCategoriesCollection.findOne({userId}).getCategory(operation.categoryId);
 
       if (!category) {
         throw new Meteor.Error('category is not finded');
       }
 
-      fieldsToUpdate['categoryId'] = operation.categoryId;
+      fieldsToUpdate.categoryId = operation.categoryId;
     }
 
     if (operation.accountId) {
-      let account = G.UsersAccountsCollection.findOne({userId}).getAccount(operation.accountId);
+      const account = G.UsersAccountsCollection.findOne({userId}).getAccount(operation.accountId);
 
       if (!account) {
         throw new Meteor.Error('account is not finded');
       }
 
-      fieldsToUpdate['accountId'] = operation.accountId;
+      fieldsToUpdate.accountId = operation.accountId;
     }
 
     if (operation.date) {
-      fieldsToUpdate['date'] = operation.date;
+      fieldsToUpdate.date = operation.date;
     }
 
     return G.UsersOperationsCollection.update({ userId, _id: operationId }, { $set: fieldsToUpdate });
   },
 
-  updateTransferUserOperation: (userId, operationId, operation) => {
-    let operationInfo =  G.UsersOperationsCollection.findOne(operationId);
+  [`${namespace}/UpdateTransfer`]: (userId, operationId, operation) => {
+    const operationInfo =  G.UsersOperationsCollection.findOne(operationId);
 
-    if ((operationInfo.type === 'expense' && operation.amount > 0) || (operationInfo.type === 'income' && operation.amount < 0)) {
+    if (operation.amount) {
+      if ((operationInfo.type === 'expense' && operation.amount > 0) || (operationInfo.type === 'income' && operation.amount < 0)) {
+        operation.amount = operation.amount * -1;
+      }
+    }
+
+    Meteor.call(`${namespace}/Update`, userId, operationId, operation);
+
+    if (operation.amount) {
       operation.amount = operation.amount * -1;
     }
 
-    Meteor.call('updateUserOperation', userId, operationId, operation);
-    Meteor.call('updateUserOperation', userId, operationInfo.groupTo, operation);
+    if (operation.accountId) {
+      delete operation.accountId;
+    }
+
+    Meteor.call(`${namespace}/Update`, userId, operationInfo.groupTo, operation);
   },
 
-  removeUserOperation: (userId, operationId, removeAccount = false) => {
-    let operationToRemove = G.UsersOperationsCollection.findOne(operationId);
+  [`${namespace}/Remove`]: (userId, operationId, removeAccount = false) => {
+    const operationToRemove = G.UsersOperationsCollection.findOne(operationId);
 
     if (!operationToRemove) {
       throw new Meteor.Error('operation is not finded');
@@ -161,5 +174,5 @@ Meteor.methods({
     if (operationToRemove.groupTo) {
       G.UsersOperationsCollection.remove(operationToRemove.groupTo);
     }
-  }
+  },
 });

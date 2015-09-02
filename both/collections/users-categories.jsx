@@ -1,29 +1,27 @@
-'use strict';
-
 G.UsersCategoriesCollection = new Meteor.Collection('usersCategories');
 
 // Helpers
+const flattenCategories = (categories, flat = []) => {
+  let nextFlat = flat;
 
-let flattenCategories = (categories, flat = []) => {
   categories.forEach(category => {
     if (category.children) {
-      flat = flattenCategories(category.children, flat);
+      nextFlat = flattenCategories(category.children, nextFlat);
     }
 
-    flat.push(_.omit(category, 'children'));
+    nextFlat.push(_.omit(category, 'children'));
   });
 
-  return flat;
+  return nextFlat;
 };
 
 G.UsersCategoriesCollection.helpers({
-  getFlatCategories: function() {
+  getFlatCategories: function getFlatCategories() {
     return flattenCategories(this.categories);
   },
-
-  getCategory: function (categoryid) {
+  getCategory: function getCategory(categoryid) {
     return _.find(flattenCategories(this.categories), category => {
       return category._id === categoryid;
     });
-  }
+  },
 });

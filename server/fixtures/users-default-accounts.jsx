@@ -1,5 +1,3 @@
-'use strict';
-
 G.UsersDefaultAccountsFixture = {
   ru: [
     {
@@ -9,7 +7,7 @@ G.UsersDefaultAccountsFixture = {
       currentBalance: 0,
       status: 'active',
       order: 0,
-      type: 'standart'
+      type: 'standart',
     },
     {
       name: 'Зарплатная карта',
@@ -18,7 +16,7 @@ G.UsersDefaultAccountsFixture = {
       currentBalance: 0,
       status: 'active',
       order: 0,
-      type: 'standart'
-    }
-  ]
+      type: 'standart',
+    },
+  ],
 };
