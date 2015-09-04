@@ -5,8 +5,8 @@ SetModule('app');
 @View('client/register/register.html')
 @Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$filter', '$rootScope'])
 
-class register {
-  constructor ($meteor, $state, $mdToast, toastPosition, $filter, $rootScope) {
+export class register {
+  constructor($meteor, $state, $mdToast, toastPosition, $filter, $rootScope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
@@ -19,7 +19,7 @@ class register {
   }
 
   showError(err) {
-    let errorToast = this.$mdToast
+    const errorToast = this.$mdToast
       .simple()
       .position(this.toastPosition)
       .hideDelay(3000)
@@ -34,13 +34,13 @@ class register {
       password: this.password,
       profile: {
         utcOffset: moment().utcOffset(),
-        language: TAPi18n.getLanguage()
-      }
+        language: TAPi18n.getLanguage(),
+      },
     })
       .then(() => {
         this.$state.go('dashboard.overview')
           .then(() => {
-            let emailVerifyToast = this.$mdToast
+            const emailVerifyToast = this.$mdToast
               .simple()
               .position(this.toastPosition)
               .hideDelay(3000)

@@ -11,33 +11,33 @@ Meteor.methods({
     const user = Meteor.users.findOne(userId);
 
     if (!user) {
-      throw new Meteor.Error('user is not finded');
+      throw new Meteor.Error('ERROR.USER_NOT_FOUND', 'User is not found');
     }
 
     if (['debt', 'standart'].indexOf(account.type) < 0) {
-      throw new Meteor.Error('invalid account type');
+      throw new Meteor.Error('ERROR.INVALID_ACCOUNT_TYPE', 'Invalid account type');
     }
 
     if (['active', 'closed'].indexOf(account.status) < 0) {
-      throw new Meteor.Error('invalid account status');
+      throw new Meteor.Error('ERROR.INVALID_ACCOUNT_STATUS', 'Invalid account status');
     }
 
     if (account.type === 'debt' && account.startBalance >= 0) {
-      throw new Meteor.Error('debt account may be only negative balance');
+      throw new Meteor.Error('ERROR.ACCOUNT_ONLY_NEGATIVE', 'Debt account can only have a negative balance');
     }
 
     if (!account.name) {
-      throw new Meteor.Error('account name is empty');
+      throw new Meteor.Error('ERROR.ACCOUNT_NAME_EMPTY', 'Account name is empty');
     }
 
     if (!account.currencyId) {
-      throw new Meteor.Error('account currencyId is empty');
+      throw new Meteor.Error('ERROR.ACCOUNT_CURRENCY_EMPTY', 'Account currency is empty');
     }
 
     const currency = G.CurrenciesCollection.findOne(account.currencyId);
 
     if (!currency) {
-      throw new Meteor.Error('currency is not finded');
+      throw new Meteor.Error('ERROR.CURRENCY_NOT_FOUND', 'Currency is not found');
     }
 
     return G.UsersAccountsCollection.update({
@@ -78,7 +78,7 @@ Meteor.methods({
 
     if (account.status) {
       if (['active', 'closed'].indexOf(account.status) < 0) {
-        throw new Meteor.Error('invalid account status');
+        throw new Meteor.Error('ERROR.INVALID_ACCOUNT_STATUS', 'Invalid account status');
       }
 
       fieldsToUpdate['accounts.$.status'] = account.status;

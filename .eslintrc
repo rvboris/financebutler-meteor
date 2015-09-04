@@ -1,13 +1,13 @@
 {
   "extends": "airbnb/base",
-  "parser": "babel-eslint",
-  "new-cap": [0, {
-    "newIsCapExceptions": [
-      "Component",
-      "View",
-      "State",
-      "Filter",
-      "Component"
-    ]
-  }]
+  "plugins": [
+    "angular"
+  ],
+  "rules": {
+    "new-cap": [2, {
+      "capIsNewExceptions": ["Component", "View", "State", "Filter", "Component", "Inject", "SetModule"]
+    }],
+    "no-shadow": [0],
+    "angular/di": [0]
+  }
 }

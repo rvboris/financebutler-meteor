@@ -5,8 +5,8 @@ SetModule('app');
 @View('client/login/login.html')
 @Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$rootScope'])
 
-class login {
-  constructor ($meteor, $state, $mdToast, toastPosition, $rootScope) {
+export class login {
+  constructor($meteor, $state, $mdToast, toastPosition, $rootScope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
@@ -18,7 +18,7 @@ class login {
   }
 
   showError(err) {
-    let errorToast = this.$mdToast
+    const errorToast = this.$mdToast
       .simple()
       .position(this.toastPosition)
       .hideDelay(3000)

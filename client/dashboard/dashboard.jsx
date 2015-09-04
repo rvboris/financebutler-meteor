@@ -4,12 +4,12 @@ SetModule('app');
 @View('client/dashboard/dashboard.html')
 @Inject(['dashboard'])
 
-class dashboard {
-  constructor (dashboard) {
+export class dashboard {
+  constructor(dashboard) {
     this.currentUser = dashboard.currentUser;
   }
 
   static resolve = {
-    currentUser: $meteor => $meteor.requireUser()
+    currentUser: $meteor => $meteor.requireUser(),
   }
 }

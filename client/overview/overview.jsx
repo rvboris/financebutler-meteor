@@ -4,6 +4,4 @@ SetModule('app');
 @State({ name: 'dashboard.overview', url: '/overview' })
 @View('client/overview/overview.html')
 
-class overview {
-
-}
+export class overview {}
