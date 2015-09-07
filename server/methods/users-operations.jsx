@@ -2,7 +2,7 @@ const namespace = 'UsersOperations';
 
 Meteor.methods({
   [`${namespace}/Add`]: (userId, accountId, operation) => {
-    operation.date = operation.date || new Date();
+    operation.date = moment.utc(operation.date || new Date()).toDate();
 
     const user = Meteor.users.findOne(userId);
 
@@ -66,7 +66,7 @@ Meteor.methods({
   },
 
   [`${namespace}/AddTransfer`]: (userId, accountIdFrom, accountIdTo, operation) => {
-    operation.date = operation.date || new Date();
+    operation.date = moment.utc(operation.date || new Date()).toDate();
 
     const groupFromOperation = Meteor.call(`${namespace}/Add`, userId, accountIdFrom, {
       amount: operation.amount > 0 ? operation.amount * -1 : operation.amount,
@@ -164,5 +164,30 @@ Meteor.methods({
     if (operationToRemove.groupTo) {
       G.UsersOperationsCollection.remove(operationToRemove.groupTo);
     }
+  },
+
+  [`${namespace}/GetBalanceForDate`]: (userId, accountId, date = moment.utc().toDate()) => {
+    const operationsCount = G.UsersOperationsCollection.find({ userId, accountId }).count();
+
+    if (operationsCount === 0) {
+      return G.UsersAccountsCollection.findOne({ userId }).getAccount(accountId).startBalance;
+    }
+
+    const dayBalance = G.UsersOperationsCollection.findOne({
+      userId,
+      accountId,
+      date: {
+        $lte: moment.utc(date).subtract(1, 'day').endOf('day').toDate(),
+      },
+      dayBalance: {
+        $exists: true,
+      },
+    }, {
+      sort: {
+        date: -1,
+      },
+    });
+
+    return dayBalance ? dayBalance.dayBalance : 0;
   },
 });

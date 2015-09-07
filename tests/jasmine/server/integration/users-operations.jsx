@@ -35,7 +35,7 @@ describe('users operations', () => {
   it('income operation', () => {
     let accountForIncome = testUsersAccounts[0];
     const incomeAmount = 100000;
-    const incomeDate = new Date(2014, 1, 5);
+    const incomeDate = moment.utc('2015 1 5').toDate();
 
     jasmine.clock().mockDate(incomeDate);
 
@@ -60,7 +60,7 @@ describe('users operations', () => {
   it('expense operation', () => {
     let accountForExpense = testUsersAccounts[0];
     const expenseAmount = -20000;
-    const expenseDate = new Date(2014, 1, 10);
+    const expenseDate = moment.utc('2015 1 10').toDate();
 
     jasmine.clock().mockDate(expenseDate);
 
@@ -85,7 +85,7 @@ describe('users operations', () => {
   it('transfer operation', () => {
     let accountFrom = testUsersAccounts[0];
     let accountTo = testUsersAccounts[1];
-    const transferDate = new Date(2014, 1, 20);
+    const transferDate = moment.utc('2015 1 20').toDate();
 
     jasmine.clock().mockDate(transferDate);
 
@@ -122,7 +122,7 @@ describe('users operations', () => {
   it('insert expense operation at middle', () => {
     let accountForExpense = testUsersAccounts[0];
     const expenseAmount = -5000;
-    const expenseDate = new Date(2014, 1, 6);
+    const expenseDate = moment.utc('2015 1 6').toDate();
 
     jasmine.clock().mockDate(expenseDate);
 
@@ -147,7 +147,7 @@ describe('users operations', () => {
   it('insert income operation at start', () => {
     let accountForIncome = testUsersAccounts[0];
     const incomeAmount = 3000;
-    const incomeDate = new Date(2014, 1, 4);
+    const incomeDate = moment.utc('2015 1 4').toDate();
 
     jasmine.clock().mockDate(incomeDate);
 
@@ -172,7 +172,7 @@ describe('users operations', () => {
   it('remove operation', () => {
     let accountForExpense = testUsersAccounts[0];
     const expenseAmount = -2000;
-    const expenseDate = new Date(2014, 1, 9);
+    const expenseDate = moment.utc('2015 1 9').toDate();
 
     jasmine.clock().mockDate(expenseDate);
 
@@ -203,7 +203,7 @@ describe('users operations', () => {
   it('remove transfer operation (from)', () => {
     let accountFrom = testUsersAccounts[0];
     let accountTo = testUsersAccounts[1];
-    const transferDate = new Date(2014, 1, 15);
+    const transferDate = moment.utc('2015 1 15').toDate();
 
     jasmine.clock().mockDate(transferDate);
 
@@ -248,7 +248,7 @@ describe('users operations', () => {
   it('remove transfer operation (to)', () => {
     let accountFrom = testUsersAccounts[0];
     let accountTo = testUsersAccounts[1];
-    const transferDate = new Date(2014, 1, 16);
+    const transferDate = moment.utc('2015 1 16').toDate();
 
     jasmine.clock().mockDate(transferDate);
 
@@ -293,7 +293,7 @@ describe('users operations', () => {
   it('update operation date', () => {
     let accountForExpense = testUsersAccounts[0];
     const expenseAmount = -3000;
-    const expenseDate = new Date(2014, 1, 21);
+    const expenseDate = moment.utc('2015 1 21').toDate();
 
     jasmine.clock().mockDate(expenseDate);
 
@@ -315,7 +315,7 @@ describe('users operations', () => {
     expect(accountForExpense.currentBalance).toBe(65000);
 
     Meteor.call('UsersOperations/Update', testUserId, expenseOperationId, {
-      date: new Date(2014, 1, 8),
+      date: moment.utc('2015 1 8').toDate(),
     });
 
     accountForExpense = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountForExpense._id);
@@ -325,5 +325,61 @@ describe('users operations', () => {
     resultOperation = G.UsersOperationsCollection.findOne(expenseOperationId);
 
     expect(resultOperation.balance).toBe(95000);
+  });
+
+  it('update operation account', () => {
+    let accountForExpense = testUsersAccounts[0];
+    const expenseAmount = -3000;
+    const expenseDate = moment.utc('2015 1 25').toDate();
+
+    jasmine.clock().mockDate(expenseDate);
+
+    const expenseOperationId = Meteor.call('UsersOperations/Add', testUserId, accountForExpense._id, {
+      type: 'expense',
+      amount: expenseAmount,
+    });
+
+    let resultOperation = G.UsersOperationsCollection.findOne(expenseOperationId);
+
+    expect(resultOperation).not.toBeUndefined();
+    expect(resultOperation.type).toBe('expense');
+    expect(resultOperation.amount).toBe(expenseAmount);
+    expect(resultOperation.balance).toBe(62000);
+    expect(resultOperation.date).toEqual(expenseDate);
+
+    accountForExpense = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountForExpense._id);
+
+    expect(accountForExpense.currentBalance).toBe(62000);
+
+    Meteor.call('UsersOperations/Update', testUserId, expenseOperationId, {
+      accountId: testUsersAccounts[1]._id,
+    });
+
+    accountForExpense = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountForExpense._id);
+
+    expect(accountForExpense.currentBalance).toBe(65000);
+
+    resultOperation = G.UsersOperationsCollection.findOne(expenseOperationId);
+
+    expect(resultOperation.balance).toBe(7000);
+
+    const accountToChange = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(testUsersAccounts[1]._id);
+
+    expect(accountToChange.currentBalance).toBe(7000);
+  });
+
+  it('get balance in the empty past', () => {
+    const date = moment.utc('2015 1 1').toDate();
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, date)).toBe(0);
+  });
+
+  it('get balance in the empty future', () => {
+    const date = moment.utc('2020 1 25').toDate();
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, date)).toBe(65000);
+  });
+
+  it('get normal balance', () => {
+    const date = moment.utc('2015 1 10').toDate();
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, date)).toBe(95000);
   });
 });

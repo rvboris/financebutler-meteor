@@ -58,7 +58,7 @@ G.userGenerator = (email, password, profile) => {
   };
 
   const getRandomDate = () => {
-    return moment()
+    return moment.utc()
       .subtract(demoAccountYears, 'year')
       .add(_.random(1, demoAccountYears * 365), 'days')
       .add(_.random(1, 23), 'hour')
@@ -69,8 +69,8 @@ G.userGenerator = (email, password, profile) => {
 
   Logstar.info('Generate operations');
 
-  const startDate = moment().subtract(demoAccountYears, 'year');
-  const endDate = moment();
+  const startDate = moment.utc().subtract(demoAccountYears, 'year');
+  const endDate = moment.utc();
   const currentDate = startDate;
 
   let sumIncome = 0;
