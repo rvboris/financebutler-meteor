@@ -368,20 +368,18 @@ describe('users operations', () => {
     expect(accountToChange.currentBalance).toBe(7000);
   });
 
-  it('get day balance in the empty past', () => {
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 1').toDate())).toBe(0);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 4').toDate())).toBe(0);
-  });
-
-  it('get day balance in the empty future', () => {
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2020 1 25').toDate())).toBe(65000);
-  });
-
   it('get day normal balance', () => {
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 3').toDate())).toBe(0);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 4').toDate())).toBe(0);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 5').toDate())).toBe(3000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 6').toDate())).toBe(103000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 7').toDate())).toBe(98000);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 8').toDate())).toBe(98000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 9').toDate())).toBe(95000);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 10').toDate())).toBe(95000);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 20').toDate())).toBe(75000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2020 1 25').toDate())).toBe(65000);
+
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 20').toDate())).toBe(0);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 21').toDate())).toBe(10000);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 26').toDate())).toBe(7000);
