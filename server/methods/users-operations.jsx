@@ -177,10 +177,13 @@ Meteor.methods({
       userId,
       accountId,
       date: {
-        $lte: moment.utc(date).subtract(1, 'day').endOf('day').toDate(),
+        $lte: moment.utc(date).endOf('day').toDate(),
       },
       dayBalance: {
         $exists: true,
+      },
+      balance: {
+        $exists: false,
       },
     }, {
       sort: {
@@ -188,6 +191,29 @@ Meteor.methods({
       },
     });
 
-    return dayBalance ? dayBalance.dayBalance : 0;
+    if (dayBalance) {
+      let balance = dayBalance.dayBalance;
+
+      G.UsersOperationsCollection.find({
+        userId,
+        accountId,
+        dayBalance: {
+          $exists: false,
+        },
+        balance: {
+          $exists: true,
+        },
+        date: {
+          $gte: moment.utc(dayBalance.date).toDate(),
+          $lte: moment.utc(date).subtract(1, 'day').endOf('day').toDate(),
+        },
+      }).forEach(operation => {
+        balance += operation.amount;
+      });
+
+      return balance;
+    }
+
+    return 0;
   },
 });

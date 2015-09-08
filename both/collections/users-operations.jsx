@@ -45,13 +45,18 @@ const balanceCorrection = (userId, accountId, fromDate) => {
   }, {
     sort: {
       date: 1,
+      dayBalance: -1,
     },
   }).forEach((nextOperation) => {
     if (nextOperation.amount) {
       currentBalance += nextOperation.amount;
     }
 
-    G.UsersOperationsCollection.direct.update(nextOperation._id, { $set: { [nextOperation.dayBalance ? 'dayBalance' : 'balance']: currentBalance } });
+    G.UsersOperationsCollection.direct.update(nextOperation._id, {
+      $set: {
+        [_.isUndefined(nextOperation.dayBalance) ? 'balance' : 'dayBalance']: currentBalance,
+      },
+    });
   });
 
   G.UsersAccountsCollection.update({
@@ -70,6 +75,9 @@ const upsertDayBalance = (userId, accountId, date, balance) => {
     accountId,
     dayBalance: {
       $exists: true,
+    },
+    balance: {
+      $exists: false,
     },
     date: {
       $gte: moment.utc(date).startOf('day').toDate(),
@@ -93,6 +101,12 @@ const dayBalanceCorrenction = (userId, accountId, date) => {
   const countDayOperations = G.UsersOperationsCollection.find({
     userId,
     accountId,
+    dayBalance: {
+      $exists: false,
+    },
+    balance: {
+      $exists: true,
+    },
     date: {
       $gte: moment.utc(date).startOf('day').toDate(),
       $lte: moment.utc(date).endOf('day').toDate(),
@@ -105,6 +119,9 @@ const dayBalanceCorrenction = (userId, accountId, date) => {
       accountId,
       dayBalance: {
         $exists: true,
+      },
+      balance: {
+        $exists: false,
       },
       date: {
         $gte: moment.utc(date).startOf('day').toDate(),
@@ -119,8 +136,10 @@ const dayBalanceCorrenction = (userId, accountId, date) => {
 // Hooks
 G.UsersOperationsCollection.before.insert((userId, operation) => {
   const currentBalance = G.UsersAccountsCollection.findOne({ userId: operation.userId }).getAccount(operation.accountId).currentBalance;
+
   operation.balance = operation.amount + currentBalance;
   operation.date = moment.utc(operation.date).toDate();
+
   upsertDayBalance(operation.userId, operation.accountId, operation.date, currentBalance);
 });
 
@@ -130,10 +149,17 @@ G.UsersOperationsCollection.after.insert((userId, operation) => {
   }
 
   const operationsAfter = G.UsersOperationsCollection.find({
-    date: { $gt: operation.date },
+    date: {
+      $gt: operation.date,
+    },
     accountId: operation.accountId,
     userId: operation.userId,
-    balance: { $exists: true },
+    balance: {
+      $exists: true,
+    },
+    dayBalance: {
+      $exists: false,
+    },
   }).count();
 
   if (operationsAfter > 0) {
