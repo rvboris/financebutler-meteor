@@ -8,7 +8,7 @@ SetModule('app', [
   'ngMaterial',
   'ngMdIcons',
   'ngMessages',
-  'validation.match'
+  'validation.match',
 ])
 .constant('toastPosition', 'bottom right')
 .config(($urlRouterProvider, $locationProvider) => {
@@ -20,11 +20,11 @@ SetModule('app', [
 
   $rootScope.state = $state;
 
-  $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
+  const stateChangeErrorHandler = $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
     if (error === 'AUTH_REQUIRED') {
       $state.go('login')
         .then(() => {
-          let errorToast = $mdToast
+          const errorToast = $mdToast
             .simple()
             .position(toastPosition)
             .hideDelay(3000)
@@ -33,65 +33,70 @@ SetModule('app', [
           $mdToast.show(errorToast);
         });
 
-        return;
+      return;
     }
 
     $state.go('home');
- });
+  });
 
- $rootScope.loginWith = (service) => {
-   return $meteor['loginWith' + service]()
-     .then(() => {
-       if (!Meteor.user().profile.language && !Meteor.user().profile.utcOffset) {
-         Meteor.users.update(Meteor.userId(), {
-           $set: {
-             'profile.utcOffset': moment().utcOffset(),
-             'profile.language': TAPi18n.getLanguage()
-           }
-         });
-       }
-
-       return $state.go('dashboard.overview');
-     });
- };
-
- let deferState = true;
- let translateCheckInterval;
-
- $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-   if (!$rootScope.translateReady) {
-     event.preventDefault();
-
-     if (!translateCheckInterval) {
-       translateCheckInterval = $interval(() => {
-         if (!$rootScope.translateReady) {
-           return;
-         }
-
-         $interval.cancel(translateCheckInterval);
-         $state.go(toState.name, toParams);
-       }, 50);
-     }
-
-     return;
-   }
-
-   if (['login', 'register', 'resetPassword'].indexOf(toState.name) >= 0 && deferState) {
-     event.preventDefault();
-
-     deferState = false;
-
-     $meteor.waitForUser()
-      .then(user => {
-        if (user) {
-          $rootScope.state.go('dashboard.overview');
-        } else {
-          $state.go(toState.name, toParams);
+  $rootScope.loginWith = (service) => {
+    return $meteor['loginWith' + service]()
+      .then(() => {
+        if (!Meteor.user().profile.language && !Meteor.user().profile.utcOffset) {
+          Meteor.users.update(Meteor.userId(), {
+            $set: {
+              'profile.utcOffset': moment().utcOffset(),
+              'profile.language': TAPi18n.getLanguage(),
+            },
+          });
         }
 
-        deferState = true;
+        return $state.go('dashboard.overview');
       });
-   }
+  };
+
+  let deferState = true;
+  let translateCheckInterval;
+
+  const stateChangeStartHandler = $rootScope.$on('$stateChangeStart', (event, toState, toParams) => {
+    if (!$rootScope.translateReady) {
+      event.preventDefault();
+
+      if (!translateCheckInterval) {
+        translateCheckInterval = $interval(() => {
+          if (!$rootScope.translateReady) {
+            return;
+          }
+
+          $interval.cancel(translateCheckInterval);
+          $state.go(toState.name, toParams);
+        }, 50);
+      }
+
+      return;
+    }
+
+    if (['login', 'register', 'resetPassword'].indexOf(toState.name) >= 0 && deferState) {
+      event.preventDefault();
+
+      deferState = false;
+
+      $meteor.waitForUser()
+        .then(user => {
+          if (user) {
+            $rootScope.state.go('dashboard.overview');
+          } else {
+            $state.go(toState.name, toParams);
+          }
+
+          deferState = true;
+        });
+    }
+
+    $rootScope.$on('$destroy', () => {
+      stateChangeErrorHandler();
+      stateChangeStartHandler();
+    });
   });
 });
 

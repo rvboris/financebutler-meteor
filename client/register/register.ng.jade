@@ -16,23 +16,23 @@ md-whiteframe.md-whiteframe-z1(layout='column', flex='50')
         div(ng-messages='registerForm.password.$error', ng-if='registerForm.password.$touched')
           div(ng-message='required') {{'REGISTER.PASSWORD_REQUIRED' | translate}}
           div(ng-message='minlength') {{'REGISTER.PASSWORD_MIN_LENGTH' | translate : '{ count: 7 }'}}
-          
+
       md-input-container
         label {{'REGISTER.PASSWORD_REPEAT' | translate}}
         input(type='password', name='passwordRepeat', ng-model='vm.passwordRepeat', aria-label='{{"REGISTER.PASSWORD_REPEAT" | translate}}', match='vm.password')
         div(ng-messages='registerForm.passwordRepeat.$error', ng-if='registerForm.passwordRepeat.$touched')
           div(ng-message='match') {{'REGISTER.PASSWORD_MATCH' | translate}}
-      
+
       div(layout='row', layout-align='center center')
         md-button.md-raised.md-primary.register-btn(aria-label='{{"REGISTER.REGISTER" | translate}}', type='submit', ng-disabled='!registerForm.$valid') {{'REGISTER.REGISTER' | translate}}
         span(flex)
         a(ui-sref='login', layout-margin='') {{'REGISTER.ALREADY_REGISTER' | translate}}
-        
+
     md-divider(layout-margin='')
-    
+
     div(layout='row', layout-align='center center')
       h1.md-title {{'REGISTER.LOGIN_WITH' | translate}}
-    
+
     div(layout='row', layout-align='space-around center')
       md-button(ng-click='vm.loginWith("Twitter")', aria-label='Twitter')
         ng-md-icon(icon='twitter')

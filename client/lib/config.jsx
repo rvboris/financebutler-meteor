@@ -1,3 +1,5 @@
+window.exports = window.exports || {}; // eslint-disable-line
+
 Meteor.startup(() => {
   Session.set('translateReady', false);
 

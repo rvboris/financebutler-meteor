@@ -3,22 +3,24 @@ SetModule('app');
 @Filter('translate')
 @Inject(['$parse', '$log', '$rootScope'])
 
-class translate {
-  constructor ($parse, $log, $rootScope) {
-    return function(key, options) {
+export class translate {
+  constructor($parse, $log, $rootScope) {
+    return (key, options) => {
       if (!$rootScope.translateReady) {
         return '';
       }
 
+      let parsedOptions;
+
       if (!angular.isObject(options)) {
-        options = $parse(options)(this);
+        parsedOptions = $parse(options)(this);
       }
 
       try {
-        return TAPi18n.__(key, options);
+        return TAPi18n.__(key, parsedOptions);
       } catch (err) {
         $log.error(err);
       }
-    }
+    };
   }
 }

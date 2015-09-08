@@ -5,8 +5,8 @@ SetModule('app');
 @View('client/reset-password/reset-password.html')
 @Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$stateParams', '$filter', '$rootScope'])
 
-class resetPassword {
-  constructor ($meteor, $state, $mdToast, toastPosition, $stateParams, $filter, $rootScope) {
+export class resetPassword {
+  constructor($meteor, $state, $mdToast, toastPosition, $stateParams, $filter, $rootScope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
@@ -23,7 +23,7 @@ class resetPassword {
   }
 
   showError(err) {
-    let errorToast = this.$mdToast
+    const errorToast = this.$mdToast
       .simple()
       .position(this.toastPosition)
       .hideDelay(3000)
@@ -35,7 +35,7 @@ class resetPassword {
   recovery() {
     this.$meteor.forgotPassword({email: this.email})
       .then(() => {
-        let recoveryResult = this.$mdToast
+        const recoveryResult = this.$mdToast
           .simple()
           .position(this.toastPosition)
           .hideDelay(3000)

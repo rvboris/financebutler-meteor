@@ -1,4 +1,4 @@
-describe('Collection: Users', () => {
+describe('users', () => {
   const login = 'test@test';
   const password = 'test@test';
 

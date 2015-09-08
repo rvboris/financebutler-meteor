@@ -1,12 +1,12 @@
 G.UsersOperationsCollection = new Meteor.Collection('usersOperations');
 
-const getLastBalance = (operation, accountId, fromDate) => {
+const getLastBalance = (userId, accountId, fromDate) => {
   const lastOperation = G.UsersOperationsCollection.findOne({
     date: {
-      $lt: fromDate || operation.date,
+      $lt: fromDate,
     },
-    userId: operation.userId,
-    accountId: accountId,
+    userId,
+    accountId,
     dayBalance: {
       $exists: false,
     },
@@ -25,7 +25,7 @@ const getLastBalance = (operation, accountId, fromDate) => {
     lastOperationBalance = lastOperation.balance;
   } else {
     lastOperationBalance = G.UsersAccountsCollection
-      .findOne({ userId: operation.userId })
+      .findOne({ userId })
       .getAccount(accountId)
       .startBalance;
   }
@@ -33,29 +33,34 @@ const getLastBalance = (operation, accountId, fromDate) => {
   return lastOperationBalance;
 };
 
-const balanceCorrection = (operation, accountId, fromDate) => {
-  let currentBalance = getLastBalance(operation, accountId, fromDate);
+const balanceCorrection = (userId, accountId, fromDate) => {
+  let currentBalance = getLastBalance(userId, accountId, fromDate);
 
   G.UsersOperationsCollection.find({
     date: {
-      $gte: fromDate || operation.date,
+      $gte: fromDate,
     },
-    accountId: accountId,
-    userId: operation.userId,
+    accountId,
+    userId,
   }, {
     sort: {
       date: 1,
+      dayBalance: -1,
     },
   }).forEach((nextOperation) => {
     if (nextOperation.amount) {
       currentBalance += nextOperation.amount;
     }
 
-    G.UsersOperationsCollection.direct.update(nextOperation._id, { $set: { [nextOperation.dayBalance ? 'dayBalance' : 'balance']: currentBalance } });
+    G.UsersOperationsCollection.direct.update(nextOperation._id, {
+      $set: {
+        [_.isUndefined(nextOperation.dayBalance) ? 'balance' : 'dayBalance']: currentBalance,
+      },
+    });
   });
 
   G.UsersAccountsCollection.update({
-    userId: operation.userId,
+    userId,
     'accounts._id': accountId,
   }, {
     $set: {
@@ -64,32 +69,78 @@ const balanceCorrection = (operation, accountId, fromDate) => {
   });
 };
 
+const upsertDayBalance = (userId, accountId, date, balance) => {
+  const countDayBalanceOperations = G.UsersOperationsCollection.find({
+    userId,
+    accountId,
+    dayBalance: {
+      $exists: true,
+    },
+    balance: {
+      $exists: false,
+    },
+    date: {
+      $gte: moment.utc(date).startOf('day').toDate(),
+      $lte: moment.utc(date).endOf('day').toDate(),
+    },
+  }).count();
+
+  if (countDayBalanceOperations > 0) {
+    return;
+  }
+
+  G.UsersOperationsCollection.direct.insert({
+    userId,
+    accountId,
+    date: moment.utc(date).startOf('day').toDate(),
+    dayBalance: balance,
+  });
+};
+
+const dayBalanceCorrenction = (userId, accountId, date) => {
+  const countDayOperations = G.UsersOperationsCollection.find({
+    userId,
+    accountId,
+    dayBalance: {
+      $exists: false,
+    },
+    balance: {
+      $exists: true,
+    },
+    date: {
+      $gte: moment.utc(date).startOf('day').toDate(),
+      $lte: moment.utc(date).endOf('day').toDate(),
+    },
+  }).count();
+
+  if (countDayOperations === 0) {
+    G.UsersOperationsCollection.direct.remove({
+      userId,
+      accountId,
+      dayBalance: {
+        $exists: true,
+      },
+      balance: {
+        $exists: false,
+      },
+      date: {
+        $gte: moment.utc(date).startOf('day').toDate(),
+        $lte: moment.utc(date).endOf('day').toDate(),
+      },
+    });
+  } else {
+    upsertDayBalance(userId, accountId, date, getLastBalance(userId, accountId, date));
+  }
+};
+
 // Hooks
 G.UsersOperationsCollection.before.insert((userId, operation) => {
   const currentBalance = G.UsersAccountsCollection.findOne({ userId: operation.userId }).getAccount(operation.accountId).currentBalance;
 
   operation.balance = operation.amount + currentBalance;
+  operation.date = moment.utc(operation.date).toDate();
 
-  const dayBalanceCount = G.UsersOperationsCollection.find({
-    userId: operation.userId,
-    accountId: operation.accountId,
-    dayBalance: {
-      $exists: true,
-    },
-    date: {
-      $gte: moment(operation.date).startOf('day').toDate(),
-      $lte: moment(operation.date).endOf('day').toDate(),
-    },
-  }).count();
-
-  if (dayBalanceCount === -1) {
-    G.UsersOperationsCollection.direct.insert({
-      date: operation.date,
-      userId: operation.userId,
-      dayBalance: currentBalance,
-      accountId: operation.accountId,
-    });
-  }
+  upsertDayBalance(operation.userId, operation.accountId, operation.date, currentBalance);
 });
 
 G.UsersOperationsCollection.after.insert((userId, operation) => {
@@ -98,14 +149,21 @@ G.UsersOperationsCollection.after.insert((userId, operation) => {
   }
 
   const operationsAfter = G.UsersOperationsCollection.find({
-    date: { $gt: operation.date },
+    date: {
+      $gt: operation.date,
+    },
     accountId: operation.accountId,
     userId: operation.userId,
-    balance: { $exists: true },
+    balance: {
+      $exists: true,
+    },
+    dayBalance: {
+      $exists: false,
+    },
   }).count();
 
   if (operationsAfter > 0) {
-    balanceCorrection(operation, operation.accountId);
+    balanceCorrection(operation.userId, operation.accountId, operation.date);
   } else {
     Meteor.call('UsersAccounts/UpdateBalance', operation.userId, operation.accountId, operation.amount);
   }
@@ -118,32 +176,22 @@ G.UsersOperationsCollection.after.update(function afterUpdate(userId, operation)
 
   const fromDate = this.previous.date < operation.date ? this.previous.date : operation.date;
 
-  balanceCorrection(operation, operation.accountId, fromDate);
+  balanceCorrection(operation.userId, operation.accountId, fromDate);
+
+  if (operation.date !== this.previous.date) {
+    dayBalanceCorrenction(operation.userId, operation.accountId, operation.date);
+  }
 
   if (operation.accountId !== this.previous.accountId) {
-    balanceCorrection(operation, this.previous.accountId, fromDate);
+    balanceCorrection(operation.userId, this.previous.accountId, fromDate);
+
+    if (operation.date !== this.previous.date) {
+      dayBalanceCorrenction(operation.userId, this.previous.accountId, this.previous.date);
+    }
   }
 });
 
 G.UsersOperationsCollection.after.remove(function afterRemove(userId, operation) {
-  const countDayOperations = G.UsersOperationsCollection.find({
-    date: {
-      $gte: moment(operation.date).startOf('day').toDate(),
-      $lte: moment(operation.date).endOf('day').toDate(),
-    },
-  }).count();
-
-  if (countDayOperations === 0) {
-    G.UsersOperationsCollection.direct.remove({
-      dayBalance: {
-        $exists: true,
-      },
-      date: {
-        $gte: moment(operation.date).startOf('day').toDate(),
-        $lte: moment(operation.date).endOf('day').toDate(),
-      },
-    });
-  }
-
-  balanceCorrection(operation, operation.accountId);
+  dayBalanceCorrenction(operation.userId, operation.accountId, operation.date);
+  balanceCorrection(operation.userId, operation.accountId, operation.date);
 });

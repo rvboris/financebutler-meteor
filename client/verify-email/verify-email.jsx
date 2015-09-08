@@ -3,13 +3,13 @@ SetModule('app');
 @State({ name: 'verifyEmail', url: '/verify-email/:token' })
 @Inject(['$stateParams', '$state', '$meteor', '$mdToast', 'toastPosition', '$filter'])
 
-class verifyEmail {
-  constructor ($stateParams, $state, $meteor, $mdToast, toastPosition, $filter) {
+export class verifyEmail {
+  constructor($stateParams, $state, $meteor, $mdToast, toastPosition, $filter) {
     $meteor.verifyEmail($stateParams.token)
       .then(() => {
         $state.go('dashboard.overview')
           .then(() => {
-            let resultToast = $mdToast
+            const resultToast = $mdToast
               .simple()
               .position(toastPosition)
               .hideDelay(3000)
@@ -20,7 +20,7 @@ class verifyEmail {
       })
       .catch(err => {
         $state.go('home').then(() => {
-          let errorToast = $mdToast
+          const errorToast = $mdToast
             .simple()
             .position(toastPosition)
             .hideDelay(3000)
