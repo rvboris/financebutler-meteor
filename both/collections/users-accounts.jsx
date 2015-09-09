@@ -15,6 +15,17 @@ G.UsersAccountsCollection.helpers({
   getAccountByMaxBalance: function getAccountByMaxBalance() {
     return _.max(this.accounts, 'currentBalance');
   },
+  getCurrency: function getAccount(accountId) {
+    const account = _.find(this.accounts, account => {
+      return account._id === accountId;
+    });
+
+    if (!account) {
+      return account;
+    }
+
+    return G.CurrenciesCollection.findOne(account.currencyId);
+  },
 });
 
 // Hooks

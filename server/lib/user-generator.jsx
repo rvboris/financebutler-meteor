@@ -1,12 +1,15 @@
 G.userGenerator = (email, password, profile) => {
   Logstar.info(`User generation start for ${email}`);
 
+  const currency = G.CurrenciesCollection.findOne({ code: 'RUB' });
+
   const userId = Accounts.createUser({
     email: email,
     password: password,
     profile: profile || {
       utcOffset: 180,
       language: 'ru',
+      currencyId: currency._id,
     },
   });
 
@@ -15,11 +18,11 @@ G.userGenerator = (email, password, profile) => {
   const demoAccountYears = 3;
   const debtAccountId = Random.id();
   const debtAmount = _.random(demoAccountYears * 50000, demoAccountYears * 80000);
-  const debtMonthlyPay = _.round(debtAmount / (demoAccountYears * 12));
+  const debtMonthlyPay = +(debtAmount / (demoAccountYears * 12)).toFixed(currency.decimalDigits);
 
   Meteor.call('UsersAccounts/Add', userId, {
     name: 'Credit',
-    currencyId: G.CurrenciesCollection.findOne({ code: 'RUB' })._id,
+    currencyId: currency._id,
     startBalance: debtAmount * -1,
     type: 'debt',
     _id: debtAccountId,
@@ -127,7 +130,7 @@ G.userGenerator = (email, password, profile) => {
 
         if (expenseAccount.currentBalance - dailyExpense >= 0) {
           for (let i = 0; i < dailyExpenseCount; i++) {
-            const roundedExpense = _.round(dailyExpense / dailyExpenseCount);
+            const roundedExpense = +(dailyExpense / dailyExpenseCount).toFixed(currency.decimalDigits);
 
             dailyExpenseSum += roundedExpense;
 
@@ -370,7 +373,12 @@ G.userGenerator = (email, password, profile) => {
     totalTransferRemoves++;
   });
 
-  const totalCheck = sumIncome - sumExpense - sumDebt - Meteor.call('UsersAccounts/GetTotals', userId);
+  sumIncome = +sumIncome.toFixed(currency.decimalDigits);
+  sumExpense = +sumExpense.toFixed(currency.decimalDigits);
+  sumTransfer = +sumTransfer.toFixed(currency.decimalDigits);
+  sumDebt = +sumDebt.toFixed(currency.decimalDigits);
+
+  const totalCheck = sumIncome - sumExpense - sumDebt - Meteor.call('UsersAccounts/GetSimpleTotal', userId);
 
   Logstar.info(`--- Generated user stats ---`);
   Logstar.info(`Total income ${sumIncome}`);

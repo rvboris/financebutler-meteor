@@ -93,19 +93,36 @@ Meteor.methods({
   },
 
   [`${namespace}/UpdateBalance`]: (userId, accountId, balance) => {
+    const account = G.UsersAccountsCollection.findOne({userId}).getAccount(accountId);
+    const currency = G.CurrenciesCollection.findOne(account.currencyId);
+
     return G.UsersAccountsCollection.update({
       userId: userId,
       'accounts._id': accountId,
     }, {
-      $inc: {
-        'accounts.$.currentBalance': balance,
+      $set: {
+        'accounts.$.currentBalance': +(account.currentBalance + balance).toFixed(currency.decimalDigits),
       },
     });
   },
 
-  [`${namespace}/GetTotals`]: userId => {
+  [`${namespace}/GetSimpleTotal`]: userId => {
     return _.sum(G.UsersAccountsCollection.findOne({userId}).accounts, account => {
       return account.currentBalance;
+    });
+  },
+
+  [`${namespace}/GetCurrencyTotal`]: userId => {
+    const userCurrency = Meteor.users.findOne(userId).getCurrency();
+
+    return _.sum(G.UsersAccountsCollection.findOne({userId}).accounts, account => {
+      const accountCurrency = G.CurrenciesCollection.findOne(account.currencyId);
+
+      if (accountCurrency.code === userCurrency.code) {
+        return account.currentBalance;
+      }
+
+      return fx(account.currentBalance).from(accountCurrency.code).to(userCurrency.code);
     });
   },
 });

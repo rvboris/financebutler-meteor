@@ -8,6 +8,13 @@ const iterateCategories = (categories, callback = () => {}) => {
   });
 };
 
+// Helpers
+Meteor.users.helpers({
+  getCurrency: function getAccount() {
+    return G.Currencies.findOne(this.profile.currencyId);
+  },
+});
+
 // Hooks
 const setupUserDefaultCollections = (userId, user) => {
   if (!user.profile.language) {

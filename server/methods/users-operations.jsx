@@ -16,6 +16,8 @@ Meteor.methods({
       throw new Meteor.Error('ERROR.ACCOUNT_NOT_FOUND', 'Account is not found');
     }
 
+    const operationCurrency = G.CurrenciesCollection.findOne(account.currencyId);
+
     if (operation.categoryId) {
       const category = G.UsersCategoriesCollection.findOne({userId}).getCategory(operation.categoryId);
 
@@ -36,7 +38,11 @@ Meteor.methods({
       throw new Meteor.Error('ERROR.OPERATION_AMOUNT_REQUIRED', 'Operation amount is required');
     }
 
-    operation.amount = _.round(_.parseInt(operation.amount));
+    operation.amount = +parseFloat(operation.amount).toFixed(operationCurrency.decimalDigits);
+
+    if (!_.isNumber(operation.amount) || _.isNaN(operation.amount) || !_.isFinite(operation.amount)) {
+      throw new Meteor.Error('ERROR.OPERATION_AMOUNT_INVALID', 'Operation amount is invalid');
+    }
 
     if (operation.amount === 0) {
       throw new Meteor.Error('ERROR.OPERATION_AMOUNT_NOT_NULL', 'Operation amount cannot be equal to 0');
@@ -89,8 +95,20 @@ Meteor.methods({
   [`${namespace}/Update`]: (userId, operationId, operation) => {
     const fieldsToUpdate = {};
 
+    const operationToUpdate = G.UsersOperationsCollection.findOne(operationId);
+
+    if (!operationToUpdate) {
+      throw new Meteor.Error('ERROR.OPERATION_NOT_FOUND', 'Operation is not found');
+    }
+
     if (operation.amount) {
-      operation.amount = _.round(_.parseInt(operation.amount));
+      const operationCurrency = G.UsersAccountsCollection.findOne({ userId }).getCurrency(operationToUpdate.accountId);
+
+      operation.amount = +parseFloat(operation.amount).toFixed(operationCurrency.decimalDigits);
+
+      if (!_.isNumber(operation.amount) || _.isNaN(operation.amount) || !_.isFinite(operation.amount)) {
+        throw new Meteor.Error('ERROR.OPERATION_AMOUNT_INVALID', 'Operation amount is invalid');
+      }
 
       if (operation.amount === 0) {
         throw new Meteor.Error('ERROR.OPERATION_AMOUNT_NOT_NULL', 'Operation amount cannot be equal to 0');

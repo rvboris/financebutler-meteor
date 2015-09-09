@@ -29,3 +29,6 @@ ongoworks:security
 dburles:collection-helpers
 sanjo:jasmine
 velocity:console-reporter
+http
+percolate:synced-cron
+theara:moneyjs
