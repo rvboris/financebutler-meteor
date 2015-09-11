@@ -3,134 +3,134 @@ G.UsersDefaultCategoriesFixture = {
     {
       'name': 'Без категории',
       'type': 'any',
-      'system': true
+      'system': true,
     }, {
       'name': 'Корректировка',
       'type': 'any',
-      'system': true
+      'system': true,
     }, {
       'name': 'Зарплата',
-      'type': 'income'
+      'type': 'income',
     }, {
       'name': 'Подработка',
-      'type': 'income'
+      'type': 'income',
     }, {
       'name': 'Другие доходы',
-      'type': 'income'
+      'type': 'income',
     }, {
       'name': 'Питание',
       'type': 'expense',
       'children': [
         {
           'name': 'Обеды на работе',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Продукты домой',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Кафе, рестораны',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Службы доставки',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Одежда',
       'type': 'expense',
       'children': [
         {
           'name': 'Аксессуары',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Нижнее белье, купальники',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Медицина',
       'type': 'expense',
       'children': [
         {
           'name': 'Аптека',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Анализы',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Консультации, больницы',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Другая медицина',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Дом, дача',
       'type': 'expense',
       'children': [
         {
           'name': 'Хозтовары',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Ремонт',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Ребенок',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Животные',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Предметы интерьера',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Другое для дома, дачи',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Автомобиль',
       'type': 'expense',
       'children': [
         {
           'name': 'Топливо',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Сервис',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Страховка',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Запчасти',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Другие авто. расходы',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Транспорт',
       'type': 'expense',
       'children': [
         {
           'name': 'Общественный транспорт',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Такси',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Ж/Д билеты',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Авиа билеты',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Другой транспорт',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Платежи',
       'type': 'expense',
@@ -141,98 +141,98 @@ G.UsersDefaultCategoriesFixture = {
           'children': [
             {
               'name': 'Электричество',
-              'type': 'expense'
+              'type': 'expense',
             }, {
               'name': 'Аренда',
-              'type': 'expense'
+              'type': 'expense',
             }, {
               'name': 'Телефон',
-              'type': 'expense'
+              'type': 'expense',
             }, {
               'name': 'Вода',
-              'type': 'expense'
+              'type': 'expense',
             }, {
               'name': 'Газ',
-              'type': 'expense'
-            }
-          ]
+              'type': 'expense',
+            },
+          ],
         }, {
           'name': 'Сотовая связь',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Интернет',
           'type': 'expense',
           'children': [
             {
               'name': 'Абонетская плата',
-              'type': 'expense'
+              'type': 'expense',
             }, {
               'name': 'Сервисы',
-              'type': 'expense'
-            }
-          ]
+              'type': 'expense',
+            },
+          ],
         }, {
           'name': 'Телевидение',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Учеба',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Гос. услуги',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Банковское обслуживание',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Подписки',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Другие платежи',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Техника',
       'type': 'expense',
       'children': [
         {
           'name': 'Бытовая техника',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Мобильные гаджеты',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Компьютерная техника',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Инструменты',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Другая техника',
-          'type': 'expense'
-        }
-      ]
+          'type': 'expense',
+        },
+      ],
     }, {
       'name': 'Спортивные товары',
-      'type': 'expense'
+      'type': 'expense',
     }, {
       'name': 'Другие траты',
       'type': 'expense',
       'children': [
         {
           'name': 'Подарки, праздники',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Отдых, развлечения',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Разовые траты',
-          'type': 'expense'
+          'type': 'expense',
         }, {
           'name': 'Уход за собой',
-          'type': 'expense'
-        }
-      ]
-    }
-  ]
-}
+          'type': 'expense',
+        },
+      ],
+    },
+  ],
+};

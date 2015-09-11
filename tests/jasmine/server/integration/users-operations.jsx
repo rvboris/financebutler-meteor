@@ -469,7 +469,7 @@ describe('users operations', () => {
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
     accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
 
-    expect(accountFrom.currentBalance).toBe(45000);
+    expect(accountFrom.currentBalance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
     expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
   });
 });
