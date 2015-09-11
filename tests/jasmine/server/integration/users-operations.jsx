@@ -11,6 +11,7 @@ describe('users operations', () => {
   let password;
   let testUsersAccounts;
   let testUserId;
+  let accountIdUSD;
 
   beforeAll(() => {
     login = 'test@operations';
@@ -23,6 +24,13 @@ describe('users operations', () => {
         utfOffset: 180,
         language: 'ru',
       },
+    });
+
+    accountIdUSD = Meteor.call('UsersAccounts/Add', testUserId, {
+      name: 'Test USD Account',
+      startBalance: 1000,
+      currencyId: G.CurrenciesCollection.findOne({ code: 'USD' })._id,
+      type: 'standart',
     });
 
     testUsersAccounts = G.UsersAccountsCollection.findOne({userId: testUserId}).accounts;
@@ -101,22 +109,22 @@ describe('users operations', () => {
     expect(resultOperationFrom).not.toBeUndefined();
     expect(resultOperationFrom.groupTo).not.toBeUndefined();
     expect(resultOperationFrom.type).toBe('expense');
-    expect(resultOperationFrom.amount).toBe(-10000);
+    expect(resultOperationFrom.amount).toBe(-amount);
     expect(resultOperationFrom.balance).toBe(70000);
     expect(resultOperationFrom.date).toEqual(transferDate);
 
     expect(resultOperationTo).not.toBeUndefined();
     expect(resultOperationTo.groupTo).not.toBeUndefined();
     expect(resultOperationTo.type).toBe('income');
-    expect(resultOperationTo.amount).toBe(10000);
-    expect(resultOperationTo.balance).toBe(10000);
+    expect(resultOperationTo.amount).toBe(amount);
+    expect(resultOperationTo.balance).toBe(amount);
     expect(resultOperationTo.date).toEqual(transferDate);
 
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
     accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
 
     expect(accountFrom.currentBalance).toBe(70000);
-    expect(accountTo.currentBalance).toBe(10000);
+    expect(accountTo.currentBalance).toBe(amount);
   });
 
   it('insert expense operation at middle', () => {
@@ -219,15 +227,15 @@ describe('users operations', () => {
     expect(resultOperationFrom).not.toBeUndefined();
     expect(resultOperationFrom.groupTo).not.toBeUndefined();
     expect(resultOperationFrom.type).toBe('expense');
-    expect(resultOperationFrom.amount).toBe(-10000);
+    expect(resultOperationFrom.amount).toBe(-amount);
     expect(resultOperationFrom.balance).toBe(68000);
     expect(resultOperationFrom.date).toEqual(transferDate);
 
     expect(resultOperationTo).not.toBeUndefined();
     expect(resultOperationTo.groupTo).not.toBeUndefined();
     expect(resultOperationTo.type).toBe('income');
-    expect(resultOperationTo.amount).toBe(10000);
-    expect(resultOperationTo.balance).toBe(10000);
+    expect(resultOperationTo.amount).toBe(amount);
+    expect(resultOperationTo.balance).toBe(amount);
     expect(resultOperationTo.date).toEqual(transferDate);
 
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
@@ -264,15 +272,15 @@ describe('users operations', () => {
     expect(resultOperationFrom).not.toBeUndefined();
     expect(resultOperationFrom.groupTo).not.toBeUndefined();
     expect(resultOperationFrom.type).toBe('expense');
-    expect(resultOperationFrom.amount).toBe(-10000);
+    expect(resultOperationFrom.amount).toBe(-amount);
     expect(resultOperationFrom.balance).toBe(68000);
     expect(resultOperationFrom.date).toEqual(transferDate);
 
     expect(resultOperationTo).not.toBeUndefined();
     expect(resultOperationTo.groupTo).not.toBeUndefined();
     expect(resultOperationTo.type).toBe('income');
-    expect(resultOperationTo.amount).toBe(10000);
-    expect(resultOperationTo.balance).toBe(10000);
+    expect(resultOperationTo.amount).toBe(amount);
+    expect(resultOperationTo.balance).toBe(amount);
     expect(resultOperationTo.date).toEqual(transferDate);
 
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
@@ -383,5 +391,85 @@ describe('users operations', () => {
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 20').toDate())).toBe(0);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 21').toDate())).toBe(10000);
     expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 26').toDate())).toBe(7000);
+  });
+
+  it('transfer operation in different currency (from)', () => {
+    let accountFrom = testUsersAccounts[0];
+    let accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountIdUSD);
+    const transferDate = moment.utc('2015 1 27').toDate();
+
+    jasmine.clock().mockDate(transferDate);
+
+    const amount = 10000;
+    const amountUSD = +(amount / fx.rates.RUB).toFixed(2);
+
+    const operationFromId = Meteor.call('UsersOperations/AddTransfer', testUserId, accountFrom._id, accountTo._id, {
+      amount: {
+        from: amount,
+      },
+    });
+
+    const resultOperationFrom = G.UsersOperationsCollection.findOne(operationFromId);
+    const resultOperationTo = G.UsersOperationsCollection.findOne(resultOperationFrom.groupTo);
+
+    expect(resultOperationFrom).not.toBeUndefined();
+    expect(resultOperationFrom.groupTo).not.toBeUndefined();
+    expect(resultOperationFrom.type).toBe('expense');
+    expect(resultOperationFrom.amount).toBe(-amount);
+    expect(resultOperationFrom.balance).toBe(55000);
+    expect(resultOperationFrom.date).toEqual(transferDate);
+
+    expect(resultOperationTo).not.toBeUndefined();
+    expect(resultOperationTo.groupTo).not.toBeUndefined();
+    expect(resultOperationTo.type).toBe('income');
+    expect(resultOperationTo.amount).toBe(amountUSD);
+    expect(resultOperationTo.balance).toBe(accountTo.startBalance + amountUSD);
+    expect(resultOperationTo.date).toEqual(transferDate);
+
+    accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
+    accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
+
+    expect(accountFrom.currentBalance).toBe(55000);
+    expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD).toFixed(2));
+  });
+
+  it('transfer operation in different currency (to)', () => {
+    let accountFrom = testUsersAccounts[0];
+    let accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountIdUSD);
+    const transferDate = moment.utc('2015 1 28').toDate();
+
+    jasmine.clock().mockDate(transferDate);
+
+    const amount = 10000;
+    const amountUSD = +(amount / fx.rates.RUB).toFixed(2);
+
+    const operationFromId = Meteor.call('UsersOperations/AddTransfer', testUserId, accountFrom._id, accountTo._id, {
+      amount: {
+        to: amountUSD,
+      },
+    });
+
+    const resultOperationFrom = G.UsersOperationsCollection.findOne(operationFromId);
+    const resultOperationTo = G.UsersOperationsCollection.findOne(resultOperationFrom.groupTo);
+
+    expect(resultOperationFrom).not.toBeUndefined();
+    expect(resultOperationFrom.groupTo).not.toBeUndefined();
+    expect(resultOperationFrom.type).toBe('expense');
+    expect(resultOperationFrom.amount).toBe(-(amountUSD * fx.rates.RUB).toFixed(2));
+    expect(resultOperationFrom.balance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
+    expect(resultOperationFrom.date).toEqual(transferDate);
+
+    expect(resultOperationTo).not.toBeUndefined();
+    expect(resultOperationTo.groupTo).not.toBeUndefined();
+    expect(resultOperationTo.type).toBe('income');
+    expect(resultOperationTo.amount).toBe(amountUSD);
+    expect(resultOperationTo.balance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
+    expect(resultOperationTo.date).toEqual(transferDate);
+
+    accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
+    accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
+
+    expect(accountFrom.currentBalance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
+    expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
   });
 });

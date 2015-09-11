@@ -1,12 +1,15 @@
 G.userGenerator = (email, password, profile) => {
   Logstar.info(`User generation start for ${email}`);
 
+  const currency = G.CurrenciesCollection.findOne({ code: 'RUB' });
+
   const userId = Accounts.createUser({
     email: email,
     password: password,
     profile: profile || {
       utcOffset: 180,
       language: 'ru',
+      currencyId: currency._id,
     },
   });
 
@@ -15,12 +18,12 @@ G.userGenerator = (email, password, profile) => {
   const demoAccountYears = 3;
   const debtAccountId = Random.id();
   const debtAmount = _.random(demoAccountYears * 50000, demoAccountYears * 80000);
-  const debtMonthlyPay = _.round(debtAmount / (demoAccountYears * 12));
+  const debtMonthlyPay = +(debtAmount / (demoAccountYears * 12)).toFixed(currency.decimalDigits);
 
   Meteor.call('UsersAccounts/Add', userId, {
     name: 'Credit',
-    currencyId: G.CurrenciesCollection.findOne({ code: 'RUB' })._id,
-    startBalance: debtAmount * -1,
+    currencyId: currency._id,
+    startBalance: -debtAmount,
     type: 'debt',
     _id: debtAccountId,
   });
@@ -127,13 +130,13 @@ G.userGenerator = (email, password, profile) => {
 
         if (expenseAccount.currentBalance - dailyExpense >= 0) {
           for (let i = 0; i < dailyExpenseCount; i++) {
-            const roundedExpense = _.round(dailyExpense / dailyExpenseCount);
+            const roundedExpense = +(dailyExpense / dailyExpenseCount).toFixed(currency.decimalDigits);
 
             dailyExpenseSum += roundedExpense;
 
             Meteor.call('UsersOperations/Add', userId, expenseAccount._id, {
               type: 'expense',
-              amount: roundedExpense * -1,
+              amount: -roundedExpense,
               date: mutateCurrentDayTime(currentDate),
               categoryId: getRandomCategoryId('expense'),
             });
@@ -176,7 +179,7 @@ G.userGenerator = (email, password, profile) => {
 
       if (debtAccountBalance < 0 && payDebtAccount.currentBalance > 0) {
         let payDebtAmount = payDebtAccount.currentBalance > debtMonthlyPay ? payDebtAccount.currentBalance : debtMonthlyPay;
-        payDebtAmount = (debtAccountBalance * -1) < payDebtAmount ? (debtAccountBalance * -1) : payDebtAmount;
+        payDebtAmount = -(debtAccountBalance) < payDebtAmount ? -(debtAccountBalance) : payDebtAmount;
 
         sumDebt += payDebtAmount;
 
@@ -202,7 +205,7 @@ G.userGenerator = (email, password, profile) => {
 
     Meteor.call('UsersOperations/Add', userId, account, {
       type,
-      amount: amount * (type === 'expense' ? -1 : 1),
+      amount: type === 'expense' ? -(amount) : amount,
       date: getRandomDate(),
       categoryId: getRandomCategoryId(type),
     });
@@ -370,7 +373,12 @@ G.userGenerator = (email, password, profile) => {
     totalTransferRemoves++;
   });
 
-  const totalCheck = sumIncome - sumExpense - sumDebt - Meteor.call('UsersAccounts/GetTotals', userId);
+  sumIncome = +sumIncome.toFixed(currency.decimalDigits);
+  sumExpense = +sumExpense.toFixed(currency.decimalDigits);
+  sumTransfer = +sumTransfer.toFixed(currency.decimalDigits);
+  sumDebt = +sumDebt.toFixed(currency.decimalDigits);
+
+  const totalCheck = sumIncome - sumExpense - sumDebt - Meteor.call('UsersAccounts/GetSimpleTotal', userId);
 
   Logstar.info(`--- Generated user stats ---`);
   Logstar.info(`Total income ${sumIncome}`);

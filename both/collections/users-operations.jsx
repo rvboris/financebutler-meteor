@@ -35,6 +35,7 @@ const getLastBalance = (userId, accountId, fromDate) => {
 
 const balanceCorrection = (userId, accountId, fromDate) => {
   let currentBalance = getLastBalance(userId, accountId, fromDate);
+  const accountCurrency = G.UsersAccountsCollection.findOne({userId}).getCurrency(accountId);
 
   G.UsersOperationsCollection.find({
     date: {
@@ -54,7 +55,7 @@ const balanceCorrection = (userId, accountId, fromDate) => {
 
     G.UsersOperationsCollection.direct.update(nextOperation._id, {
       $set: {
-        [_.isUndefined(nextOperation.dayBalance) ? 'balance' : 'dayBalance']: currentBalance,
+        [_.isUndefined(nextOperation.dayBalance) ? 'balance' : 'dayBalance']: +currentBalance.toFixed(accountCurrency.decimalDigits),
       },
     });
   });
@@ -64,7 +65,7 @@ const balanceCorrection = (userId, accountId, fromDate) => {
     'accounts._id': accountId,
   }, {
     $set: {
-      'accounts.$.currentBalance': currentBalance,
+      'accounts.$.currentBalance': +currentBalance.toFixed(accountCurrency.decimalDigits),
     },
   });
 };
@@ -195,3 +196,5 @@ G.UsersOperationsCollection.after.remove(function afterRemove(userId, operation)
   dayBalanceCorrenction(operation.userId, operation.accountId, operation.date);
   balanceCorrection(operation.userId, operation.accountId, operation.date);
 });
+
+G.balanceCorrection = balanceCorrection;

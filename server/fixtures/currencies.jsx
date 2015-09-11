@@ -2,8 +2,8 @@ G.CurrenciesFixtures = [
   {
     'symbol': '$',
     'name': 'US Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'USD',
     'translate': {
@@ -14,8 +14,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CA$',
     'name': 'Canadian Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'CAD',
     'translate': {
@@ -26,8 +26,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '€',
     'name': 'Euro',
-    'symbol_native': '€',
-    'decimal_digits': 2,
+    'symbolNative': '€',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'EUR',
     'translate': {
@@ -38,8 +38,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'AED',
     'name': 'United Arab Emirates Dirham',
-    'symbol_native': 'د.إ.‏',
-    'decimal_digits': 2,
+    'symbolNative': 'د.إ.‏',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'AED',
     'translate': {
@@ -50,8 +50,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Af',
     'name': 'Afghan Afghani',
-    'symbol_native': '؋',
-    'decimal_digits': 0,
+    'symbolNative': '؋',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'AFN',
     'translate': {
@@ -62,8 +62,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'ALL',
     'name': 'Albanian Lek',
-    'symbol_native': 'Lek',
-    'decimal_digits': 0,
+    'symbolNative': 'Lek',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'ALL',
     'translate': {
@@ -74,8 +74,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'AMD',
     'name': 'Armenian Dram',
-    'symbol_native': 'դր.',
-    'decimal_digits': 0,
+    'symbolNative': 'դր.',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'AMD',
     'translate': {
@@ -86,8 +86,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'AR$',
     'name': 'Argentine Peso',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'ARS',
     'translate': {
@@ -98,8 +98,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'AU$',
     'name': 'Australian Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'AUD',
     'translate': {
@@ -110,8 +110,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'man.',
     'name': 'Azerbaijani Manat',
-    'symbol_native': 'ман.',
-    'decimal_digits': 2,
+    'symbolNative': 'ман.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'AZN',
     'translate': {
@@ -122,8 +122,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'KM',
     'name': 'Bosnia-Herzegovina Convertible Mark',
-    'symbol_native': 'KM',
-    'decimal_digits': 2,
+    'symbolNative': 'KM',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BAM',
     'translate': {
@@ -134,8 +134,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Tk',
     'name': 'Bangladeshi Taka',
-    'symbol_native': '৳',
-    'decimal_digits': 2,
+    'symbolNative': '৳',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BDT',
     'translate': {
@@ -146,8 +146,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'BGN',
     'name': 'Bulgarian Lev',
-    'symbol_native': 'лв.',
-    'decimal_digits': 2,
+    'symbolNative': 'лв.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BGN',
     'translate': {
@@ -158,8 +158,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'BD',
     'name': 'Bahraini Dinar',
-    'symbol_native': 'د.ب.‏',
-    'decimal_digits': 3,
+    'symbolNative': 'د.ب.‏',
+    'decimalDigits': 3,
     'rounding': 0,
     'code': 'BHD',
     'translate': {
@@ -170,8 +170,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'FBu',
     'name': 'Burundian Franc',
-    'symbol_native': 'FBu',
-    'decimal_digits': 0,
+    'symbolNative': 'FBu',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'BIF',
     'translate': {
@@ -182,8 +182,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'BN$',
     'name': 'Brunei Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BND',
     'translate': {
@@ -194,8 +194,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Bs',
     'name': 'Bolivian Boliviano',
-    'symbol_native': 'Bs',
-    'decimal_digits': 2,
+    'symbolNative': 'Bs',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BOB',
     'translate': {
@@ -206,8 +206,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'R$',
     'name': 'Brazilian Real',
-    'symbol_native': 'R$',
-    'decimal_digits': 2,
+    'symbolNative': 'R$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BRL',
     'translate': {
@@ -218,8 +218,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'BWP',
     'name': 'Botswanan Pula',
-    'symbol_native': 'P',
-    'decimal_digits': 2,
+    'symbolNative': 'P',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BWP',
     'translate': {
@@ -230,8 +230,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'BYR',
     'name': 'Belarusian Ruble',
-    'symbol_native': 'BYR',
-    'decimal_digits': 0,
+    'symbolNative': 'BYR',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'BYR',
     'translate': {
@@ -242,8 +242,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'BZ$',
     'name': 'Belize Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'BZD',
     'translate': {
@@ -254,8 +254,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CDF',
     'name': 'Congolese Franc',
-    'symbol_native': 'FrCD',
-    'decimal_digits': 2,
+    'symbolNative': 'FrCD',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'CDF',
     'translate': {
@@ -266,8 +266,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CHF',
     'name': 'Swiss Franc',
-    'symbol_native': 'CHF',
-    'decimal_digits': 2,
+    'symbolNative': 'CHF',
+    'decimalDigits': 2,
     'rounding': 0.05,
     'code': 'CHF',
     'translate': {
@@ -278,8 +278,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CL$',
     'name': 'Chilean Peso',
-    'symbol_native': '$',
-    'decimal_digits': 0,
+    'symbolNative': '$',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'CLP',
     'translate': {
@@ -290,8 +290,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CN¥',
     'name': 'Chinese Yuan',
-    'symbol_native': 'CN¥',
-    'decimal_digits': 2,
+    'symbolNative': 'CN¥',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'CNY',
     'translate': {
@@ -302,8 +302,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CO$',
     'name': 'Colombian Peso',
-    'symbol_native': '$',
-    'decimal_digits': 0,
+    'symbolNative': '$',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'COP',
     'translate': {
@@ -314,8 +314,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₡',
     'name': 'Costa Rican Colón',
-    'symbol_native': '₡',
-    'decimal_digits': 0,
+    'symbolNative': '₡',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'CRC',
     'translate': {
@@ -326,8 +326,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CV$',
     'name': 'Cape Verdean Escudo',
-    'symbol_native': 'CV$',
-    'decimal_digits': 2,
+    'symbolNative': 'CV$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'CVE',
     'translate': {
@@ -338,8 +338,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Kč',
     'name': 'Czech Republic Koruna',
-    'symbol_native': 'Kč',
-    'decimal_digits': 2,
+    'symbolNative': 'Kč',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'CZK',
     'translate': {
@@ -350,8 +350,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Fdj',
     'name': 'Djiboutian Franc',
-    'symbol_native': 'Fdj',
-    'decimal_digits': 0,
+    'symbolNative': 'Fdj',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'DJF',
     'translate': {
@@ -362,8 +362,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Dkr',
     'name': 'Danish Krone',
-    'symbol_native': 'kr',
-    'decimal_digits': 2,
+    'symbolNative': 'kr',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'DKK',
     'translate': {
@@ -374,8 +374,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'RD$',
     'name': 'Dominican Peso',
-    'symbol_native': 'RD$',
-    'decimal_digits': 2,
+    'symbolNative': 'RD$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'DOP',
     'translate': {
@@ -386,8 +386,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'DA',
     'name': 'Algerian Dinar',
-    'symbol_native': 'د.ج.‏',
-    'decimal_digits': 2,
+    'symbolNative': 'د.ج.‏',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'DZD',
     'translate': {
@@ -398,8 +398,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Ekr',
     'name': 'Estonian Kroon',
-    'symbol_native': 'kr',
-    'decimal_digits': 2,
+    'symbolNative': 'kr',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'EEK',
     'translate': {
@@ -410,8 +410,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'EGP',
     'name': 'Egyptian Pound',
-    'symbol_native': 'ج.م.‏',
-    'decimal_digits': 2,
+    'symbolNative': 'ج.م.‏',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'EGP',
     'translate': {
@@ -422,8 +422,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Nfk',
     'name': 'Eritrean Nakfa',
-    'symbol_native': 'Nfk',
-    'decimal_digits': 2,
+    'symbolNative': 'Nfk',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'ERN',
     'translate': {
@@ -434,8 +434,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Br',
     'name': 'Ethiopian Birr',
-    'symbol_native': 'Br',
-    'decimal_digits': 2,
+    'symbolNative': 'Br',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'ETB',
     'translate': {
@@ -446,8 +446,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '£',
     'name': 'British Pound Sterling',
-    'symbol_native': '£',
-    'decimal_digits': 2,
+    'symbolNative': '£',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'GBP',
     'translate': {
@@ -458,8 +458,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'GEL',
     'name': 'Georgian Lari',
-    'symbol_native': 'GEL',
-    'decimal_digits': 2,
+    'symbolNative': 'GEL',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'GEL',
     'translate': {
@@ -470,8 +470,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'GH₵',
     'name': 'Ghanaian Cedi',
-    'symbol_native': 'GH₵',
-    'decimal_digits': 2,
+    'symbolNative': 'GH₵',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'GHS',
     'translate': {
@@ -482,8 +482,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'FG',
     'name': 'Guinean Franc',
-    'symbol_native': 'FG',
-    'decimal_digits': 0,
+    'symbolNative': 'FG',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'GNF',
     'translate': {
@@ -494,8 +494,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'GTQ',
     'name': 'Guatemalan Quetzal',
-    'symbol_native': 'Q',
-    'decimal_digits': 2,
+    'symbolNative': 'Q',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'GTQ',
     'translate': {
@@ -506,8 +506,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'HK$',
     'name': 'Hong Kong Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'HKD',
     'translate': {
@@ -518,8 +518,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'HNL',
     'name': 'Honduran Lempira',
-    'symbol_native': 'L',
-    'decimal_digits': 2,
+    'symbolNative': 'L',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'HNL',
     'translate': {
@@ -530,8 +530,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'kn',
     'name': 'Croatian Kuna',
-    'symbol_native': 'kn',
-    'decimal_digits': 2,
+    'symbolNative': 'kn',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'HRK',
     'translate': {
@@ -542,8 +542,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Ft',
     'name': 'Hungarian Forint',
-    'symbol_native': 'Ft',
-    'decimal_digits': 0,
+    'symbolNative': 'Ft',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'HUF',
     'translate': {
@@ -554,8 +554,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Rp',
     'name': 'Indonesian Rupiah',
-    'symbol_native': 'Rp',
-    'decimal_digits': 0,
+    'symbolNative': 'Rp',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'IDR',
     'translate': {
@@ -566,8 +566,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₪',
     'name': 'Israeli New Sheqel',
-    'symbol_native': '₪',
-    'decimal_digits': 2,
+    'symbolNative': '₪',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'ILS',
     'translate': {
@@ -578,8 +578,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Rs',
     'name': 'Indian Rupee',
-    'symbol_native': 'টকা',
-    'decimal_digits': 2,
+    'symbolNative': 'টকা',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'INR',
     'translate': {
@@ -590,8 +590,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'IQD',
     'name': 'Iraqi Dinar',
-    'symbol_native': 'د.ع.‏',
-    'decimal_digits': 0,
+    'symbolNative': 'د.ع.‏',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'IQD',
     'translate': {
@@ -602,8 +602,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'IRR',
     'name': 'Iranian Rial',
-    'symbol_native': '﷼',
-    'decimal_digits': 0,
+    'symbolNative': '﷼',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'IRR',
     'translate': {
@@ -614,8 +614,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Ikr',
     'name': 'Icelandic Króna',
-    'symbol_native': 'kr',
-    'decimal_digits': 0,
+    'symbolNative': 'kr',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'ISK',
     'translate': {
@@ -626,8 +626,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'J$',
     'name': 'Jamaican Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'JMD',
     'translate': {
@@ -638,8 +638,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'JD',
     'name': 'Jordanian Dinar',
-    'symbol_native': 'د.أ.‏',
-    'decimal_digits': 3,
+    'symbolNative': 'د.أ.‏',
+    'decimalDigits': 3,
     'rounding': 0,
     'code': 'JOD',
     'translate': {
@@ -650,8 +650,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '¥',
     'name': 'Japanese Yen',
-    'symbol_native': '￥',
-    'decimal_digits': 0,
+    'symbolNative': '￥',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'JPY',
     'translate': {
@@ -662,8 +662,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Ksh',
     'name': 'Kenyan Shilling',
-    'symbol_native': 'Ksh',
-    'decimal_digits': 2,
+    'symbolNative': 'Ksh',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'KES',
     'translate': {
@@ -674,8 +674,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'KHR',
     'name': 'Cambodian Riel',
-    'symbol_native': '៛',
-    'decimal_digits': 2,
+    'symbolNative': '៛',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'KHR',
     'translate': {
@@ -686,8 +686,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CF',
     'name': 'Comorian Franc',
-    'symbol_native': 'FC',
-    'decimal_digits': 0,
+    'symbolNative': 'FC',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'KMF',
     'translate': {
@@ -698,8 +698,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₩',
     'name': 'South Korean Won',
-    'symbol_native': '₩',
-    'decimal_digits': 0,
+    'symbolNative': '₩',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'KRW',
     'translate': {
@@ -710,8 +710,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'KD',
     'name': 'Kuwaiti Dinar',
-    'symbol_native': 'د.ك.‏',
-    'decimal_digits': 3,
+    'symbolNative': 'د.ك.‏',
+    'decimalDigits': 3,
     'rounding': 0,
     'code': 'KWD',
     'translate': {
@@ -722,8 +722,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'KZT',
     'name': 'Kazakhstani Tenge',
-    'symbol_native': 'тңг.',
-    'decimal_digits': 2,
+    'symbolNative': 'тңг.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'KZT',
     'translate': {
@@ -734,8 +734,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'LB£',
     'name': 'Lebanese Pound',
-    'symbol_native': 'ل.ل.‏',
-    'decimal_digits': 0,
+    'symbolNative': 'ل.ل.‏',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'LBP',
     'translate': {
@@ -746,8 +746,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'SLRs',
     'name': 'Sri Lankan Rupee',
-    'symbol_native': 'SL Re',
-    'decimal_digits': 2,
+    'symbolNative': 'SL Re',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'LKR',
     'translate': {
@@ -758,8 +758,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Lt',
     'name': 'Lithuanian Litas',
-    'symbol_native': 'Lt',
-    'decimal_digits': 2,
+    'symbolNative': 'Lt',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'LTL',
     'translate': {
@@ -770,8 +770,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Ls',
     'name': 'Latvian Lats',
-    'symbol_native': 'Ls',
-    'decimal_digits': 2,
+    'symbolNative': 'Ls',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'LVL',
     'translate': {
@@ -782,8 +782,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'LD',
     'name': 'Libyan Dinar',
-    'symbol_native': 'د.ل.‏',
-    'decimal_digits': 3,
+    'symbolNative': 'د.ل.‏',
+    'decimalDigits': 3,
     'rounding': 0,
     'code': 'LYD',
     'translate': {
@@ -794,8 +794,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MAD',
     'name': 'Moroccan Dirham',
-    'symbol_native': 'د.م.‏',
-    'decimal_digits': 2,
+    'symbolNative': 'د.م.‏',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MAD',
     'translate': {
@@ -806,8 +806,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MDL',
     'name': 'Moldovan Leu',
-    'symbol_native': 'MDL',
-    'decimal_digits': 2,
+    'symbolNative': 'MDL',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MDL',
     'translate': {
@@ -818,8 +818,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MGA',
     'name': 'Malagasy Ariary',
-    'symbol_native': 'MGA',
-    'decimal_digits': 0,
+    'symbolNative': 'MGA',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'MGA',
     'translate': {
@@ -830,8 +830,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MKD',
     'name': 'Macedonian Denar',
-    'symbol_native': 'MKD',
-    'decimal_digits': 2,
+    'symbolNative': 'MKD',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MKD',
     'translate': {
@@ -842,8 +842,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MMK',
     'name': 'Myanma Kyat',
-    'symbol_native': 'K',
-    'decimal_digits': 0,
+    'symbolNative': 'K',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'MMK',
     'translate': {
@@ -854,8 +854,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MOP$',
     'name': 'Macanese Pataca',
-    'symbol_native': 'MOP$',
-    'decimal_digits': 2,
+    'symbolNative': 'MOP$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MOP',
     'translate': {
@@ -866,8 +866,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MURs',
     'name': 'Mauritian Rupee',
-    'symbol_native': 'MURs',
-    'decimal_digits': 0,
+    'symbolNative': 'MURs',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'MUR',
     'translate': {
@@ -878,8 +878,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MX$',
     'name': 'Mexican Peso',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MXN',
     'translate': {
@@ -890,8 +890,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'RM',
     'name': 'Malaysian Ringgit',
-    'symbol_native': 'RM',
-    'decimal_digits': 2,
+    'symbolNative': 'RM',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MYR',
     'translate': {
@@ -902,8 +902,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'MTn',
     'name': 'Mozambican Metical',
-    'symbol_native': 'MTn',
-    'decimal_digits': 2,
+    'symbolNative': 'MTn',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'MZN',
     'translate': {
@@ -914,8 +914,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'N$',
     'name': 'Namibian Dollar',
-    'symbol_native': 'N$',
-    'decimal_digits': 2,
+    'symbolNative': 'N$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'NAD',
     'translate': {
@@ -926,8 +926,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₦',
     'name': 'Nigerian Naira',
-    'symbol_native': '₦',
-    'decimal_digits': 2,
+    'symbolNative': '₦',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'NGN',
     'translate': {
@@ -938,8 +938,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'C$',
     'name': 'Nicaraguan Córdoba',
-    'symbol_native': 'C$',
-    'decimal_digits': 2,
+    'symbolNative': 'C$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'NIO',
     'translate': {
@@ -950,8 +950,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Nkr',
     'name': 'Norwegian Krone',
-    'symbol_native': 'kr',
-    'decimal_digits': 2,
+    'symbolNative': 'kr',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'NOK',
     'translate': {
@@ -962,8 +962,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'NPRs',
     'name': 'Nepalese Rupee',
-    'symbol_native': 'नेरू',
-    'decimal_digits': 2,
+    'symbolNative': 'नेरू',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'NPR',
     'translate': {
@@ -974,8 +974,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'NZ$',
     'name': 'New Zealand Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'NZD',
     'translate': {
@@ -986,8 +986,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'OMR',
     'name': 'Omani Rial',
-    'symbol_native': 'ر.ع.‏',
-    'decimal_digits': 3,
+    'symbolNative': 'ر.ع.‏',
+    'decimalDigits': 3,
     'rounding': 0,
     'code': 'OMR',
     'translate': {
@@ -998,8 +998,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'B/.',
     'name': 'Panamanian Balboa',
-    'symbol_native': 'B/.',
-    'decimal_digits': 2,
+    'symbolNative': 'B/.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'PAB',
     'translate': {
@@ -1010,8 +1010,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'S/.',
     'name': 'Peruvian Nuevo Sol',
-    'symbol_native': 'S/.',
-    'decimal_digits': 2,
+    'symbolNative': 'S/.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'PEN',
     'translate': {
@@ -1022,8 +1022,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₱',
     'name': 'Philippine Peso',
-    'symbol_native': '₱',
-    'decimal_digits': 2,
+    'symbolNative': '₱',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'PHP',
     'translate': {
@@ -1034,8 +1034,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'PKRs',
     'name': 'Pakistani Rupee',
-    'symbol_native': '₨',
-    'decimal_digits': 0,
+    'symbolNative': '₨',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'PKR',
     'translate': {
@@ -1046,8 +1046,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'zł',
     'name': 'Polish Zloty',
-    'symbol_native': 'zł',
-    'decimal_digits': 2,
+    'symbolNative': 'zł',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'PLN',
     'translate': {
@@ -1058,8 +1058,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₲',
     'name': 'Paraguayan Guarani',
-    'symbol_native': '₲',
-    'decimal_digits': 0,
+    'symbolNative': '₲',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'PYG',
     'translate': {
@@ -1070,8 +1070,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'QR',
     'name': 'Qatari Rial',
-    'symbol_native': 'ر.ق.‏',
-    'decimal_digits': 2,
+    'symbolNative': 'ر.ق.‏',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'QAR',
     'translate': {
@@ -1082,8 +1082,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'RON',
     'name': 'Romanian Leu',
-    'symbol_native': 'RON',
-    'decimal_digits': 2,
+    'symbolNative': 'RON',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'RON',
     'translate': {
@@ -1094,8 +1094,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'din.',
     'name': 'Serbian Dinar',
-    'symbol_native': 'дин.',
-    'decimal_digits': 0,
+    'symbolNative': 'дин.',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'RSD',
     'translate': {
@@ -1106,8 +1106,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'RUB',
     'name': 'Russian Ruble',
-    'symbol_native': 'руб.',
-    'decimal_digits': 2,
+    'symbolNative': 'руб.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'RUB',
     'translate': {
@@ -1118,8 +1118,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'RWF',
     'name': 'Rwandan Franc',
-    'symbol_native': 'FR',
-    'decimal_digits': 0,
+    'symbolNative': 'FR',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'RWF',
     'translate': {
@@ -1130,8 +1130,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'SR',
     'name': 'Saudi Riyal',
-    'symbol_native': 'ر.س.‏',
-    'decimal_digits': 2,
+    'symbolNative': 'ر.س.‏',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'SAR',
     'translate': {
@@ -1142,8 +1142,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'SDG',
     'name': 'Sudanese Pound',
-    'symbol_native': 'SDG',
-    'decimal_digits': 2,
+    'symbolNative': 'SDG',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'SDG',
     'translate': {
@@ -1154,8 +1154,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Skr',
     'name': 'Swedish Krona',
-    'symbol_native': 'kr',
-    'decimal_digits': 2,
+    'symbolNative': 'kr',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'SEK',
     'translate': {
@@ -1166,8 +1166,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'S$',
     'name': 'Singapore Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'SGD',
     'translate': {
@@ -1178,8 +1178,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Ssh',
     'name': 'Somali Shilling',
-    'symbol_native': 'Ssh',
-    'decimal_digits': 0,
+    'symbolNative': 'Ssh',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'SOS',
     'translate': {
@@ -1190,8 +1190,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'SY£',
     'name': 'Syrian Pound',
-    'symbol_native': 'ل.س.‏',
-    'decimal_digits': 0,
+    'symbolNative': 'ل.س.‏',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'SYP',
     'translate': {
@@ -1202,8 +1202,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '฿',
     'name': 'Thai Baht',
-    'symbol_native': '฿',
-    'decimal_digits': 2,
+    'symbolNative': '฿',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'THB',
     'translate': {
@@ -1214,8 +1214,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'DT',
     'name': 'Tunisian Dinar',
-    'symbol_native': 'د.ت.‏',
-    'decimal_digits': 3,
+    'symbolNative': 'د.ت.‏',
+    'decimalDigits': 3,
     'rounding': 0,
     'code': 'TND',
     'translate': {
@@ -1226,8 +1226,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'T$',
     'name': 'Tongan Paʻanga',
-    'symbol_native': 'T$',
-    'decimal_digits': 2,
+    'symbolNative': 'T$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'TOP',
     'translate': {
@@ -1238,8 +1238,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'TL',
     'name': 'Turkish Lira',
-    'symbol_native': 'TL',
-    'decimal_digits': 2,
+    'symbolNative': 'TL',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'TRY',
     'translate': {
@@ -1250,8 +1250,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'TT$',
     'name': 'Trinidad and Tobago Dollar',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'TTD',
     'translate': {
@@ -1262,8 +1262,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'NT$',
     'name': 'New Taiwan Dollar',
-    'symbol_native': 'NT$',
-    'decimal_digits': 2,
+    'symbolNative': 'NT$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'TWD',
     'translate': {
@@ -1274,8 +1274,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'TSh',
     'name': 'Tanzanian Shilling',
-    'symbol_native': 'TSh',
-    'decimal_digits': 0,
+    'symbolNative': 'TSh',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'TZS',
     'translate': {
@@ -1286,8 +1286,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₴',
     'name': 'Ukrainian Hryvnia',
-    'symbol_native': '₴',
-    'decimal_digits': 2,
+    'symbolNative': '₴',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'UAH',
     'translate': {
@@ -1298,8 +1298,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'USh',
     'name': 'Ugandan Shilling',
-    'symbol_native': 'USh',
-    'decimal_digits': 0,
+    'symbolNative': 'USh',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'UGX',
     'translate': {
@@ -1310,8 +1310,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '$U',
     'name': 'Uruguayan Peso',
-    'symbol_native': '$',
-    'decimal_digits': 2,
+    'symbolNative': '$',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'UYU',
     'translate': {
@@ -1322,8 +1322,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'UZS',
     'name': 'Uzbekistan Som',
-    'symbol_native': 'UZS',
-    'decimal_digits': 0,
+    'symbolNative': 'UZS',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'UZS',
     'translate': {
@@ -1334,8 +1334,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'Bs.F.',
     'name': 'Venezuelan Bolívar',
-    'symbol_native': 'Bs.F.',
-    'decimal_digits': 2,
+    'symbolNative': 'Bs.F.',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'VEF',
     'translate': {
@@ -1346,8 +1346,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': '₫',
     'name': 'Vietnamese Dong',
-    'symbol_native': '₫',
-    'decimal_digits': 0,
+    'symbolNative': '₫',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'VND',
     'translate': {
@@ -1358,8 +1358,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'FCFA',
     'name': 'CFA Franc BEAC',
-    'symbol_native': 'FCFA',
-    'decimal_digits': 0,
+    'symbolNative': 'FCFA',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'XAF',
     'translate': {
@@ -1370,8 +1370,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'CFA',
     'name': 'CFA Franc BCEAO',
-    'symbol_native': 'CFA',
-    'decimal_digits': 0,
+    'symbolNative': 'CFA',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'XOF',
     'translate': {
@@ -1382,8 +1382,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'YR',
     'name': 'Yemeni Rial',
-    'symbol_native': 'ر.ي.‏',
-    'decimal_digits': 0,
+    'symbolNative': 'ر.ي.‏',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'YER',
     'translate': {
@@ -1394,8 +1394,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'R',
     'name': 'South African Rand',
-    'symbol_native': 'R',
-    'decimal_digits': 2,
+    'symbolNative': 'R',
+    'decimalDigits': 2,
     'rounding': 0,
     'code': 'ZAR',
     'translate': {
@@ -1406,8 +1406,8 @@ G.CurrenciesFixtures = [
   }, {
     'symbol': 'ZK',
     'name': 'Zambian Kwacha',
-    'symbol_native': 'ZK',
-    'decimal_digits': 0,
+    'symbolNative': 'ZK',
+    'decimalDigits': 0,
     'rounding': 0,
     'code': 'ZMK',
     'translate': {

@@ -43,6 +43,10 @@ Meteor.startup(() => {
       user.profile.name = user.emails[user.emails.length - 1].address.split('@')[0];
     }
 
+    if (!user.profile.currencyId) {
+      user.profile.currencyId = G.CurrenciesCollection.findOne({ code: 'RUB' })._id;
+    }
+
     return user;
   });
 
@@ -102,6 +106,10 @@ Meteor.startup(() => {
       G.CurrenciesCollection.insertTranslations(_.omit(currency, 'translate'), currency.translate);
     });
   }
+
+  SyncedCron.start();
+
+  Meteor.call('ExchangeRates/Update');
 
   Meteor.call('velocity/isMirror', (err, isMirror) => {
     if (isMirror) {

@@ -25,3 +25,20 @@ G.UsersCategoriesCollection.helpers({
     });
   },
 });
+
+// Hooks
+G.UsersAccountsCollection.after.update(function afterUpdate(userId, categories) {
+  const newCategories = flattenCategories(categories.categories).map(category => category._id);
+  const oldCategories = flattenCategories(this.previous.categories).map(category => category._id);
+
+  _.difference(oldCategories, newCategories).forEach(categoryId => {
+    G.UsersCategoriesCollection.update({
+      userId: categories.userId,
+      categoryId: categoryId,
+    }, {
+      $unset: {
+        categoryId: '',
+      },
+    });
+  });
+});
