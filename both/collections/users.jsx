@@ -11,7 +11,7 @@ const iterateCategories = (categories, callback = () => {}) => {
 // Helpers
 Meteor.users.helpers({
   getCurrency: function getAccount() {
-    return G.Currencies.findOne(this.profile.currencyId);
+    return G.CurrenciesCollection.findOne(this.profile.currencyId);
   },
 });
 

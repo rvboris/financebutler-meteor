@@ -23,7 +23,7 @@ G.userGenerator = (email, password, profile) => {
   Meteor.call('UsersAccounts/Add', userId, {
     name: 'Credit',
     currencyId: currency._id,
-    startBalance: debtAmount * -1,
+    startBalance: -debtAmount,
     type: 'debt',
     _id: debtAccountId,
   });
@@ -136,7 +136,7 @@ G.userGenerator = (email, password, profile) => {
 
             Meteor.call('UsersOperations/Add', userId, expenseAccount._id, {
               type: 'expense',
-              amount: roundedExpense * -1,
+              amount: -roundedExpense,
               date: mutateCurrentDayTime(currentDate),
               categoryId: getRandomCategoryId('expense'),
             });
@@ -179,7 +179,7 @@ G.userGenerator = (email, password, profile) => {
 
       if (debtAccountBalance < 0 && payDebtAccount.currentBalance > 0) {
         let payDebtAmount = payDebtAccount.currentBalance > debtMonthlyPay ? payDebtAccount.currentBalance : debtMonthlyPay;
-        payDebtAmount = (debtAccountBalance * -1) < payDebtAmount ? (debtAccountBalance * -1) : payDebtAmount;
+        payDebtAmount = -(debtAccountBalance) < payDebtAmount ? -(debtAccountBalance) : payDebtAmount;
 
         sumDebt += payDebtAmount;
 
@@ -205,7 +205,7 @@ G.userGenerator = (email, password, profile) => {
 
     Meteor.call('UsersOperations/Add', userId, account, {
       type,
-      amount: amount * (type === 'expense' ? -1 : 1),
+      amount: type === 'expense' ? -(amount) : amount,
       date: getRandomDate(),
       categoryId: getRandomCategoryId(type),
     });

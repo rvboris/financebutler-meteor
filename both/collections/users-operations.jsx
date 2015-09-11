@@ -196,3 +196,5 @@ G.UsersOperationsCollection.after.remove(function afterRemove(userId, operation)
   dayBalanceCorrenction(operation.userId, operation.accountId, operation.date);
   balanceCorrection(operation.userId, operation.accountId, operation.date);
 });
+
+G.balanceCorrection = balanceCorrection;

@@ -31,12 +31,20 @@ G.UsersAccountsCollection.helpers({
 // Hooks
 G.UsersAccountsCollection.after.update(function afterUpdate(userId, account) {
   if (account.accounts.length < this.previous.accounts.length) {
-    const removedAccounts = _.difference(this.previous.accounts.map(acc => acc._id), account.accounts.map(acc => acc._id));
+    const removedAccounts = _.select(this.previous.accounts, acc => !_.findWhere(account.accounts, { _id: acc._id }));
 
     removedAccounts.forEach(removedAccount => {
-      G.UsersOperationsCollection.find({ userId: account.userId, accountId: removedAccount }).forEach(operation => {
+      G.UsersOperationsCollection.find({ userId: account.userId, accountId: removedAccount._id }).forEach(operation => {
         Meteor.call('UsersOperations/Remove', operation.userId, operation._id, true);
       });
     });
+
+    return;
   }
+
+  const startBalanceChanged = _.select(this.previous.accounts, acc => !_.findWhere(account.accounts, { startBalance: acc.startBalance }));
+
+  startBalanceChanged.forEach(changedAccount => {
+    G.balanceCorrection(account.userId, changedAccount._id, changedAccount.createdAt);
+  });
 });

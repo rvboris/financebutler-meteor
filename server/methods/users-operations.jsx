@@ -56,6 +56,10 @@ Meteor.methods({
       throw new Meteor.Error('ERROR.INCOME_OPERATION_POSITIVE', 'Income operation must be positive');
     }
 
+    if (operation.type === 'expense' && -operation.amount > account.currentBalance) {
+      throw new Meteor.Error('ERROR.OPERATION_NOT_ENOUGH_MONEY', 'On account of insufficient funds');
+    }
+
     const operationToInsert = {
       userId: userId,
       accountId: accountId,
@@ -74,17 +78,62 @@ Meteor.methods({
   [`${namespace}/AddTransfer`]: (userId, accountIdFrom, accountIdTo, operation) => {
     operation.date = moment.utc(operation.date || new Date()).toDate();
 
-    const groupFromOperation = Meteor.call(`${namespace}/Add`, userId, accountIdFrom, {
-      amount: operation.amount > 0 ? operation.amount * -1 : operation.amount,
-      date: operation.date,
-      type: 'expense',
-    });
+    const accountFrom = G.UsersAccountsCollection.findOne({ userId }).getAccount(accountIdFrom);
+    const accountFromCurrency = G.CurrenciesCollection.findOne(accountFrom.currencyId);
+    const accountToCurrency = G.UsersAccountsCollection.findOne({ userId }).getCurrency(accountIdTo);
 
-    const groupToOperation = Meteor.call(`${namespace}/Add`, userId, accountIdTo, {
-      amount: operation.amount < 0 ? operation.amount * -1 : operation.amount,
-      date: operation.date,
-      type: 'income',
-    });
+    let groupFromOperation;
+    let groupToOperation;
+
+    if (accountFromCurrency._id === accountToCurrency._id) {
+      if (_.isObject(operation.amount)) {
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_NUMBER_REQUIRED', 'Transfer operation require number amount');
+      }
+
+      if (operation.amount > accountFrom.currentBalance) {
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_NOT_ENOUGH_MONEY', 'On account of insufficient funds');
+      }
+
+      groupFromOperation = Meteor.call(`${namespace}/Add`, userId, accountIdFrom, {
+        amount: operation.amount > 0 ? -(operation.amount) : operation.amount,
+        date: operation.date,
+        type: 'expense',
+      });
+
+      groupToOperation = Meteor.call(`${namespace}/Add`, userId, accountIdTo, {
+        amount: operation.amount < 0 ? -(operation.amount) : operation.amount,
+        date: operation.date,
+        type: 'income',
+      });
+    } else {
+      if (!_.isObject(operation.amount)) {
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_OBJECT_REQUIRED', 'Transfer operation has different currency, required object amount');
+      }
+
+      if (!operation.amount.to && operation.amount.from) {
+        operation.amount.to = fx(operation.amount.from).from(accountFromCurrency.code).to(accountToCurrency.code);
+      } else if (!operation.amount.from && operation.amount.to) {
+        operation.amount.from = fx(operation.amount.to).from(accountToCurrency.code).to(accountFromCurrency.code);
+      } else {
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_OBJECT_INVALID', 'Transfer operation amount object is invalid');
+      }
+
+      if (operation.from > accountFrom.currentBalance) {
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_NOT_ENOUGH_MONEY', 'On account of insufficient funds');
+      }
+
+      groupFromOperation = Meteor.call(`${namespace}/Add`, userId, accountIdFrom, {
+        amount: operation.amount.from > 0 ? -(operation.amount.from) : operation.amount.from,
+        date: operation.date,
+        type: 'expense',
+      });
+
+      groupToOperation = Meteor.call(`${namespace}/Add`, userId, accountIdTo, {
+        amount: operation.amount.to < 0 ? -(operation.amount.to) : operation.amount.to,
+        date: operation.date,
+        type: 'income',
+      });
+    }
 
     G.UsersOperationsCollection.direct.update(groupFromOperation, { $set: { groupTo: groupToOperation } });
     G.UsersOperationsCollection.direct.update(groupToOperation, { $set: { groupTo: groupFromOperation } });
@@ -149,14 +198,14 @@ Meteor.methods({
 
     if (operation.amount) {
       if ((operationInfo.type === 'expense' && operation.amount > 0) || (operationInfo.type === 'income' && operation.amount < 0)) {
-        operation.amount = operation.amount * -1;
+        operation.amount = -operation.amount;
       }
     }
 
     Meteor.call(`${namespace}/Update`, userId, operationId, operation);
 
     if (operation.amount) {
-      operation.amount = operation.amount * -1;
+      operation.amount = -operation.amount;
     }
 
     if (operation.accountId) {
