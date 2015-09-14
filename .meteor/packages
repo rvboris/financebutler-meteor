@@ -32,3 +32,4 @@ velocity:console-reporter
 http
 percolate:synced-cron
 theara:moneyjs
+reywood:publish-composite

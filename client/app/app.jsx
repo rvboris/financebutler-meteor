@@ -11,9 +11,13 @@ SetModule('app', [
   'validation.match',
 ])
 .constant('toastPosition', 'bottom right')
-.config(($urlRouterProvider, $locationProvider) => {
+.config(($urlRouterProvider, $locationProvider, $mdThemingProvider) => {
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(true);
+
+  $mdThemingProvider.theme('default')
+    .primaryPalette('teal')
+    .accentPalette('brown');
 })
 .run(($rootScope, $state, $mdToast, toastPosition, $filter, $meteor, $interval) => {
   $meteor.session('translateReady').bind($rootScope, 'translateReady');
@@ -96,6 +100,15 @@ SetModule('app', [
     $rootScope.$on('$destroy', () => {
       stateChangeErrorHandler();
       stateChangeStartHandler();
+    });
+  });
+
+  $rootScope.$meteorAutorun(() => {
+    TAPi18n.subscribe('currencies', 1800);
+    $rootScope.currencies = $rootScope.$meteorCollection(G.CurrenciesCollection);
+
+    $rootScope.$meteorSubscribe('exchangeRates').then(() => {
+      $rootScope.exchangeRates = $rootScope.$meteorObject(G.ExchangeRatesCollection, {}).rates;
     });
   });
 });

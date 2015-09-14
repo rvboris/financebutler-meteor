@@ -1,19 +1,23 @@
-md-content(flex='', layout='column')
-  md-toolbar
-    .md-toolbar-tools
-      h3 FinanceButler
-      span(flex)
-      {{vm.currentUser|json}}
-      md-menu(ng-if='$root.currentUser._id')
-        md-button(arial-label='', ng-click='$mdOpenMenu($event)')
-          ng-md-icon(icon='account_circle')
-          span  {{'APP.PROFILE' | translate}}
-        md-menu-content(width='4')
-          md-menu-item
-            md-button(ng-click='$root.state.go("account.settings")') {{'APP.SETTINGS' | translate}}
-          md-menu-item
-            md-button(ng-click='$root.state.go("account.profile")') {{'APP.PROFILE' | translate}}
-          md-divider
-          md-menu-item
-            md-button(ng-click='$root.state.go("logout")') {{'APP.LOGOUT' | translate}}
-  ui-view(flex='', layout='column')
+md-content(flex='', layout='row')
+  md-sidenav.md-sidenav-left.md-whiteframe-z2(md-is-locked-open='$mdMedia("gt-sm")', md-component-id='left', ng-if='$root.currentUser._id')
+    md-toolbar(layout-align='center center')
+      img(src='images/logo.png', width='204', height='123', layout-margin='').logo
+  md-content(flex='', layout='column').gray-background.md-whiteframe-z2
+    md-toolbar(ng-if='$root.currentUser._id')
+      .md-toolbar-tools
+        md-button(ng-click='toogleLeft()', hide-gt-md='').md-primary
+          ng-md-icon(icon='menu')
+        span(flex)
+        md-menu(ng-if='$root.currentUser._id')
+          md-button(arial-label='', ng-click='$mdOpenMenu($event)')
+            ng-md-icon(icon='account_circle')
+            span  {{'APP.PROFILE' | translate}}
+          md-menu-content(width='4')
+            md-menu-item
+              md-button(ng-click='$root.state.go("account.settings")') {{'APP.SETTINGS' | translate}}
+            md-menu-item
+              md-button(ng-click='$root.state.go("account.profile")') {{'APP.PROFILE' | translate}}
+            md-divider
+            md-menu-item
+              md-button(ng-click='$root.state.go("logout")') {{'APP.LOGOUT' | translate}}
+    ui-view(flex='', layout='column', layout-padding='')

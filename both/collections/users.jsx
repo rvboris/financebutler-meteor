@@ -54,11 +54,15 @@ const setupUserDefaultCollections = (userId, user) => {
 };
 
 Meteor.users.after.insert((userId, user) => {
-  setupUserDefaultCollections(user._id, user);
+  if (user.services.password) {
+    setupUserDefaultCollections(user._id, user);
+  }
 });
 
 Meteor.users.after.update((userId, user) => {
-  setupUserDefaultCollections(user._id, user);
+  if (!user.services) {
+    setupUserDefaultCollections(user._id, user);
+  }
 });
 
 Meteor.users.after.remove((userId, user) => {

@@ -27,7 +27,7 @@ G.UsersCategoriesCollection.helpers({
 });
 
 // Hooks
-G.UsersAccountsCollection.after.update(function afterUpdate(userId, categories) {
+G.UsersCategoriesCollection.after.update(function afterUpdate(userId, categories) {
   const newCategories = flattenCategories(categories.categories).map(category => category._id);
   const oldCategories = flattenCategories(this.previous.categories).map(category => category._id);
 
