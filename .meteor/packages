@@ -6,7 +6,6 @@ angular:angular-animate
 angularui:angular-ui-router
 civilframe:angular-jade
 sebhero:angular-material-icons
-pbastowski:angular2-now
 pbastowski:angular-babel
 accounts-password
 accounts-twitter
@@ -33,3 +32,4 @@ http
 percolate:synced-cron
 theara:moneyjs
 reywood:publish-composite
+pbastowski:angular2-now

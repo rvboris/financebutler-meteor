@@ -1,1 +1,48 @@
-ui-view
+div(layout='row', flex='')
+  md-sidenav(md-component-id='left', md-is-locked-open='$mdMedia("gt-md")').md-sidenav-left.md-whiteframe-z2
+    md-toolbar(layout-align='center center')
+      img(src='images/logo.png', width='204', height='123', layout-margin='')
+    md-content(layout-padding='', layout='column')
+      md-button.md-primary
+        div(layout='row')
+          ng-md-icon(icon='swap_vert')
+          span(flex='') Операции
+      md-button.md-primary
+        div(layout='row')
+          ng-md-icon(icon='trending_up')
+          span(flex='') Отчеты
+      div(flex='')
+      md-divider
+      md-button.md-primary
+        div(layout='row')
+          ng-md-icon(icon='account_balance_wallet')
+          span(flex='') Счета
+      md-button.md-primary
+        div(layout='row')
+          ng-md-icon(icon='my_library_books')
+          span(flex='') Категории
+
+  md-content(flex='')
+    md-toolbar(layout='row')
+      md-button(hide-gt-sm='', ng-click='dashboard.toggleSidenav()')
+        ng-md-icon(icon='menu')
+      span(flex='')
+      md-menu
+        md-button(ng-click='$mdOpenMenu($event)', md-menu-origin='')
+          ng-md-icon(icon='account_circle')
+          |  {{$root.currentUser.profile.name}}
+        md-menu-content(width='3')
+          md-button
+            div(layout='row')
+              ng-md-icon(icon='person_outline') 
+              span(flex='') {{'APP.PROFILE' | translate}}
+          md-button
+            div(layout='row')
+              ng-md-icon(icon='settings')
+              span(flex='') {{'APP.SETTINGS' | translate}}
+          md-menu-divider
+          md-button(ng-click='$parent.app.$state.go("app.logout")').md-warn
+            div(layout='row')
+              ng-md-icon(icon='logout') 
+              span(flex='') {{'APP.LOGOUT' | translate}}
+    div(ui-view='', flex='', layout='column', layout-padding='')

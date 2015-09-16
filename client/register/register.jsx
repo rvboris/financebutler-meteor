@@ -1,18 +1,18 @@
 SetModule('app');
 
 @Component('register')
-@State({ name: 'register', url: '/register' })
 @View('client/register/register.html')
-@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$filter', '$rootScope'])
+@State({ name: 'app.register', url: '/register' })
+@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$filter', '$scope'])
 
 export class register {
-  constructor($meteor, $state, $mdToast, toastPosition, $filter, $rootScope) {
+  constructor($meteor, $state, $mdToast, toastPosition, $filter, $scope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
     this.toastPosition = toastPosition;
     this.$filter = $filter;
-    this.$rootScope = $rootScope;
+    this.$scope = $scope;
 
     this.email = '';
     this.password = '';
@@ -38,7 +38,7 @@ export class register {
       },
     })
       .then(() => {
-        this.$state.go('dashboard.overview')
+        this.$state.go('app.dashboard.overview')
           .then(() => {
             const emailVerifyToast = this.$mdToast
               .simple()
@@ -53,6 +53,6 @@ export class register {
   }
 
   loginWith(service) {
-    this.$rootScope.loginWith(service).catch(this.showError.bind(this));
+    this.$scope.$parent.app.loginWith(service).catch(this.showError.bind(this));
   }
 }

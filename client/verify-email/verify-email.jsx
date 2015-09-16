@@ -1,6 +1,6 @@
 SetModule('app');
 
-@State({ name: 'verifyEmail', url: '/verify-email/:token' })
+@State({ name: 'app.verifyEmail', url: '/verify-email/:token' })
 @Inject(['$stateParams', '$state', '$meteor', '$mdToast', 'toastPosition', '$filter'])
 
 export class verifyEmail {

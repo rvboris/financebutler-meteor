@@ -4,16 +4,16 @@ md-whiteframe.md-whiteframe-z1(layout='column', flex='50', layout-margin='')
     .md-toolbar-tools
       h2 {{'LOGIN.AUTHORIZATION' | translate}}
   md-content(layout-padding='')
-    form(layout='column', ng-submit='vm.login()', name='loginForm', novalidate='')
+    form(layout='column', ng-submit='login.login()', name='loginForm', novalidate='')
       md-input-container
         label {{'LOGIN.EMAIL' | translate}}
-        input(type='email', name='email', ng-model='vm.email', aria-label='{{"LOGIN.EMAIL" | translate}}', required='')
+        input(type='email', name='email', ng-model='login.email', aria-label='{{"LOGIN.EMAIL" | translate}}', required='')
         div(ng-messages='loginForm.email.$error', ng-if='loginForm.email.$touched')
           div(ng-message='required') {{'LOGIN.EMAIL_REQUIRED' | translate}}
           div(ng-message='email') {{'LOGIN.EMAIL_INVALID' | translate}}
       md-input-container
         label {{'LOGIN.PASSWORD' | translate}}
-        input(type='password', name='password', ng-model='vm.password', ng-minlength='7', aria-label='{{"LOGIN.PASSWORD" | translate}}', required='')
+        input(type='password', name='password', ng-model='login.password', ng-minlength='7', aria-label='{{"LOGIN.PASSWORD" | translate}}', required='')
         div(ng-messages='loginForm.password.$error', ng-if='loginForm.password.$touched')
           div(ng-message='required') {{'LOGIN.PASSWORD_REQUIRED' | translate}}
           div(ng-message='minlength') {{'LOGIN.PASSWORD_MIN_LENGTH' | translate: '{ count: 7 }'}}
@@ -21,7 +21,7 @@ md-whiteframe.md-whiteframe-z1(layout='column', flex='50', layout-margin='')
       div(layout='row', layout-align='center center')
         md-button.md-raised.md-primary(aria-label='{{"LOGIN.LOGIN" | translate}}', type='submit', ng-disabled='!loginForm.$valid') {{'LOGIN.LOGIN' | translate}}
         span(flex)
-        a(ui-sref='resetPassword', layout-margin='') {{'LOGIN.FORGOT_PASSWORD' | translate}}
+        a(ui-sref='app.resetPassword', layout-margin='') {{'LOGIN.FORGOT_PASSWORD' | translate}}
 
     md-divider(layout-margin='')
 
@@ -29,17 +29,17 @@ md-whiteframe.md-whiteframe-z1(layout='column', flex='50', layout-margin='')
       h1.md-title {{'LOGIN.LOGIN_WITH' | translate}}
 
     div(layout='row', layout-align='space-around center')
-      md-button(ng-click='vm.loginWith("Twitter")', aria-label='Twitter')
+      md-button(ng-click='login.loginWith("Twitter")', aria-label='Twitter')
         ng-md-icon(icon='twitter')
         span  Twitter
-      md-button(ng-click='vm.loginWith("Facebook")', aria-label='Facebook')
+      md-button(ng-click='login.loginWith("Facebook")', aria-label='Facebook')
         ng-md-icon(icon='facebook')
         span  Facebook
-      md-button(ng-click='vm.loginWith("Google")', aria-label='Google')
+      md-button(ng-click='login.loginWith("Google")', aria-label='Google')
         ng-md-icon(icon='google-plus')
         span  Google
 
     md-divider(layout-margin='')
 
     div(layout='row', layout-align='space-around center', layout-padding='')
-      a(ui-sref='register', layout-margin='') {{'LOGIN.REGISTRATION' | translate}}
+      a(ui-sref='app.register', layout-margin='') {{'LOGIN.REGISTRATION' | translate}}

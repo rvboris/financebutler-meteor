@@ -3,7 +3,7 @@ _ = lodash;
 Meteor.startup(() => {
   if (Meteor.settings.public.env === 'production') {
     Logstar.isLocal = false;
-  } else if (Meteor.settings.public.env === 'development') {
+  } else if (Meteor.settings.public.env === 'development' && Package['xolvio:cleaner']) {
     Package['xolvio:cleaner'].resetDatabase();
   }
 

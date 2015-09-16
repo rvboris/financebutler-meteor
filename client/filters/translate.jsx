@@ -4,9 +4,9 @@ SetModule('app');
 @Inject(['$parse', '$log', '$rootScope'])
 
 export class translate {
-  constructor($parse, $log, $rootScope) {
+  constructor($parse, $log) {
     return (key, options) => {
-      if (!$rootScope.translateReady) {
+      if (!Session.get('translateReady')) {
         return '';
       }
 
