@@ -7,7 +7,7 @@ export class verifyEmail {
   constructor($stateParams, $state, $meteor, $mdToast, toastPosition, $filter) {
     $meteor.verifyEmail($stateParams.token)
       .then(() => {
-        $state.go('dashboard.overview')
+        $state.go('app.dashboard.overview')
           .then(() => {
             const resultToast = $mdToast
               .simple()
@@ -19,7 +19,7 @@ export class verifyEmail {
           });
       })
       .catch(err => {
-        $state.go('home').then(() => {
+        $state.go('app.home').then(() => {
           const errorToast = $mdToast
             .simple()
             .position(toastPosition)

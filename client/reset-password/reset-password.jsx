@@ -42,14 +42,14 @@ export class resetPassword {
           .content(this.$filter('translate')('RESET_PASSWORD.CHECK_MAIL'));
 
         this.$mdToast.show(recoveryResult);
-        this.$state.go('login');
+        this.$state.go('app.login');
       }.bind(this))
       .catch(this.showError.bind(this));
   }
 
   save() {
     this.$meteor.resetPassword(this.token, this.password)
-      .then(() => this.$state.go('dashboard.overview'))
+      .then(() => this.$state.go('app.dashboard.overview'))
       .catch(this.showError.bind(this));
   }
 

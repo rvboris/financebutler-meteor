@@ -128,4 +128,4 @@ export class app {
   }
 }
 
-bootstrap('app', { xstrictDi: true });
+bootstrap(app);

@@ -2,25 +2,36 @@ div(layout='row', flex='')
   md-sidenav(md-component-id='left', md-is-locked-open='$mdMedia("gt-md")').md-sidenav-left.md-whiteframe-z2
     md-toolbar(layout-align='center center')
       img(src='images/logo.png', width='204', height='123', layout-margin='')
-    md-content(layout-padding='', layout='column')
-      md-button.md-primary
-        div(layout='row')
-          ng-md-icon(icon='swap_vert')
-          span(flex='') Операции
-      md-button.md-primary
-        div(layout='row')
-          ng-md-icon(icon='trending_up')
-          span(flex='') Отчеты
-      div(flex='')
+    md-content(layout-padding='', layout='column', flex='')
+      div(layout='column')
+        md-button.md-primary
+          div(layout='row')
+            ng-md-icon(icon='swap_vert')
+            span(flex='') {{'APP.OPERATIONS' | translate}}
+        md-button.md-primary
+          div(layout='row')
+            ng-md-icon(icon='event')
+            span(flex='') {{'APP.BUDGET' | translate}}
+        md-button.md-primary
+          div(layout='row')
+            ng-md-icon(icon='trending_up')
+            span(flex='') {{'APP.REPORTS' | translate}}
       md-divider
-      md-button.md-primary
-        div(layout='row')
-          ng-md-icon(icon='account_balance_wallet')
-          span(flex='') Счета
-      md-button.md-primary
-        div(layout='row')
-          ng-md-icon(icon='my_library_books')
-          span(flex='') Категории
+      md-content(layout='column', flex='', layout-align='start center')
+        h1.md-headline {{'APP.ACCOUNTS' | translate}}
+        span {{dashboard | json}}
+        span {{$parent.dashboard | json}}
+        md-button.md-primary(ng-repeat="account in dashboard.accounts") {{account.name}}
+      md-divider
+      div(layout='column')
+        md-button.md-primary
+          div(layout='row')
+            ng-md-icon(icon='account_balance_wallet')
+            span(flex='') {{'APP.ACCOUNTS_CONTROL' | translate}}
+        md-button.md-primary
+          div(layout='row')
+            ng-md-icon(icon='my_library_books')
+            span(flex='') {{'APP.CATEGORIES_CONTROL' | translate}}
 
   md-content(flex='')
     md-toolbar(layout='row')

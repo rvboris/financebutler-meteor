@@ -13,6 +13,11 @@ Meteor.startup(() => {
     },
   });
 
+  Mandrill.config({
+    username: Meteor.settings.mandrill.user,
+    key: Meteor.settings.mandrill.key,
+  });
+
   Logstar.info('Setup Accounts');
 
   Accounts.config({
@@ -80,23 +85,63 @@ Meteor.startup(() => {
     secret: Meteor.settings.twitter.secret,
   });
 
-  Accounts.emailTemplates.siteName = 'FinanceButler';
-  Accounts.emailTemplates.from = 'FinanceButler <no-reply@financebutler.ru>';
+  Accounts.emailTemplates.headers = {
+    'X-MC-AutoText': true,
+  };
+
+  Accounts.emailTemplates.siteName = 'Finance Butler';
+  Accounts.emailTemplates.from = 'Finance Butler <robot@financebutler.ru>';
 
   Accounts.emailTemplates.resetPassword.subject = user => {
     return TAPi18n.__('EMAIL.RESET_PASSWORD_SUBJECT', {}, user.profile.language);
   };
 
-  Accounts.emailTemplates.resetPassword.text = (user, url) => {
-    return TAPi18n.__('EMAIL.RESET_PASSWORD_TEXT', { url: url.replace('#/', '') }, user.profile.language);
+  Accounts.emailTemplates.resetPassword.html = (user, url) => {
+    let result;
+
+    try {
+      result = Mandrill.templates.render({
+        template_name: `reset-password-${user.profile.language}`,
+        template_content: [],
+        merge_vars: [
+          {
+            name: 'resetPasswordLink',
+            content: url.replace('#/', ''),
+          },
+        ],
+      });
+    } catch (error) {
+      Logstar.error(error);
+      return TAPi18n.__('EMAIL.RESET_PASSWORD_TEXT', { url: url.replace('#/', '') }, user.profile.language);
+    }
+
+    return result.data.html;
   };
 
   Accounts.emailTemplates.verifyEmail.subject = user => {
     return TAPi18n.__('EMAIL.CONFIRM_EMAIL_SUBJECT', {}, user.profile.language);
   };
 
-  Accounts.emailTemplates.verifyEmail.text = (user, url) => {
-    return TAPi18n.__('EMAIL.CONFIRM_EMAIL_TEXT', { url: url.replace('#/', '') }, user.profile.language);
+  Accounts.emailTemplates.verifyEmail.html = (user, url) => {
+    let result;
+
+    try {
+      result = Mandrill.templates.render({
+        template_name: `verify-email-${user.profile.language}`,
+        template_content: [],
+        merge_vars: [
+          {
+            name: 'confirmLink',
+            content: url.replace('#/', ''),
+          },
+        ],
+      });
+    } catch (error) {
+      Logstar.error(error);
+      return TAPi18n.__('EMAIL.CONFIRM_EMAIL_TEXT', { url: url.replace('#/', '') }, user.profile.language);
+    }
+
+    return result.data.html;
   };
 
   if (G.CurrenciesCollection.find().count() === 0) {

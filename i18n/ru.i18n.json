@@ -44,10 +44,10 @@
     "REGISTRATION": "Регистрация",
     "NEW_PASSWORD": "Пароль",
     "NEW_PASSWORD_REQUIRED": "Пароль обязателен",
-    "PASSWORD_MIN_LENGTH": "Минимальная длинна пароля __count__ символ",
-    "PASSWORD_MIN_LENGTH_plural_1": "Минимальная длинна пароля __count__ символ",
-    "PASSWORD_MIN_LENGTH_plural_2": "Минимальная длинна пароля __count__ символа",
-    "PASSWORD_MIN_LENGTH_plural_5": "Минимальная длинна пароля __count__ символов",
+    "NEW_PASSWORD_MIN_LENGTH": "Минимальная длинна пароля __count__ символ",
+    "NEW_PASSWORD_MIN_LENGTH_plural_1": "Минимальная длинна пароля __count__ символ",
+    "NEW_PASSWORD_MIN_LENGTH_plural_2": "Минимальная длинна пароля __count__ символа",
+    "NEW_PASSWORD_MIN_LENGTH_plural_5": "Минимальная длинна пароля __count__ символов",
     "NEW_PASSWORD_REPEAT": "Повторите пароль",
     "NEW_PASSWORD_MATCH": "Пароли должны совпадать",
     "CHECK_MAIL": "Ссылка для сброса пароля отправлена вам на email"
@@ -68,7 +68,13 @@
   "APP": {
     "SETTINGS": "Настройки",
     "PROFILE": "Профиль",
-    "LOGOUT": "Выйти"
+    "LOGOUT": "Выйти",
+    "OPERATIONS": "Операции",
+    "ACCOUNTS": "Счета",
+    "ACCOUNTS_CONTROL": "Управление счетами",
+    "REPORTS": "Отчеты",
+    "BUDGET": "Бюджет",
+    "CATEGORIES_CONTROL": "Управление категориями"
   },
   "ERROR": {
     "USER_NOT_FOUND": "Пользователь не найден"
