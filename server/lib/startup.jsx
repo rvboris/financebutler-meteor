@@ -1,6 +1,10 @@
 _ = lodash;
 
 Meteor.startup(() => {
+  if (process.env.METEOR_ENV !== Meteor.settings.public.env) {
+    throw new Meteor.Error('ERROR.INVALID_CONFIG_ENV', 'Config env not equal METEOR_ENV');
+  }
+
   if (Meteor.settings.public.env === 'production') {
     Logstar.isLocal = false;
   } else if (Meteor.settings.public.env === 'development' && Package['xolvio:cleaner']) {
@@ -159,6 +163,14 @@ Meteor.startup(() => {
   Meteor.call('velocity/isMirror', (err, isMirror) => {
     if (isMirror) {
       return;
+    }
+
+    if (Meteor.settings.public.env === 'production') {
+      const demoUser = Meteor.users.findOne({ 'emails.address': 'demo@demo' });
+
+      if (demoUser) {
+        Meteor.users.remove(demoUser._id);
+      }
     }
 
     G.userGenerator('demo@demo', 'demo@demo');
