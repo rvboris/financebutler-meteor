@@ -1,15 +1,40 @@
 SetModule('app');
 
-@State({ name: 'dashboard', url: '/dashboard', abstract: true })
+@Component('dashboard')
 @View('client/dashboard/dashboard.html')
-@Inject(['dashboard'])
+@State({
+  name: 'app.dashboard',
+  url: '/dashboard',
+  abstract: true,
+})
+@Inject(['$state', '$scope', '$mdBottomSheet', '$mdSidenav'])
 
 export class dashboard {
-  constructor(dashboard) {
-    this.currentUser = dashboard.currentUser;
+  constructor($state, $scope, $mdBottomSheet, $mdSidenav) {
+    this.$state = $state;
+    this.$mdBottomSheet = $mdBottomSheet;
+    this.$mdSidenav = $mdSidenav;
+
+    $scope.$meteorSubscribe('usersAccounts').then(() => {
+      this.accounts = $scope.$meteorObject(G.UsersAccountsCollection, { userId: Meteor.userId() }).accounts;
+    }.bind(this));
+
+    $scope.$meteorSubscribe('usersCategories').then(() => {
+      this.categories = $scope.$meteorObject(G.UsersCategoriesCollection, { userId: Meteor.userId() });
+    }.bind(this));
+
+    this.currency = $scope.$meteorObject(G.CurrenciesCollection, Meteor.user().profile.currencyId);
   }
 
   static resolve = {
     currentUser: $meteor => $meteor.requireUser(),
+  }
+
+  toggleSidenav() {
+    const pending = this.$mdBottomSheet.hide() || $q.when(true);
+
+    pending.then(() => {
+      this.$mdSidenav('left').toggle();
+    }.bind(this));
   }
 }

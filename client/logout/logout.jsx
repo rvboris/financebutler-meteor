@@ -1,11 +1,11 @@
 SetModule('app');
 
-@State({ name: 'logout', url: '/logout' })
+@State({ name: 'app.logout', url: '/logout' })
 @Inject(['logout', '$state'])
 
 export class logout {
   constructor(logout, $state) {
-    $state.go('login');
+    $state.go('app.login');
   }
 
   static resolve = {

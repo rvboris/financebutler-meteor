@@ -10,7 +10,9 @@
   "private": true,
   "overrides": {
     "angular-validation-match": {
-      "arch": ["client"]
+      "arch": [
+        "client"
+      ]
     }
   }
 }

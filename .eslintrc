@@ -8,6 +8,7 @@
       "capIsNewExceptions": ["Component", "View", "State", "Filter", "Component", "Inject", "SetModule"]
     }],
     "no-shadow": [0],
-    "angular/di": [0]
+    "angular/di": [0],
+    "angular/module-getter": [0]
   }
 }

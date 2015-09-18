@@ -1,18 +1,18 @@
 SetModule('app');
 
-@Component('resetPassword')
-@State({ name: 'resetPassword', url: '/reset-password/:token?' })
+@Component('reset-password')
 @View('client/reset-password/reset-password.html')
-@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$stateParams', '$filter', '$rootScope'])
+@State({ name: 'app.resetPassword', url: '/reset-password/:token?'})
+@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$stateParams', '$filter', '$scope'])
 
 export class resetPassword {
-  constructor($meteor, $state, $mdToast, toastPosition, $stateParams, $filter, $rootScope) {
+  constructor($meteor, $state, $mdToast, toastPosition, $stateParams, $filter, $scope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
     this.toastPosition = toastPosition;
     this.$filter = $filter;
-    this.$rootScope = $rootScope;
+    this.$scope = $scope;
 
     if ($stateParams && $stateParams.token) {
       this.token = $stateParams.token;
@@ -42,18 +42,18 @@ export class resetPassword {
           .content(this.$filter('translate')('RESET_PASSWORD.CHECK_MAIL'));
 
         this.$mdToast.show(recoveryResult);
-        this.$state.go('login');
+        this.$state.go('app.login');
       }.bind(this))
       .catch(this.showError.bind(this));
   }
 
   save() {
     this.$meteor.resetPassword(this.token, this.password)
-      .then(() => this.$state.go('dashboard.overview'))
+      .then(() => this.$state.go('app.dashboard.overview'))
       .catch(this.showError.bind(this));
   }
 
   loginWith(service) {
-    this.$rootScope.loginWith(service).catch(this.showError.bind(this));
+    this.$scope.$parent.app.loginWith(service).catch(this.showError.bind(this));
   }
 }

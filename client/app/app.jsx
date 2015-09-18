@@ -1,7 +1,5 @@
 angular.extend(window, angular2now);
 
-angular2now.options({ controllerAs: 'vm' });
-
 SetModule('app', [
   'angular-meteor',
   'ui.router',
@@ -11,36 +9,110 @@ SetModule('app', [
   'validation.match',
 ])
 .constant('toastPosition', 'bottom right')
-.config(($urlRouterProvider, $locationProvider) => {
+.config(['$urlRouterProvider', '$locationProvider', '$mdThemingProvider', ($urlRouterProvider, $locationProvider, $mdThemingProvider) => {
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(true);
-})
-.run(($rootScope, $state, $mdToast, toastPosition, $filter, $meteor, $interval) => {
-  $meteor.session('translateReady').bind($rootScope, 'translateReady');
 
-  $rootScope.state = $state;
+  $mdThemingProvider.theme('default')
+    .primaryPalette('teal')
+    .accentPalette('brown');
+}]);
 
-  const stateChangeErrorHandler = $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
-    if (error === 'AUTH_REQUIRED') {
-      $state.go('login')
-        .then(() => {
-          const errorToast = $mdToast
-            .simple()
-            .position(toastPosition)
-            .hideDelay(3000)
-            .content($filter('translate')('GLOBAL.AUTH_REQUIRED'));
+@Component('app')
+@View('client/app/app.html')
+@State({ name: 'app', abstract: true, url: '' })
+@Inject(['$rootScope', '$scope', '$state', '$mdToast', 'toastPosition', '$filter', '$meteor', '$interval'])
 
-          $mdToast.show(errorToast);
-        });
+export class app {
+  constructor($rootScope, $scope, $state, $mdToast, toastPosition, $filter, $meteor, $interval) {
+    this.$state = $state;
+    this.$meteor = $meteor;
 
-      return;
-    }
+    this.$meteor.session('translateReady').bind($scope, 'translateReady');
 
-    $state.go('home');
-  });
+    const stateChangeErrorHandler = $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
+      if (error === 'AUTH_REQUIRED') {
+        this.$state.go('app.login')
+          .then(() => {
+            const errorToast = $mdToast
+              .simple()
+              .position(toastPosition)
+              .hideDelay(3000)
+              .content($filter('translate')('GLOBAL.AUTH_REQUIRED'));
 
-  $rootScope.loginWith = (service) => {
-    return $meteor['loginWith' + service]()
+            $mdToast.show(errorToast);
+          });
+
+        return;
+      }
+
+      this.$state.go('app.home');
+    }.bind(this));
+
+    let deferState = true;
+    let translateCheckInterval;
+
+    const stateChangeStartHandler = $rootScope.$on('$stateChangeStart', (event, toState, toParams) => {
+      if (!$scope.translateReady) {
+        event.preventDefault();
+
+        if (!translateCheckInterval) {
+          translateCheckInterval = $interval(() => {
+            if (!$scope.translateReady) {
+              return;
+            }
+
+            $interval.cancel(translateCheckInterval);
+            this.$state.go(toState.name, toParams);
+          }, 50);
+        }
+
+        return;
+      }
+
+      if (['login', 'register', 'resetPassword'].indexOf(toState.name) >= 0 && deferState) {
+        event.preventDefault();
+
+        deferState = false;
+
+        this.$meteor.waitForUser()
+          .then(user => {
+            if (user) {
+              this.$state.go('app.dashboard.overview');
+            } else {
+              this.$state.go(toState.name, toParams);
+            }
+
+            deferState = true;
+          }.bind(this));
+      }
+    }.bind(this));
+
+    let exchangeRatesHandler = angular.noop;
+
+    $scope.$meteorAutorun(() => {
+      TAPi18n.subscribe('currencies', 1800);
+      this.currencies = $scope.$meteorCollection(G.CurrenciesCollection);
+
+      $scope.$meteorSubscribe('exchangeRates').then(() => {
+        this.exchangeRates = $scope.$meteorObject(G.ExchangeRatesCollection, {}, false);
+
+        exchangeRatesHandler = $scope.$watch(() => this.exchangeRates.getRawObject(), exchangeRates => {
+          fx.rates = exchangeRates.rates;
+          fx.base = exchangeRates.base;
+        }, true);
+      }.bind(this));
+    }.bind(this));
+
+    $scope.$on('$destroy', () => {
+      stateChangeErrorHandler();
+      stateChangeStartHandler();
+      exchangeRatesHandler();
+    });
+  }
+
+  loginWith(service) {
+    return this.$meteor['loginWith' + service]()
       .then(() => {
         if (!Meteor.user().profile.language && !Meteor.user().profile.utcOffset) {
           Meteor.users.update(Meteor.userId(), {
@@ -51,58 +123,9 @@ SetModule('app', [
           });
         }
 
-        return $state.go('dashboard.overview');
-      });
-  };
-
-  let deferState = true;
-  let translateCheckInterval;
-
-  const stateChangeStartHandler = $rootScope.$on('$stateChangeStart', (event, toState, toParams) => {
-    if (!$rootScope.translateReady) {
-      event.preventDefault();
-
-      if (!translateCheckInterval) {
-        translateCheckInterval = $interval(() => {
-          if (!$rootScope.translateReady) {
-            return;
-          }
-
-          $interval.cancel(translateCheckInterval);
-          $state.go(toState.name, toParams);
-        }, 50);
-      }
-
-      return;
-    }
-
-    if (['login', 'register', 'resetPassword'].indexOf(toState.name) >= 0 && deferState) {
-      event.preventDefault();
-
-      deferState = false;
-
-      $meteor.waitForUser()
-        .then(user => {
-          if (user) {
-            $rootScope.state.go('dashboard.overview');
-          } else {
-            $state.go(toState.name, toParams);
-          }
-
-          deferState = true;
-        });
-    }
-
-    $rootScope.$on('$destroy', () => {
-      stateChangeErrorHandler();
-      stateChangeStartHandler();
-    });
-  });
-});
-
-@Component('app')
-@View('client/app/app.html')
-
-class app {}
+        return this.$state.go('app.dashboard.overview');
+      }.bind(this));
+  }
+}
 
 bootstrap(app);

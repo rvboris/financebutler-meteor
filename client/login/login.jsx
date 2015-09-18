@@ -1,17 +1,17 @@
 SetModule('app');
 
 @Component('login')
-@State({ name: 'login', url: '/login' })
 @View('client/login/login.html')
-@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$rootScope'])
+@State({ name: 'app.login', url: '/login' })
+@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$scope'])
 
 export class login {
-  constructor($meteor, $state, $mdToast, toastPosition, $rootScope) {
+  constructor($meteor, $state, $mdToast, toastPosition, $scope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
     this.toastPosition = toastPosition;
-    this.$rootScope = $rootScope;
+    this.$scope = $scope;
 
     this.email = '';
     this.password = '';
@@ -30,12 +30,12 @@ export class login {
   login() {
     this.$meteor.loginWithPassword(this.email, this.password)
       .then(() => {
-        this.$state.go('dashboard.overview');
+        this.$state.go('app.dashboard.overview');
       }.bind(this))
       .catch(this.showError.bind(this));
   }
 
   loginWith(service) {
-    this.$rootScope.loginWith(service).catch(this.showError.bind(this));
+    this.$scope.$parent.app.loginWith(service).catch(this.showError.bind(this));
   }
 }
