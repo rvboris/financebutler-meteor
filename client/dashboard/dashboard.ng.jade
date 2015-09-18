@@ -1,27 +1,32 @@
 div(layout='row', flex='')
-  md-sidenav(md-component-id='left', md-is-locked-open='$mdMedia("gt-md")').md-sidenav-left.md-whiteframe-z2
+  md-sidenav(md-component-id='left', md-is-locked-open='$mdMedia("gt-md")', layout='column').md-sidenav-left.md-whiteframe-z2
     md-toolbar(layout-align='center center')
       img(src='images/logo.png', width='204', height='123', layout-margin='')
-    md-content(layout-padding='', layout='column', flex='')
+    md-content(layout='column', flex='')
       div(layout='column')
-        md-button.md-primary
+        md-button(ng-click="dashboard.$state.go('app.dashboard.overview')").md-primary
+          div(layout='row')
+            ng-md-icon(icon='swap_vert')
+            span(flex='') {{'APP.OVERVIEW' | translate}}
+        md-button(ng-click="dashboard.$state.go('app.dashboard.operations')").md-primary
           div(layout='row')
             ng-md-icon(icon='swap_vert')
             span(flex='') {{'APP.OPERATIONS' | translate}}
-        md-button.md-primary
+        md-button(ng-click="dashboard.$state.go('app.dashboard.budget')").md-primary
           div(layout='row')
             ng-md-icon(icon='event')
             span(flex='') {{'APP.BUDGET' | translate}}
-        md-button.md-primary
+        md-button(ng-click="dashboard.$state.go('app.dashboard.reports')").md-primary
           div(layout='row')
             ng-md-icon(icon='trending_up')
             span(flex='') {{'APP.REPORTS' | translate}}
       md-divider
-      md-content(layout='column', flex='', layout-align='start center')
+      div(layout='row', layout-align='center center')
         h1.md-headline {{'APP.ACCOUNTS' | translate}}
-        span {{dashboard | json}}
-        span {{$parent.dashboard | json}}
-        md-button.md-primary(ng-repeat="account in dashboard.accounts") {{account.name}}
+      md-content(layout='column', flex='')
+        div(layout='row', ng-repeat="account in dashboard.accounts", layout-align='space-between center')
+          md-button(ng-class="{ 'md-warn': account.type === 'debt' }") {{account.name}}
+          md-button(ng-class="{ 'md-warn': account.type === 'debt' }") {{account.currentBalance | currency : account.currencyId}}
       md-divider
       div(layout='column')
         md-button.md-primary
@@ -35,25 +40,28 @@ div(layout='row', flex='')
 
   md-content(flex='')
     md-toolbar(layout='row')
-      md-button(hide-gt-sm='', ng-click='dashboard.toggleSidenav()')
-        ng-md-icon(icon='menu')
-      span(flex='')
-      md-menu
-        md-button(ng-click='$mdOpenMenu($event)', md-menu-origin='')
-          ng-md-icon(icon='account_circle')
-          |  {{$root.currentUser.profile.name}}
-        md-menu-content(width='3')
-          md-button
-            div(layout='row')
-              ng-md-icon(icon='person_outline') 
-              span(flex='') {{'APP.PROFILE' | translate}}
-          md-button
-            div(layout='row')
-              ng-md-icon(icon='settings')
-              span(flex='') {{'APP.SETTINGS' | translate}}
-          md-menu-divider
-          md-button(ng-click='$parent.app.$state.go("app.logout")').md-warn
-            div(layout='row')
-              ng-md-icon(icon='logout') 
-              span(flex='') {{'APP.LOGOUT' | translate}}
+      div.md-toolbar-tools
+        md-button(hide-gt-sm='', ng-click='dashboard.toggleSidenav()')
+          ng-md-icon(icon='menu')
+        md-toolbar-tools
+          h2 {{ dashboard.$state.current.name | dashboardBreadcrumb }}
+        span(flex='')
+        md-menu
+          md-button(ng-click='$mdOpenMenu($event)', md-menu-origin='')
+            ng-md-icon(icon='account_circle')
+            |  {{$root.currentUser.profile.name}}
+          md-menu-content(width='3')
+            md-button
+              div(layout='row')
+                ng-md-icon(icon='person_outline') 
+                span(flex='') {{'APP.PROFILE' | translate}}
+            md-button
+              div(layout='row')
+                ng-md-icon(icon='settings')
+                span(flex='') {{'APP.SETTINGS' | translate}}
+            md-menu-divider
+            md-button(ng-click='$parent.app.$state.go("app.logout")').md-warn
+              div(layout='row')
+                ng-md-icon(icon='logout') 
+                span(flex='') {{'APP.LOGOUT' | translate}}
     div(ui-view='', flex='', layout='column', layout-padding='')

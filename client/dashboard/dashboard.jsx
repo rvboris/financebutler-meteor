@@ -5,13 +5,16 @@ SetModule('app');
 @State({
   name: 'app.dashboard',
   url: '/dashboard',
-  templateUrl: 'client/dashboard/dashboard.html',
   abstract: true,
 })
-@Inject(['dashboard', '$scope'])
+@Inject(['$state', '$scope', '$mdBottomSheet', '$mdSidenav'])
 
 export class dashboard {
-  constructor(dashboard, $scope) {
+  constructor($state, $scope, $mdBottomSheet, $mdSidenav) {
+    this.$state = $state;
+    this.$mdBottomSheet = $mdBottomSheet;
+    this.$mdSidenav = $mdSidenav;
+
     $scope.$meteorSubscribe('usersAccounts').then(() => {
       this.accounts = $scope.$meteorObject(G.UsersAccountsCollection, { userId: Meteor.userId() }).accounts;
     }.bind(this));
@@ -25,5 +28,13 @@ export class dashboard {
 
   static resolve = {
     currentUser: $meteor => $meteor.requireUser(),
+  }
+
+  toggleSidenav() {
+    const pending = this.$mdBottomSheet.hide() || $q.when(true);
+
+    pending.then(() => {
+      this.$mdSidenav('left').toggle();
+    }.bind(this));
   }
 }

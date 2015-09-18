@@ -74,7 +74,14 @@
     "ACCOUNTS_CONTROL": "Управление счетами",
     "REPORTS": "Отчеты",
     "BUDGET": "Бюджет",
-    "CATEGORIES_CONTROL": "Управление категориями"
+    "CATEGORIES_CONTROL": "Управление категориями",
+    "OVERVIEW": "Обзор"
+  },
+  "STATE": {
+    "APP_DASHBOARD_OVERVIEW": "Обзор",
+    "APP_DASHBOARD_OPERATIONS": "Операции",
+    "APP_DASHBOARD_BUDGET": "Бюджет",
+    "APP_DASHBOARD_REPORTS": "Отчеты"
   },
   "ERROR": {
     "USER_NOT_FOUND": "Пользователь не найден"
