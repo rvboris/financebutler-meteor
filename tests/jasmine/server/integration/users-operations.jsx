@@ -433,43 +433,43 @@ describe('users operations', () => {
     expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD).toFixed(2));
   });
 
-  // it('transfer operation in different currency (to)', () => {
-  //   let accountFrom = testUsersAccounts[0];
-  //   let accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountIdUSD);
-  //   const transferDate = moment.utc('2015 1 28').toDate();
-  //
-  //   jasmine.clock().mockDate(transferDate);
-  //
-  //   const amount = 10000;
-  //   const amountUSD = +(amount / fx.rates.RUB).toFixed(2);
-  //
-  //   const operationFromId = Meteor.call('UsersOperations/AddTransfer', testUserId, accountFrom._id, accountTo._id, {
-  //     amount: {
-  //       to: amountUSD,
-  //     },
-  //   });
-  //
-  //   const resultOperationFrom = G.UsersOperationsCollection.findOne(operationFromId);
-  //   const resultOperationTo = G.UsersOperationsCollection.findOne(resultOperationFrom.groupTo);
-  //
-  //   expect(resultOperationFrom).not.toBeUndefined();
-  //   expect(resultOperationFrom.groupTo).not.toBeUndefined();
-  //   expect(resultOperationFrom.type).toBe('expense');
-  //   expect(resultOperationFrom.amount).toBe(-(amountUSD * fx.rates.RUB).toFixed(2));
-  //   expect(resultOperationFrom.balance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
-  //   expect(resultOperationFrom.date).toEqual(transferDate);
-  //
-  //   expect(resultOperationTo).not.toBeUndefined();
-  //   expect(resultOperationTo.groupTo).not.toBeUndefined();
-  //   expect(resultOperationTo.type).toBe('income');
-  //   expect(resultOperationTo.amount).toBe(amountUSD);
-  //   expect(resultOperationTo.balance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
-  //   expect(resultOperationTo.date).toEqual(transferDate);
-  //
-  //   accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
-  //   accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
-  //
-  //   expect(accountFrom.currentBalance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
-  //   expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
-  // });
+  it('transfer operation in different currency (to)', () => {
+    let accountFrom = testUsersAccounts[0];
+    let accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountIdUSD);
+    const transferDate = moment.utc('2015 1 28').toDate();
+
+    jasmine.clock().mockDate(transferDate);
+
+    const amount = 10000;
+    const amountUSD = +(amount / fx.rates.RUB).toFixed(2);
+
+    const operationFromId = Meteor.call('UsersOperations/AddTransfer', testUserId, accountFrom._id, accountTo._id, {
+      amount: {
+        to: amountUSD,
+      },
+    });
+
+    const resultOperationFrom = G.UsersOperationsCollection.findOne(operationFromId);
+    const resultOperationTo = G.UsersOperationsCollection.findOne(resultOperationFrom.groupTo);
+
+    expect(resultOperationFrom).not.toBeUndefined();
+    expect(resultOperationFrom.groupTo).not.toBeUndefined();
+    expect(resultOperationFrom.type).toBe('expense');
+    expect(resultOperationFrom.amount).toBe(-(amountUSD * fx.rates.RUB).toFixed(2));
+    expect(resultOperationFrom.balance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
+    expect(resultOperationFrom.date).toEqual(transferDate);
+
+    expect(resultOperationTo).not.toBeUndefined();
+    expect(resultOperationTo.groupTo).not.toBeUndefined();
+    expect(resultOperationTo.type).toBe('income');
+    expect(resultOperationTo.amount).toBe(amountUSD);
+    expect(resultOperationTo.balance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
+    expect(resultOperationTo.date).toEqual(transferDate);
+
+    accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
+    accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
+
+    expect(accountFrom.currentBalance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
+    expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
+  });
 });
