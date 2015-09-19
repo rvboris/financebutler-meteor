@@ -52,5 +52,5 @@ $RECYCLE.BIN/
 .idea
 
 # Configs
-development.json
-production.json
+private/config/development.json
+private/config/production.json
