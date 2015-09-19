@@ -50,3 +50,6 @@ $RECYCLE.BIN/
 
 # WebStorm
 .idea
+
+# Configs
+private/config
