@@ -1,8 +1,13 @@
-sudo: required
 language: node_js
+
 node_js:
   - "0.10"
+
+services:
+  - mongodb
+
 before_install:
-  - "curl -L http://git.io/ejPSng | /bin/sh"
-env:
-  - TEST_COMMAND=meteor --settings ./private/config/development.json
+  - "curl https://install.meteor.com | /bin/sh"
+  - "meteor reset"
+
+script: ./travis.sh
