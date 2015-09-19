@@ -1,0 +1,26 @@
+{
+  "public": {
+    "env": "development",
+    "language": "ru"
+  },
+  "facebook": {
+    "appId": "",
+    "secret": ""
+  },
+  "google": {
+    "clientId": "",
+    "secret": ""
+  },
+  "twitter": {
+    "consumerKey": "",
+    "secret": ""
+  },
+  "openexchangerates": {
+    "key": "",
+    "url": ""
+  },
+  "mandrill": {
+    "user": "",
+    "key": ""
+  }
+}
