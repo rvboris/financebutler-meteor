@@ -173,6 +173,10 @@ Meteor.startup(() => {
       }
     }
 
+    if (process.env.TRAVIS) {
+      return;
+    }
+
     G.userGenerator('demo@demo', 'demo@demo');
   });
 });
