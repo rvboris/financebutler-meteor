@@ -9,4 +9,4 @@ before_install:
   - export PATH="$HOME/.meteor:$PATH"
 before_script:
   - export METEOR_ENV="development"
-script: meteor --test --settings private/config/development.json
+script: meteor --test --release velocity:METEOR@1.1.0.3_1 --settings private/config/development.json
