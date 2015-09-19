@@ -8,6 +8,5 @@ services:
 
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
-  - "meteor reset"
 
 script: ./travis.sh
