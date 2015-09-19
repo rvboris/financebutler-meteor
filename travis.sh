@@ -1,2 +1,2 @@
 #!/bin/sh
-meteor --settings private/config/development.json
+meteor --test --settings private/config/development.json
