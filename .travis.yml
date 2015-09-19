@@ -1,0 +1,12 @@
+language: node_js
+sudo: false
+node_js:
+  - "0.10"
+services:
+  - mongodb
+before_install:
+  - "curl https://install.meteor.com | /bin/sh"
+  - export PATH="$HOME/.meteor:$PATH"
+before_script:
+  - export METEOR_ENV="development"
+script: meteor --test --release velocity:METEOR@1.1.0.3_1 --settings private/config/development.json
