@@ -8,6 +8,6 @@ before_install:
   - "curl https://install.meteor.com | /bin/sh"
   - export PATH="$HOME/.meteor:$PATH"
 before_script:
-  - "chmod ugo+x scripts/run-tests.sh"
+  - chmod ugo+x travis.sh
   - export METEOR_ENV="development"
-script: ./travis.sh
+script: travis.sh
