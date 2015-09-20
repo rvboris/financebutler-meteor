@@ -15,11 +15,6 @@
     "consumerKey": "",
     "secret": ""
   },
-  "loggly": {
-    "token": "",
-    "tags": ["financebutler"],
-    "subdomain": ""
-  },
   "openexchangerates": {
     "key": "",
     "url": ""
