@@ -93,11 +93,12 @@ Meteor.methods({
         throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_NUMBER_REQUIRED', 'Transfer operation require number amount');
       }
 
-      if (operation.amount > accountFrom.currentBalance) {
+      const bigAmount = new Big(operation.amount);
+
+      if (bigAmount.gt(accountFrom.currentBalance)) {
+        Logstar.error(operation.amount, accountFrom.currentBalance);
         throw new Meteor.Error('ERROR.OPERATION_TRANSFER_NOT_ENOUGH_MONEY', 'On account of insufficient funds');
       }
-
-      const bigAmount = new Big(operation.amount);
 
       groupFromOperation = Meteor.call(`${namespace}/Add`, userId, accountIdFrom, {
         amount: parseFloat((bigAmount.gt(0) ? bigAmount.times(-1) : bigAmount).valueOf()),

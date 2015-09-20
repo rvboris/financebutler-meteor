@@ -26,8 +26,6 @@ class UserGenerator {
       .findOne({ userId: this.userId })
       .getAccountsByType('standart');
 
-    Logstar.info('Generate operations');
-
     this.startDate = moment.utc().subtract(this.demoAccountYears, 'year');
     this.endDate = moment.utc();
     this.currentDate = this.startDate;
@@ -44,7 +42,6 @@ class UserGenerator {
       this.incomeDay2 = _.random(25, 28);
       this.incomeDay2Amount = _.random(350000, 38000);
       this.transferDays = _.sample(_.range(_.random(1, this.currentDate.daysInMonth()), this.currentDate.daysInMonth()), _.random(1, 5));
-      this.dailyExpenseSum = new Big(0);
 
       this.standartAccounts = _.shuffle(this.standartAccounts);
 
@@ -62,8 +59,6 @@ class UserGenerator {
       }
 
       this.addPayDebtOperation();
-
-      this.sumExpense = this.sumExpense.plus(this.dailyExpenseSum);
 
       this.currentDate.startOf('month');
       this.currentDate.add(1, 'month');
@@ -87,16 +82,14 @@ class UserGenerator {
   }
 
   addCreditAccount() {
-    Logstar.info('Create additional accounts');
-
     this.debtAccountId = Random.id();
-    this.debtAmount = _.random(parseFloat(new Big(this.demoAccountYears).times(5000).toFixed(this.currency.decimalDigits)), parseFloat(new Big(this.demoAccountYears).times(80000)));
+    this.debtAmount = _.random(this.demoAccountYears * 5000, this.demoAccountYears * 80000);
     this.debtMonthlyPay = parseFloat(new Big(this.debtAmount).div(new Big(this.demoAccountYears).times(12)).toFixed(this.currency.decimalDigits));
 
     Meteor.call('UsersAccounts/Add', this.userId, {
       name: 'Credit',
       currencyId: this.currency._id,
-      startBalance: parseFloat(new Big(this.debtAmount).times(-1).toFixed(this.currency.decimalDigits)),
+      startBalance: parseFloat(new Big(-this.debtAmount).toFixed(this.currency.decimalDigits)),
       type: 'debt',
       _id: this.debtAccountId,
     });
@@ -112,10 +105,10 @@ class UserGenerator {
 
   mutateOperationBalance(type, amount) {
     if (type === 'income') {
-      return _.random(amount, parseFloat(new Big(amount).plus(_.random(1, amount)).valueOf()));
+      return _.random(amount, parseFloat(new Big(amount).plus(_.random(1, amount)).toFixed(this.currency.decimalDigits)));
     }
 
-    return _.random(amount, parseFloat(new Big(amount).minus(_.random(1, amount)).valueOf()));
+    return _.random(amount, parseFloat(new Big(amount).minus(_.random(1, amount)).toFixed(this.currency.decimalDigits)));
   }
 
   mutateCurrentDayTime(day) {
@@ -156,12 +149,12 @@ class UserGenerator {
         categoryId: this.getRandomCategoryId('income'),
       });
 
-      this.sumIncome = this.sumIncome.plus(this.incomeDay1Amount);
+      this.sumIncome = this.sumIncome.plus(this.incomeDay2Amount);
     }
   }
 
   addDailyExpenseOperation() {
-    const dailyExpense = _.random(1000, parseFloat(new Big(this.incomeDay1Amount).plus(this.incomeDay2Amount).valueOf()));
+    const dailyExpense = _.random(1000, parseFloat(new Big(this.incomeDay1Amount).plus(this.incomeDay2Amount).toFixed(this.currency.decimalDigits)));
     const dailyExpenseCount = _.random(1, 10);
 
     if (this.sumExpense.plus(this.debtMonthlyPay).lt(new Big(this.incomeDay1Amount).plus(this.incomeDay2Amount))) {
@@ -173,14 +166,14 @@ class UserGenerator {
         for (let i = 0; i < dailyExpenseCount; i++) {
           const expenseAmount = parseFloat(new Big(dailyExpense).div(dailyExpenseCount).toFixed(this.currency.decimalDigits));
 
-          this.dailyExpenseSum = this.dailyExpenseSum.plus(expenseAmount);
-
           Meteor.call('UsersOperations/Add', this.userId, expenseAccount._id, {
             type: 'expense',
-            amount: parseFloat(new Big(expenseAmount).times(-1).toFixed(this.currency.decimalDigits)),
+            amount: parseFloat(new Big(-expenseAmount).toFixed(this.currency.decimalDigits)),
             date: this.mutateCurrentDayTime(this.currentDate),
             categoryId: this.getRandomCategoryId('expense'),
           });
+
+          this.sumExpense = this.sumExpense.plus(expenseAmount);
         }
       } else {
         this.hungryDays = this.hungryDays.plus(1);
@@ -218,15 +211,18 @@ class UserGenerator {
       .getAccount(this.debtAccountId).currentBalance;
 
     if (new Big(debtAccountBalance).lt(0) && new Big(payDebtAccount.currentBalance).gt(0)) {
-      let payDebtAmount = new Big(payDebtAccount.currentBalance).gt(this.debtMonthlyPay) ? payDebtAccount.currentBalance : this.debtMonthlyPay;
-      payDebtAmount = new Big(debtAccountBalance).times(-1).lt(payDebtAmount) ? parseFloat(new Big(debtAccountBalance).valueOf()) : payDebtAmount;
+      if (new Big(payDebtAccount.currentBalance).lt(this.debtMonthlyPay)) {
+        return;
+      }
 
-      this.sumDebt = this.sumDebt.plus(payDebtAmount);
+      const payAmount = new Big(payDebtAccount.currentBalance).gte(-debtAccountBalance) ? -debtAccountBalance : this.debtMonthlyPay;
 
       Meteor.call('UsersOperations/AddTransfer', this.userId, payDebtAccount._id, this.debtAccountId, {
-        amount: payDebtAmount,
+        amount: -payAmount,
         date: this.currentDate.toDate(),
       });
+
+      this.sumDebt = this.sumDebt.plus(payAmount);
     }
   }
 
@@ -240,7 +236,7 @@ class UserGenerator {
 
       Meteor.call('UsersOperations/Add', this.userId, account, {
         type,
-        amount: type === 'expense' ? -(amount) : amount,
+        amount: type === 'expense' ? -amount : amount,
         date: this.getRandomDate(),
         categoryId: this.getRandomCategoryId(type),
       });
@@ -351,9 +347,9 @@ class UserGenerator {
       Meteor.call('UsersOperations/Remove', this.userId, operation._id);
 
       if (operation.type === 'expense') {
-        this.sumExpense.plus(operation.amount);
+        this.sumExpense = this.sumExpense.plus(operation.amount);
       } else {
-        this.sumIncome.minus(operation.amount);
+        this.sumIncome = this.sumIncome.minus(operation.amount);
       }
 
       this.totalRemoves++;
@@ -395,26 +391,30 @@ class UserGenerator {
   }
 
   printReport() {
-    this.sumIncome = parseFloat(this.sumIncome.toFixed(this.currency.decimalDigits));
-    this.sumExpense = parseFloat(this.sumExpense.toFixed(this.currency.decimalDigits));
-    this.sumTransfer = parseFloat(this.sumTransfer.toFixed(this.currency.decimalDigits));
-    this.sumDebt = parseFloat(this.sumDebt.toFixed(this.currency.decimalDigits));
+    const totalCheck = this.sumIncome
+      .minus(this.sumExpense)
+      .minus(this.sumDebt)
+      .minus(new Big(this.debtAmount).minus(this.sumDebt))
+      .minus(Meteor.call('UsersAccounts/GetSimpleTotal', this.userId))
+      .toFixed(this.currency.decimalDigits);
 
-    const totalCheck = parseFloat(new Big(this.sumIncome).minus(this.sumExpense).minus(this.sumDebt).minus(Meteor.call('UsersAccounts/GetSimpleTotal', this.userId)).valueOf());
+    this.sumIncome = this.sumIncome.toFixed(this.currency.decimalDigits);
+    this.sumExpense = this.sumExpense.toFixed(this.currency.decimalDigits);
+    this.sumTransfer = this.sumTransfer.toFixed(this.currency.decimalDigits);
+    this.sumDebt = this.sumDebt.toFixed(this.currency.decimalDigits);
 
     Logstar.info(`--- Generated user stats ---`);
     Logstar.info(`Total income ${this.sumIncome}`);
     Logstar.info(`Total expense ${this.sumExpense}`);
     Logstar.info(`Total transfer ${this.sumTransfer}`);
-    //Logstar.info(`Debt paid ${this.sumDebt} of ${this.debtAmount}, left ${debtAmount - sumDebt}`);
-    //Logstar.info(`Hungry days ${hungryDays}`);
+    Logstar.info(`Debt paid ${this.sumDebt} of ${this.debtAmount}, left ${new Big(this.debtAmount).minus(this.sumDebt)}`);
+    Logstar.info(`Hungry days ${this.hungryDays.valueOf()}`);
     Logstar.info(`Total updates ${this.totalUpdates}`);
     Logstar.info(`Total removes ${this.totalRemoves}`);
     Logstar.info(`Total transfer updates ${this.totalTransferUpdates}`);
     Logstar.info(`Total transfer removes ${this.totalTransferRemoves}`);
-    Logstar.info(`User test status ${totalCheck === 0 ? 'OK' : 'FAIL'} (${totalCheck})`);
+    Logstar.info(`User test status ${parseFloat(totalCheck) === 0 ? 'OK' : totalCheck}`);
     Logstar.info(`--- Generated user stats ---`);
-    //Logstar.info(`User generation end for ${email}`);
   }
 }
 
