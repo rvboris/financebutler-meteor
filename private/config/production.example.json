@@ -1,0 +1,31 @@
+{
+  "public": {
+    "env": "development",
+    "language": "ru"
+  },
+  "facebook": {
+    "appId": "",
+    "secret": ""
+  },
+  "google": {
+    "clientId": "",
+    "secret": ""
+  },
+  "twitter": {
+    "consumerKey": "",
+    "secret": ""
+  },
+  "loggly": {
+    "token": "",
+    "tags": ["financebutler"],
+    "subdomain": ""
+  },
+  "openexchangerates": {
+    "key": "",
+    "url": ""
+  },
+  "mandrill": {
+    "user": "",
+    "key": ""
+  }
+}

@@ -401,7 +401,7 @@ describe('users operations', () => {
     jasmine.clock().mockDate(transferDate);
 
     const amount = 10000;
-    const amountUSD = +(amount / fx.rates.RUB).toFixed(2);
+    const amountUSD = parseFloat(new Big(amount).div(fx.rates.RUB).toFixed(2));
 
     const operationFromId = Meteor.call('UsersOperations/AddTransfer', testUserId, accountFrom._id, accountTo._id, {
       amount: {
@@ -423,14 +423,14 @@ describe('users operations', () => {
     expect(resultOperationTo.groupTo).not.toBeUndefined();
     expect(resultOperationTo.type).toBe('income');
     expect(resultOperationTo.amount).toBe(amountUSD);
-    expect(resultOperationTo.balance).toBe(accountTo.startBalance + amountUSD);
+    expect(resultOperationTo.balance).toBe(parseFloat(new Big(accountTo.startBalance).plus(amountUSD).toFixed(2)));
     expect(resultOperationTo.date).toEqual(transferDate);
 
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
     accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
 
     expect(accountFrom.currentBalance).toBe(55000);
-    expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD).toFixed(2));
+    expect(accountTo.currentBalance).toBe(parseFloat(new Big(accountTo.startBalance).plus(amountUSD).toFixed(2)));
   });
 
   it('transfer operation in different currency (to)', () => {
@@ -441,7 +441,7 @@ describe('users operations', () => {
     jasmine.clock().mockDate(transferDate);
 
     const amount = 10000;
-    const amountUSD = +(amount / fx.rates.RUB).toFixed(2);
+    const amountUSD = parseFloat(new Big(amount).div(fx.rates.RUB).toFixed(2));
 
     const operationFromId = Meteor.call('UsersOperations/AddTransfer', testUserId, accountFrom._id, accountTo._id, {
       amount: {
@@ -455,21 +455,21 @@ describe('users operations', () => {
     expect(resultOperationFrom).not.toBeUndefined();
     expect(resultOperationFrom.groupTo).not.toBeUndefined();
     expect(resultOperationFrom.type).toBe('expense');
-    expect(resultOperationFrom.amount).toBe(-(amountUSD * fx.rates.RUB).toFixed(2));
-    expect(resultOperationFrom.balance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
+    expect(resultOperationFrom.amount).toBe(parseFloat(new Big(amountUSD).times(fx.rates.RUB).times(-1).toFixed(2)));
+    expect(resultOperationFrom.balance).toBe(parseFloat(new Big(55000).minus(new Big(amountUSD).times(fx.rates.RUB)).toFixed(2)));
     expect(resultOperationFrom.date).toEqual(transferDate);
 
     expect(resultOperationTo).not.toBeUndefined();
     expect(resultOperationTo.groupTo).not.toBeUndefined();
     expect(resultOperationTo.type).toBe('income');
     expect(resultOperationTo.amount).toBe(amountUSD);
-    expect(resultOperationTo.balance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
+    expect(resultOperationTo.balance).toBe(parseFloat(new Big(accountTo.startBalance).plus(new Big(amountUSD).times(2)).toFixed(2)));
     expect(resultOperationTo.date).toEqual(transferDate);
 
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
     accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
 
-    expect(accountFrom.currentBalance).toBe(+(55000 - amountUSD * fx.rates.RUB).toFixed(2));
-    expect(accountTo.currentBalance).toBe(+(accountTo.startBalance + amountUSD * 2).toFixed(2));
+    expect(accountFrom.currentBalance).toBe(parseFloat(new Big(55000).minus(new Big(amountUSD).times(fx.rates.RUB)).toFixed(2)));
+    expect(accountTo.currentBalance).toBe(parseFloat(new Big(accountTo.startBalance).plus(new Big(amountUSD).times(2)).toFixed(2)));
   });
 });
