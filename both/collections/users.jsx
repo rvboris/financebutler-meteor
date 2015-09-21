@@ -66,6 +66,7 @@ Meteor.users.after.update((userId, user) => {
 });
 
 Meteor.users.after.remove((userId, user) => {
-  G.UsersCategoriesCollection.remove({ userId: user._id });
-  G.UsersAccountsCollection.remove({ userId: user._id });
+  G.UsersCategoriesCollection.direct.remove({ userId: user._id });
+  G.UsersAccountsCollection.direct.remove({ userId: user._id });
+  G.UsersOperationsCollection.direct.remove({ userId: user._id });
 });
