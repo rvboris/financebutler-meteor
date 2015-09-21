@@ -177,6 +177,6 @@ Meteor.startup(() => {
       return;
     }
 
-    G.userGenerator('demo@demo', 'demo@demo');
+    G.generateUser('demo@demo', 'demo@demo');
   });
 });

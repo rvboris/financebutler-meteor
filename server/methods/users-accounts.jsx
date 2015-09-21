@@ -26,9 +26,9 @@ Meteor.methods({
       throw new Meteor.Error('ERROR.INVALID_ACCOUNT_STATUS', 'Invalid account status');
     }
 
-    if (account.type === 'debt' && account.startBalance >= 0) {
+    if (account.type === 'debt' && new Big(account.startBalance).gte(0)) {
       throw new Meteor.Error('ERROR.ACCOUNT_ONLY_NEGATIVE', 'Debt account can only have a negative balance');
-    } else if (account.type === 'standart' && account.startBalance < 0) {
+    } else if (account.type === 'standart' && new Big(account.startBalance).lt(0)) {
       throw new Meteor.Error('ERROR.ACCOUNT_ONLY_POSITIVE', 'Standart account can only have a positive balance');
     }
 
@@ -115,7 +115,7 @@ Meteor.methods({
       'accounts._id': accountId,
     }, {
       $set: {
-        'accounts.$.currentBalance': +(account.currentBalance + balance).toFixed(currency.decimalDigits),
+        'accounts.$.currentBalance': parseFloat(new Big(account.currentBalance).plus(balance).toFixed(currency.decimalDigits)),
       },
     });
   },
@@ -139,8 +139,12 @@ Meteor.methods({
   },
 
   [`${namespace}/GetCurrencyTotal`]: (userId, debt = true) => {
-    return _.sum(G.UsersAccountsCollection.findOne({userId}).accounts, account => {
-      return account.type === 'debt' && !debt ? 0 : Meteor.call(`${namespace}/GetBalanceInCurrency`, userId, account._id);
+    let total = new Big(0);
+
+    G.UsersAccountsCollection.findOne({userId}).accounts.forEach(account => {
+      total = total.plus(account.type === 'debt' && !debt ? 0 : Meteor.call(`${namespace}/GetBalanceInCurrency`, userId, account._id));
     });
+
+    return parseFloat(total.valueOf());
   },
 });

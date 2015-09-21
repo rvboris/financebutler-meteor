@@ -34,7 +34,7 @@ const getLastBalance = (userId, accountId, fromDate) => {
 };
 
 const balanceCorrection = (userId, accountId, fromDate) => {
-  let currentBalance = getLastBalance(userId, accountId, fromDate);
+  let currentBalance = new Big(getLastBalance(userId, accountId, fromDate));
   const accountCurrency = G.UsersAccountsCollection.findOne({userId}).getCurrency(accountId);
 
   G.UsersOperationsCollection.find({
@@ -50,12 +50,12 @@ const balanceCorrection = (userId, accountId, fromDate) => {
     },
   }).forEach((nextOperation) => {
     if (nextOperation.amount) {
-      currentBalance += nextOperation.amount;
+      currentBalance = currentBalance.plus(nextOperation.amount);
     }
 
     G.UsersOperationsCollection.direct.update(nextOperation._id, {
       $set: {
-        [_.isUndefined(nextOperation.dayBalance) ? 'balance' : 'dayBalance']: +currentBalance.toFixed(accountCurrency.decimalDigits),
+        [_.isUndefined(nextOperation.dayBalance) ? 'balance' : 'dayBalance']: parseFloat(currentBalance.toFixed(accountCurrency.decimalDigits)),
       },
     });
   });
@@ -65,7 +65,7 @@ const balanceCorrection = (userId, accountId, fromDate) => {
     'accounts._id': accountId,
   }, {
     $set: {
-      'accounts.$.currentBalance': +currentBalance.toFixed(accountCurrency.decimalDigits),
+      'accounts.$.currentBalance': parseFloat(currentBalance.toFixed(accountCurrency.decimalDigits)),
     },
   });
 };
@@ -138,7 +138,7 @@ const dayBalanceCorrenction = (userId, accountId, date) => {
 G.UsersOperationsCollection.before.insert((userId, operation) => {
   const currentBalance = G.UsersAccountsCollection.findOne({ userId: operation.userId }).getAccount(operation.accountId).currentBalance;
 
-  operation.balance = operation.amount + currentBalance;
+  operation.balance = parseFloat(new Big(operation.amount).plus(currentBalance).valueOf());
   operation.date = moment.utc(operation.date).toDate();
 
   upsertDayBalance(operation.userId, operation.accountId, operation.date, currentBalance);

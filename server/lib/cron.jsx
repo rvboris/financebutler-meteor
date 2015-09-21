@@ -6,7 +6,6 @@ SyncedCron.config({
   },
   collectionName: 'cronHistory',
   utc: true,
-  collectionTTL: 172800,
 });
 
 SyncedCron.add({
