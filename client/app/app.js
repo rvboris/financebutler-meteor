@@ -10,7 +10,7 @@ SetModule('app', [
 ])
 .constant('toastPosition', 'bottom right')
 .config(['$urlRouterProvider', '$locationProvider', '$mdThemingProvider', ($urlRouterProvider, $locationProvider, $mdThemingProvider) => {
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
 
   $mdThemingProvider.theme('default')

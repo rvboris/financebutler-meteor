@@ -1,17 +1,31 @@
-meteor-platform
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-base             # Packages every Meteor app needs to have
+mongo                   # The database Meteor supports right now
+blaze-html-templates    # Compile .html files into Meteor Blaze views
+session                 # Client-side reactive dictionary for your app
+jquery                  # Helpful client-side library
+tracker                 # Meteor's client-side reactive programming library
+
+standard-minifiers      # JS/CSS minifiers run for production mode
+es5-shim                # ECMAScript 5 compatibility for older browsers.
+
 angular
+accounts-password
+accounts-twitter
+accounts-facebook
+accounts-google
 angular:angular-material
 angular:angular-messages
 angular:angular-animate
 angularui:angular-ui-router
 civilframe:angular-jade
 sebhero:angular-material-icons
-pbastowski:angular-babel
-accounts-password
-accounts-twitter
-accounts-facebook
-accounts-google
-stylus
+pbastowski:angular2-now
 softwarerero:accounts-t9n
 mquandalle:bower
 tap:i18n
@@ -27,10 +41,11 @@ ryne:basic-g
 ongoworks:security
 sanjo:jasmine
 velocity:console-reporter
-http
 percolate:synced-cron
 theara:moneyjs
-reywood:publish-composite
-pbastowski:angular2-now
 wylio:mandrill
 lepozepo:accounting
+stylus
+random
+http
+pbastowski:angular-babel
