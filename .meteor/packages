@@ -49,3 +49,4 @@ random
 http
 pbastowski:angular-babel
 financebutler:eslint
+velocity:html-reporter
