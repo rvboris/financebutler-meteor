@@ -7,7 +7,7 @@ services:
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
   - export PATH="$HOME/.meteor:$PATH"
-  - npm install velocity -g
+  - npm install velocity-cli -g
 before_script:
   - export METEOR_ENV="development"
 script: velocity test-app --ci --settings private/config/development.example.json
