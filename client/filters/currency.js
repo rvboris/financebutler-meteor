@@ -10,7 +10,8 @@ export class currency {
         return '';
       }
 
-      const currency = G.CurrenciesCollection.findOne(currencyId ? currencyId : $rootScope.currentUser.profile.currencyId);
+      const currencyToUse = currencyId ? currencyId : $rootScope.currentUser.profile.currencyId;
+      const currency = G.CurrenciesCollection.findOne(currencyToUse);
 
       const options = {
         symbol: currency.symbolNative,

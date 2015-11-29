@@ -42,7 +42,9 @@ G.UsersAccountsCollection.after.update(function afterUpdate(userId, account) {
     return;
   }
 
-  const startBalanceChanged = _.select(this.previous.accounts, acc => !_.findWhere(account.accounts, { startBalance: acc.startBalance }));
+  const startBalanceChanged = _.select(this.previous.accounts, acc => !_.findWhere(account.accounts, {
+    startBalance: acc.startBalance,
+  }));
 
   startBalanceChanged.forEach(changedAccount => {
     G.balanceCorrection(account.userId, changedAccount._id, changedAccount.createdAt);

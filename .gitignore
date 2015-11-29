@@ -1,6 +1,8 @@
 .meteor/local
 .meteor/meteorite
 
+packages/**/.npm
+
 # =========================
 # Operating System Files
 # =========================

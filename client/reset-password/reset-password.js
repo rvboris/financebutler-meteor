@@ -43,7 +43,7 @@ export class resetPassword {
 
         this.$mdToast.show(recoveryResult);
         this.$state.go('app.login');
-      }.bind(this))
+      })
       .catch(this.showError.bind(this));
   }
 

@@ -90,7 +90,8 @@ Meteor.methods({
 
     if (accountFromCurrency._id === accountToCurrency._id) {
       if (_.isObject(operation.amount)) {
-        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_NUMBER_REQUIRED', 'Transfer operation require number amount');
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_NUMBER_REQUIRED',
+          'Transfer operation require number amount');
       }
 
       const bigAmount = new Big(operation.amount);
@@ -113,7 +114,8 @@ Meteor.methods({
       });
     } else {
       if (!_.isObject(operation.amount)) {
-        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_OBJECT_REQUIRED', 'Transfer operation has different currency, required object amount');
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_OBJECT_REQUIRED',
+          'Transfer operation has different currency, required object amount');
       }
 
       if (!operation.amount.to && operation.amount.from) {
@@ -121,7 +123,8 @@ Meteor.methods({
       } else if (!operation.amount.from && operation.amount.to) {
         operation.amount.from = fx(operation.amount.to).from(accountToCurrency.code).to(accountFromCurrency.code);
       } else {
-        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_OBJECT_INVALID', 'Transfer operation amount object is invalid');
+        throw new Meteor.Error('ERROR.OPERATION_TRANSFER_AMOUNT_OBJECT_INVALID',
+          'Transfer operation amount object is invalid');
       }
 
       const bigAmountFrom = new Big(operation.amount.from);
@@ -203,12 +206,13 @@ Meteor.methods({
   },
 
   [`${namespace}/UpdateTransfer`]: (userId, operationId, operation) => {
-    const operationInfo =  G.UsersOperationsCollection.findOne(operationId);
+    const operationInfo = G.UsersOperationsCollection.findOne(operationId);
 
     const bigAmount = new Big(operation.amount);
 
     if (operation.amount) {
-      if ((operationInfo.type === 'expense' && bigAmount.gt(0)) || (operationInfo.type === 'income' && bigAmount.lt(0))) {
+      if ((operationInfo.type === 'expense' && bigAmount.gt(0))
+        || (operationInfo.type === 'income' && bigAmount.lt(0))) {
         operation.amount = parseFloat(bigAmount.times(-1).valueOf());
       }
     }

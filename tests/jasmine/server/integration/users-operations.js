@@ -371,26 +371,40 @@ describe('users operations', () => {
 
     expect(resultOperation.balance).toBe(7000);
 
-    const accountToChange = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(testUsersAccounts[1]._id);
+    const accountToChange = G.UsersAccountsCollection.findOne({ userId: testUserId })
+      .getAccount(testUsersAccounts[1]._id);
 
     expect(accountToChange.currentBalance).toBe(7000);
   });
 
   it('get day normal balance', () => {
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 3').toDate())).toBe(0);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 4').toDate())).toBe(0);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 5').toDate())).toBe(3000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 6').toDate())).toBe(103000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 7').toDate())).toBe(98000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 8').toDate())).toBe(98000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 9').toDate())).toBe(95000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 10').toDate())).toBe(95000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 20').toDate())).toBe(75000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[0]._id, moment.utc('2020 1 25').toDate())).toBe(65000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 3').toDate())).toBe(0);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 4').toDate())).toBe(0);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 5').toDate())).toBe(3000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 6').toDate())).toBe(103000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 7').toDate())).toBe(98000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 8').toDate())).toBe(98000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 9').toDate())).toBe(95000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 10').toDate())).toBe(95000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2015 1 20').toDate())).toBe(75000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[0]._id, moment.utc('2020 1 25').toDate())).toBe(65000);
 
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 20').toDate())).toBe(0);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 21').toDate())).toBe(10000);
-    expect(Meteor.call('UsersOperations/GetBalanceForDate', testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 26').toDate())).toBe(7000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 20').toDate())).toBe(0);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 21').toDate())).toBe(10000);
+    expect(Meteor.call('UsersOperations/GetBalanceForDate',
+      testUserId, testUsersAccounts[1]._id, moment.utc('2015 1 26').toDate())).toBe(7000);
   });
 
   it('transfer operation in different currency (from)', () => {
@@ -456,20 +470,24 @@ describe('users operations', () => {
     expect(resultOperationFrom.groupTo).not.toBeUndefined();
     expect(resultOperationFrom.type).toBe('expense');
     expect(resultOperationFrom.amount).toBe(parseFloat(new Big(amountUSD).times(fx.rates.RUB).times(-1).toFixed(2)));
-    expect(resultOperationFrom.balance).toBe(parseFloat(new Big(55000).minus(new Big(amountUSD).times(fx.rates.RUB)).toFixed(2)));
+    expect(resultOperationFrom.balance).toBe(parseFloat(new Big(55000).minus(new Big(amountUSD).times(fx.rates.RUB))
+      .toFixed(2)));
     expect(resultOperationFrom.date).toEqual(transferDate);
 
     expect(resultOperationTo).not.toBeUndefined();
     expect(resultOperationTo.groupTo).not.toBeUndefined();
     expect(resultOperationTo.type).toBe('income');
     expect(resultOperationTo.amount).toBe(amountUSD);
-    expect(resultOperationTo.balance).toBe(parseFloat(new Big(accountTo.startBalance).plus(new Big(amountUSD).times(2)).toFixed(2)));
+    expect(resultOperationTo.balance).toBe(parseFloat(new Big(accountTo.startBalance).plus(new Big(amountUSD).times(2))
+      .toFixed(2)));
     expect(resultOperationTo.date).toEqual(transferDate);
 
     accountFrom = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountFrom._id);
     accountTo = G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(accountTo._id);
 
-    expect(accountFrom.currentBalance).toBe(parseFloat(new Big(55000).minus(new Big(amountUSD).times(fx.rates.RUB)).toFixed(2)));
-    expect(accountTo.currentBalance).toBe(parseFloat(new Big(accountTo.startBalance).plus(new Big(amountUSD).times(2)).toFixed(2)));
+    expect(accountFrom.currentBalance).toBe(parseFloat(new Big(55000).minus(new Big(amountUSD).times(fx.rates.RUB))
+      .toFixed(2)));
+    expect(accountTo.currentBalance).toBe(parseFloat(new Big(accountTo.startBalance).plus(new Big(amountUSD).times(2))
+      .toFixed(2)));
   });
 });

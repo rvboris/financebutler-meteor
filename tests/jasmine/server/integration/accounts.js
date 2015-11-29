@@ -36,8 +36,10 @@ describe('accounts', () => {
       type: 'standart',
     });
 
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId)).not.toBeUndefined();
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id).toBe(currencyRUB._id);
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId))
+      .not.toBeUndefined();
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id)
+      .toBe(currencyRUB._id);
   });
 
   it('create account USD', () => {
@@ -48,8 +50,10 @@ describe('accounts', () => {
       type: 'standart',
     });
 
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId)).not.toBeUndefined();
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id).toBe(currencyUSD._id);
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId))
+      .not.toBeUndefined();
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id)
+      .toBe(currencyUSD._id);
   });
 
   it('create account EUR', () => {
@@ -60,8 +64,10 @@ describe('accounts', () => {
       type: 'standart',
     });
 
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId)).not.toBeUndefined();
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id).toBe(currencyEUR._id);
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId))
+      .not.toBeUndefined();
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id)
+      .toBe(currencyEUR._id);
   });
 
   it('create debt account JOD', () => {
@@ -72,8 +78,10 @@ describe('accounts', () => {
       type: 'debt',
     });
 
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId)).not.toBeUndefined();
-    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id).toBe(currencyJOD._id);
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getAccount(newAccountId))
+      .not.toBeUndefined();
+    expect(G.UsersAccountsCollection.findOne({ userId: testUserId }).getCurrency(newAccountId)._id)
+      .toBe(currencyJOD._id);
   });
 
   it('get accounts by type', () => {
@@ -100,10 +108,14 @@ describe('accounts', () => {
   });
 
   it('get balance in currency', () => {
-    const accountRUB = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts.find(acc => acc.name === 'Test account RUB');
-    const accountUSD = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts.find(acc => acc.name === 'Test account USD');
-    const accountEUR = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts.find(acc => acc.name === 'Test account EUR');
-    const accountJOD = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts.find(acc => acc.name === 'Test account JOD');
+    const accountRUB = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts
+      .find(acc => acc.name === 'Test account RUB');
+    const accountUSD = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts
+      .find(acc => acc.name === 'Test account USD');
+    const accountEUR = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts
+      .find(acc => acc.name === 'Test account EUR');
+    const accountJOD = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts
+      .find(acc => acc.name === 'Test account JOD');
 
     expect(Meteor.call('UsersAccounts/GetBalanceInCurrency', testUserId, accountRUB._id)).toBe(10000);
     expect(Meteor.call('UsersAccounts/GetBalanceInCurrency', testUserId, accountUSD._id)).toBeGreaterThan(5000);
@@ -117,7 +129,8 @@ describe('accounts', () => {
   });
 
   it('update account', () => {
-    let accountRUB = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts.find(acc => acc.name === 'Test account RUB');
+    let accountRUB = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts
+      .find(acc => acc.name === 'Test account RUB');
 
     Meteor.call('UsersAccounts/Update', testUserId, accountRUB._id, {
       name: 'Test account RUB Updated',
@@ -131,7 +144,8 @@ describe('accounts', () => {
   });
 
   it('remove account', () => {
-    const accountJOD = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts.find(acc => acc.name === 'Test account JOD');
+    const accountJOD = G.UsersAccountsCollection.findOne({ userId: testUserId }).accounts
+      .find(acc => acc.name === 'Test account JOD');
 
     Meteor.call('UsersAccounts/Remove', testUserId, accountJOD._id);
 

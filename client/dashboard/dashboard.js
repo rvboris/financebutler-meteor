@@ -17,11 +17,11 @@ export class dashboard {
 
     $scope.$meteorSubscribe('usersAccounts').then(() => {
       this.accounts = $scope.$meteorObject(G.UsersAccountsCollection, { userId: Meteor.userId() }).accounts;
-    }.bind(this));
+    });
 
     $scope.$meteorSubscribe('usersCategories').then(() => {
       this.categories = $scope.$meteorObject(G.UsersCategoriesCollection, { userId: Meteor.userId() });
-    }.bind(this));
+    });
 
     this.currency = $scope.$meteorObject(G.CurrenciesCollection, Meteor.user().profile.currencyId);
   }
@@ -35,6 +35,6 @@ export class dashboard {
 
     pending.then(() => {
       this.$mdSidenav('left').toggle();
-    }.bind(this));
+    });
   }
 }

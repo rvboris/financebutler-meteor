@@ -31,7 +31,7 @@ export class login {
     this.$meteor.loginWithPassword(this.email, this.password)
       .then(() => {
         this.$state.go('app.dashboard.overview');
-      }.bind(this))
+      })
       .catch(this.showError.bind(this));
   }
 

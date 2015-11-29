@@ -109,13 +109,14 @@ Meteor.methods({
   [`${namespace}/UpdateBalance`]: (userId, accountId, balance) => {
     const account = G.UsersAccountsCollection.findOne({userId}).getAccount(accountId);
     const currency = G.CurrenciesCollection.findOne(account.currencyId);
+    const newBalance = parseFloat(new Big(account.currentBalance).plus(balance).toFixed(currency.decimalDigits));
 
     return G.UsersAccountsCollection.update({
       userId: userId,
       'accounts._id': accountId,
     }, {
       $set: {
-        'accounts.$.currentBalance': parseFloat(new Big(account.currentBalance).plus(balance).toFixed(currency.decimalDigits)),
+        'accounts.$.currentBalance': newBalance,
       },
     });
   },
@@ -142,7 +143,11 @@ Meteor.methods({
     let total = new Big(0);
 
     G.UsersAccountsCollection.findOne({userId}).accounts.forEach(account => {
-      total = total.plus(account.type === 'debt' && !debt ? 0 : Meteor.call(`${namespace}/GetBalanceInCurrency`, userId, account._id));
+      if (account.type === 'debt' && !debt) {
+        return;
+      }
+
+      total = total.plus(Meteor.call(`${namespace}/GetBalanceInCurrency`, userId, account._id));
     });
 
     return parseFloat(total.valueOf());

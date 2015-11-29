@@ -9,14 +9,19 @@ SetModule('app', [
   'validation.match',
 ])
 .constant('toastPosition', 'bottom right')
-.config(['$urlRouterProvider', '$locationProvider', '$mdThemingProvider', ($urlRouterProvider, $locationProvider, $mdThemingProvider) => {
-  $urlRouterProvider.otherwise('/');
-  $locationProvider.html5Mode(true);
+.config([
+  '$urlRouterProvider',
+  '$locationProvider',
+  '$mdThemingProvider',
+  ($urlRouterProvider, $locationProvider, $mdThemingProvider) => {
+    $urlRouterProvider.otherwise('/');
+    $locationProvider.html5Mode(true);
 
-  $mdThemingProvider.theme('default')
-    .primaryPalette('teal')
-    .accentPalette('brown');
-}]);
+    $mdThemingProvider.theme('default')
+      .primaryPalette('teal')
+      .accentPalette('brown');
+  },
+]);
 
 @Component('app')
 @View('client/app/app.html')
@@ -30,7 +35,8 @@ export class app {
 
     this.$meteor.session('translateReady').bind($scope, 'translateReady');
 
-    const stateChangeErrorHandler = $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
+    const stateChangeErrorHandler =
+    $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
       if (error === 'AUTH_REQUIRED') {
         this.$state.go('app.login')
           .then(() => {
@@ -47,7 +53,7 @@ export class app {
       }
 
       this.$state.go('app.home');
-    }.bind(this));
+    });
 
     let deferState = true;
     let translateCheckInterval;
@@ -84,9 +90,9 @@ export class app {
             }
 
             deferState = true;
-          }.bind(this));
+          });
       }
-    }.bind(this));
+    });
 
     let exchangeRatesHandler = angular.noop;
 
@@ -101,8 +107,8 @@ export class app {
           fx.rates = exchangeRates.rates;
           fx.base = exchangeRates.base;
         }, true);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
 
     $scope.$on('$destroy', () => {
       stateChangeErrorHandler();
@@ -124,7 +130,7 @@ export class app {
         }
 
         return this.$state.go('app.dashboard.overview');
-      }.bind(this));
+      });
   }
 }
 

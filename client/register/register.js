@@ -48,7 +48,7 @@ export class register {
 
             this.$mdToast.show(emailVerifyToast);
           });
-      }.bind(this))
+      })
       .catch(this.showError.bind(this));
   }
 

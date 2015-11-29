@@ -41,7 +41,8 @@ class UserGenerator {
       this.incomeDay1Amount = _.random(20000, 22000);
       this.incomeDay2 = _.random(25, 28);
       this.incomeDay2Amount = _.random(350000, 38000);
-      this.transferDays = _.sample(_.range(_.random(1, this.currentDate.daysInMonth()), this.currentDate.daysInMonth()), _.random(1, 5));
+      this.transferDays = _.sample(_.range(_.random(1, this.currentDate.daysInMonth()),
+        this.currentDate.daysInMonth()), _.random(1, 5));
 
       this.standartAccounts = _.shuffle(this.standartAccounts);
 
@@ -84,7 +85,9 @@ class UserGenerator {
   addCreditAccount() {
     this.debtAccountId = Random.id();
     this.debtAmount = _.random(this.demoAccountYears * 5000, this.demoAccountYears * 80000);
-    this.debtMonthlyPay = parseFloat(new Big(this.debtAmount).div(new Big(this.demoAccountYears).times(12)).toFixed(this.currency.decimalDigits));
+    this.debtMonthlyPay = parseFloat(new Big(this.debtAmount)
+      .div(new Big(this.demoAccountYears).times(12))
+      .toFixed(this.currency.decimalDigits));
 
     Meteor.call('UsersAccounts/Add', this.userId, {
       name: 'Credit',
@@ -105,10 +108,14 @@ class UserGenerator {
 
   mutateOperationBalance(type, amount) {
     if (type === 'income') {
-      return _.random(amount, parseFloat(new Big(amount).plus(_.random(1, amount)).toFixed(this.currency.decimalDigits)));
+      return _.random(amount, parseFloat(new Big(amount)
+        .plus(_.random(1, amount))
+        .toFixed(this.currency.decimalDigits)));
     }
 
-    return _.random(amount, parseFloat(new Big(amount).minus(_.random(1, amount)).toFixed(this.currency.decimalDigits)));
+    return _.random(amount, parseFloat(new Big(amount)
+      .minus(_.random(1, amount))
+      .toFixed(this.currency.decimalDigits)));
   }
 
   mutateCurrentDayTime(day) {
@@ -154,7 +161,10 @@ class UserGenerator {
   }
 
   addDailyExpenseOperation() {
-    const dailyExpense = _.random(1000, parseFloat(new Big(this.incomeDay1Amount).plus(this.incomeDay2Amount).toFixed(this.currency.decimalDigits)));
+    const dailyExpense = _.random(1000, parseFloat(new Big(this.incomeDay1Amount)
+      .plus(this.incomeDay2Amount)
+      .toFixed(this.currency.decimalDigits)));
+
     const dailyExpenseCount = _.random(1, 10);
 
     if (this.sumExpense.plus(this.debtMonthlyPay).lt(new Big(this.incomeDay1Amount).plus(this.incomeDay2Amount))) {
@@ -164,7 +174,9 @@ class UserGenerator {
 
       if (new Big(expenseAccount.currentBalance).minus(dailyExpense).gte(0)) {
         for (let i = 0; i < dailyExpenseCount; i++) {
-          const expenseAmount = parseFloat(new Big(dailyExpense).div(dailyExpenseCount).toFixed(this.currency.decimalDigits));
+          const expenseAmount = parseFloat(new Big(dailyExpense)
+            .div(dailyExpenseCount)
+            .toFixed(this.currency.decimalDigits));
 
           Meteor.call('UsersOperations/Add', this.userId, expenseAccount._id, {
             type: 'expense',
@@ -202,7 +214,7 @@ class UserGenerator {
   }
 
   addPayDebtOperation() {
-    const payDebtAccount =  G.UsersAccountsCollection
+    const payDebtAccount = G.UsersAccountsCollection
       .findOne({ userId: this.userId })
       .getAccountByMaxBalance();
 
@@ -215,7 +227,8 @@ class UserGenerator {
         return;
       }
 
-      const payAmount = new Big(payDebtAccount.currentBalance).gte(-debtAccountBalance) ? -debtAccountBalance : this.debtMonthlyPay;
+      const payAmount = new Big(payDebtAccount.currentBalance)
+        .gte(-debtAccountBalance) ? -debtAccountBalance : this.debtMonthlyPay;
 
       Meteor.call('UsersOperations/AddTransfer', this.userId, payDebtAccount._id, this.debtAccountId, {
         amount: -payAmount,
@@ -230,7 +243,9 @@ class UserGenerator {
     const insertOperationsCount = _.random(10, 20);
 
     for (let i = 0; i < insertOperationsCount; i++) {
-      const account =  _.sample(G.UsersAccountsCollection.findOne({ userId: this.userId }).getAccountsByType('standart'))._id;
+      const account = _.sample(G.UsersAccountsCollection.findOne({ userId: this.userId })
+        .getAccountsByType('standart'))._id;
+
       const type = _.sample(['income', 'expense']);
       const amount = _.random(100, 3000);
 
@@ -264,7 +279,7 @@ class UserGenerator {
       });
 
       this.totalUpdates++;
-    }.bind(this));
+    });
 
     operationsToUpdate = _.sample(this.getOperationsToUpdate(), _.random(10, 20));
 
@@ -282,7 +297,7 @@ class UserGenerator {
       }
 
       this.totalUpdates++;
-    }.bind(this));
+    });
 
     operationsToUpdate = _.sample(this.getOperationsToUpdate(), _.random(10, 20));
 
@@ -292,7 +307,7 @@ class UserGenerator {
       });
 
       this.totalUpdates++;
-    }.bind(this));
+    });
 
     operationsToUpdate = _.sample(this.getOperationsToUpdate(), _.random(10, 20));
 
@@ -309,12 +324,12 @@ class UserGenerator {
       });
 
       this.totalUpdates++;
-    }.bind(this));
+    });
 
     operationsToUpdate = _.sample(this.getOperationsToUpdate(), _.random(10, 20));
 
     operationsToUpdate.forEach(operation => {
-      const newAmount =  this.mutateOperationBalance(operation.type, operation.amount);
+      const newAmount = this.mutateOperationBalance(operation.type, operation.amount);
 
       const accountIds = G.UsersAccountsCollection
         .findOne({ userId: this.userId })
@@ -337,7 +352,7 @@ class UserGenerator {
       }
 
       this.totalUpdates++;
-    }.bind(this));
+    });
   }
 
   removeOperations() {
@@ -353,7 +368,7 @@ class UserGenerator {
       }
 
       this.totalRemoves++;
-    }.bind(this));
+    });
   }
 
   transferOperationsUpdate() {
@@ -361,7 +376,7 @@ class UserGenerator {
       .filter(operation => operation.type === 'expense');
 
     operationsToUpdate.forEach(operation => {
-      const newAmount =  this.mutateOperationBalance(operation.type, operation.amount);
+      const newAmount = this.mutateOperationBalance(operation.type, operation.amount);
 
       const accountIds = G.UsersAccountsCollection
         .findOne({ userId: this.userId })
@@ -377,17 +392,18 @@ class UserGenerator {
       });
 
       this.totalTransferUpdates++;
-    }.bind(this));
+    });
   }
 
   transferOperationsRemove() {
-    operationsToUpdate = _.uniq(_.sample(this.getOperationsToUpdate(true), _.random(10, 20)).filter(operation => operation.type === 'expense'));
+    operationsToUpdate = _.uniq(_.sample(this.getOperationsToUpdate(true), _.random(10, 20))
+      .filter(operation => operation.type === 'expense'));
 
     operationsToUpdate.forEach(operation => {
       Meteor.call('UsersOperations/Remove', this.userId, operation._id);
 
       this.totalTransferRemoves++;
-    }.bind(this));
+    });
   }
 
   printReport() {
@@ -407,7 +423,8 @@ class UserGenerator {
     Logstar.info(`Total income ${this.sumIncome}`);
     Logstar.info(`Total expense ${this.sumExpense}`);
     Logstar.info(`Total transfer ${this.sumTransfer}`);
-    Logstar.info(`Debt paid ${this.sumDebt} of ${this.debtAmount}, left ${new Big(this.debtAmount).minus(this.sumDebt)}`);
+    Logstar.info(`Debt paid ${this.sumDebt} of ${this.debtAmount},
+      left ${new Big(this.debtAmount).minus(this.sumDebt)}`);
     Logstar.info(`Hungry days ${this.hungryDays.valueOf()}`);
     Logstar.info(`Total updates ${this.totalUpdates}`);
     Logstar.info(`Total removes ${this.totalRemoves}`);

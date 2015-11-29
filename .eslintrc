@@ -1,14 +1,23 @@
 {
+  "root": true,
+  "parser": "babel-eslint",
   "extends": "airbnb/base",
+  "env": {
+    "meteor": true
+  },
   "plugins": [
     "angular"
   ],
   "rules": {
+    "no-undef": 0,
+    "max-len": [2, 120, 4],
+    "id-length": [2, { "min": 1, "properties": "never" }],
     "new-cap": [2, {
       "capIsNewExceptions": ["Component", "View", "State", "Filter", "Component", "Inject", "SetModule"]
     }],
-    "no-shadow": [0],
-    "angular/di": [0],
-    "angular/module-getter": [0]
+    "no-shadow": 0,
+    "angular/di": 0,
+    "angular/module-getter": 0,
+    "linebreak-style": [2, "unix"]
   }
 }
