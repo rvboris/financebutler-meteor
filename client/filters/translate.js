@@ -1,7 +1,7 @@
 SetModule('app');
 
 @Filter('translate')
-@Inject(['$parse', '$log', '$rootScope'])
+@Inject(['$parse', '$log'])
 
 export class translate {
   constructor($parse, $log) {
@@ -17,10 +17,18 @@ export class translate {
       }
 
       try {
-        return TAPi18n.__(key, parsedOptions);
+        const translated = TAPi18n.__(key, parsedOptions);
+
+        if (translated.includes(key)) {
+          return TAPi18n.__('APP.UNKNOWN_ERROR');
+        }
+
+        return translated;
       } catch (err) {
         $log.error(err);
       }
+
+      return '';
     };
   }
 }

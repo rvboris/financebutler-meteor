@@ -75,7 +75,8 @@
     "REPORTS": "Отчеты",
     "BUDGET": "Бюджет",
     "CATEGORIES_CONTROL": "Управление категориями",
-    "OVERVIEW": "Обзор"
+    "OVERVIEW": "Обзор",
+    "UNKNOWN_ERROR": "Ошибка, что-то сломалось"
   },
   "STATE": {
     "APP_DASHBOARD_OVERVIEW": "Обзор",

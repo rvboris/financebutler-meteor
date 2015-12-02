@@ -23,7 +23,7 @@ export class register {
       .simple()
       .position(this.toastPosition)
       .hideDelay(3000)
-      .content(T9n.get(`error.accounts.${err.reason}`));
+      .content(this.$filter('t9nError')(`error.accounts.${err.reason}`));
 
     this.$mdToast.show(errorToast);
   }

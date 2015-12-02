@@ -5,17 +5,18 @@ Meteor.startup(() => {
     throw new Meteor.Error('ERROR.INVALID_CONFIG_ENV', 'Config env not equal METEOR_ENV');
   }
 
-  if (Meteor.settings.public.env === 'production') {
-    Logstar.isLocal = false;
-  } else if (Meteor.settings.public.env === 'development' && Package['xolvio:cleaner']) {
-    Package['xolvio:cleaner'].resetDatabase();
-  }
-
   Logstar.allow({
     log: () => {
       return true;
     },
   });
+
+  if (Meteor.settings.public.env === 'production') {
+    Logstar.isLocal = false;
+  } else if (Meteor.settings.public.env === 'development' && Package['xolvio:cleaner']) {
+    Package['xolvio:cleaner'].resetDatabase();
+    Meteor.call('emailStub/stub');
+  }
 
   Mandrill.config({
     username: Meteor.settings.mandrill.user,

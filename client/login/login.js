@@ -3,13 +3,14 @@ SetModule('app');
 @Component('login')
 @View('client/login/login.html')
 @State({ name: 'app.login', url: '/login' })
-@Inject(['$meteor', '$state', '$mdToast', 'toastPosition', '$scope'])
+@Inject(['$meteor', '$state', '$mdToast', '$filter', 'toastPosition', '$scope'])
 
 export class login {
-  constructor($meteor, $state, $mdToast, toastPosition, $scope) {
+  constructor($meteor, $state, $mdToast, $filter, toastPosition, $scope) {
     this.$meteor = $meteor;
     this.$state = $state;
     this.$mdToast = $mdToast;
+    this.$filter = $filter;
     this.toastPosition = toastPosition;
     this.$scope = $scope;
 
@@ -22,7 +23,7 @@ export class login {
       .simple()
       .position(this.toastPosition)
       .hideDelay(3000)
-      .content(T9n.get(`error.accounts.${err.reason}`));
+      .content(this.$filter('t9nError')(`error.accounts.${err.reason}`));
 
     this.$mdToast.show(errorToast);
   }
